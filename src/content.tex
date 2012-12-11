@@ -13,32 +13,89 @@
 
 \begin{abstract}
 This paper evaluates asynchronous server technologies. Strenghts and weaknesses
-of asynchronous programming models are alaborated and a proof of concept 
+of asynchronous programming models are elaborated and a proof of concept 
 based on node.js and vert.x is used to evaluate non-functional attributes such as
 maintainability. \ldots
 \end{abstract}
 
 \section{Introduction}
-Lorem ipsum dolor sit amet.\footcite[Cf.][30]{fettig_2005}
+In traditional Web applications a connection's lifespan starts with a request and
+ends with the servers response. Each connection is assigned a thread which
+processes the request and terminates afterwards.
+However in order to allow real-time\footnote{proper real time, as opposed to
+ancient definitions. TODO: reference} communication between client and server it
+is necessary to extend the connection's lifespan to the duration of the whole
+session which results in many simultaniously open connections.
+Assigning one thread for each open connection would cause a large overhead for
+the server even though most threads would be inactive. This is due to the data
+associated with each thread and the process of switching between all
+threads.\footnote{TODO: there's probably a better term than switching}\\
+Relatively young frameworks such as Node.js and Vert.x try to address this issue 
+by providing a completely asynchronous programming model which allows associating
+multiple simultanious connections with a single thread by using an event-driven approach.
 
-\paragraph{Key Terms}
-In general asynchronous calls can be defined as non-blocking function or method calls that allow the caller to continue while the callee handles the task.
-The retrieval of results is usually done by callbacks that are triggered by certain events (such as the completion of the task). This callback approach is referred to as event-driven.
+%Goal of this paper and structure
+This paper elaborates the concepts behind these young frameworks and analyses their 
+technical strengths and weaknesses. Furthermore non-functional attributes will be
+evaluated based on two sample implementations in Node.js  and Vert.x.
 
+\section{Setting the context}
+\label{setting_the_context}
+
+\subsection{Comparison between Asynchronous and Synchronous Processing}
+\label{comparison}
 TODO: Benefits of this approach vs synchronous (literature: distributed systems)
 
-TODO: list of recent asynchrounous programming models and frameworks such as vert.x, node.js, twisted, EventMachine, etc.
+\subsection{Existing Asynchronous Frameworks}
+\label{existing_frameworks}
+list of recent asynchrounous programming models and frameworks such as
+vert.x, node.js, twisted, EventMachine, etc.
 
-TODO: purpose of this paper / goal definitions
-This paper focusses on the more recent representatives of asynchronous programming models, in particular node.js and vert.x. 
-
-
-\section{Areas of Application} \label{areas_of_application}
-
+A table with short descriptions should be sufficient.
 
 
 
-\section{Exemplary Implementations} \label{exemplary_implementations}
+\section{Areas of Application}
+\label{areas_of_application}
 
-lalalala
+
+
+
+\section{Exemplary Implementations}
+\label{exemplary_implementations}
+
+A simple web form application has been implemented in Node.js and Vert.x to
+further analyze non-functional requirements and collect practical experience
+with these frameworks.
+
+\subsection{Software Description}
+\label{program_description}
+Brief description of the insurance fee calculator
+
+\subsection{Software Design}
+\label{software_design}
+High level design\\
+Interface description, and differences between Node.js and Vert.x
+
+\subsection{Software Implementation}
+\label{program_description}
+Complications or any other notes on the implementation process that might be
+of importance for the evaluation.
+
+
+
+
+
+\section{Evaluation of Non-functional Attributes}
+\label{evaluation_nonfunctional}
+
+
+
+
+
+\section{Conclusion}
+\label{conclusion}
+
+
+
 
