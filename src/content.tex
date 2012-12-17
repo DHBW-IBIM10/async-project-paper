@@ -46,18 +46,64 @@ evaluated based on two sample implementations in Node.js  and Vert.x.
 \label{comparison}
 TODO: Benefits of this approach vs synchronous (literature: distributed systems)
 
+%Synchronous calls -> idling threads -> 
+A common case in programming is access to I/O.
+In synchronous processing a running thread needs to wait for the completion of
+the I/O operation before it can continue.
+The thread is in an idle state while it is waiting which allows another process 
+or thread to occupy the CPU in the meanwhile.\\
+
+% writing multithreaded code is not trivial
+In multithreaded applications several threads can run simultaniously within one
+process. Several threads can access a shared memory state concurrently which can
+cause inconcistent states. This can be avoided by synchronizing threads - e.g.
+with locks. This means that programmers need to take into account every possible
+execution order to effectively avoid program defects. This can be time consuming
+and often results in error-prone code.\footcite[Cf.][TODO]{Breshears_2009}
+
+% TODO: listing or figure for demonstration
+% example of reading a file
+
+% writing event-driven code might be easier
+Asynchronous programming style uses a different concept. The flow of an
+application is determined by events, which is why this style is also called
+event-driven programming.
+
+% TODO: listing or figure for demonstration
+% same example as above but with callbacks / events
+
+
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-list of recent asynchrounous programming models and frameworks such as
-vert.x, node.js, twisted, EventMachine, etc.
+list of recent asynchronous programming models and frameworks such as vert.x,
+node.js, twisted, EventMachine, etc.
 
 A table with short descriptions should be sufficient.
+
+\begin{table}[h]
+\centering
+\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.23\textwidth} p{0.47\textwidth}}
+\toprule
+\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
+\midrule
+Node.js			& JavaScript		& Based on Googles V8 engine\\
+Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
+									& JVM based, inspired by node.js\\
+Twisted			& Python			& Python stuff, not fully threadsafe\\
+EventMachine	& Ruby				& Event-driven software system for concurrent programming.\\
+\bottomrule 
+\end{tabular*}
+  \captionof{table}{Existing asynchronous programming frameworks}
+  \label{tab:existing_frameworks}
+\end{table}
 
 
 
 \section{Areas of Application}
 \label{areas_of_application}
 
+The non-blocking nature of asynchronous calls is important in all types of
+applications that need to handle a large number of requests in real time.
 
 
 
@@ -79,8 +125,8 @@ Interface description, and differences between Node.js and Vert.x
 
 \subsection{Software Implementation}
 \label{software_implementation}
-Complications or any other notes on the implementation process that might be
-of importance for the evaluation.
+Complications or any other notes on the implementation process that might be of
+importance for the evaluation.
 
 
 
