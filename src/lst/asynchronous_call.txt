@@ -1,0 +1,6 @@
+read_completed = function(content) {
+  printContent(content);
+}
+
+reader = new FileReader();
+reader.readAsText("input.txt", read_completed);

@@ -1,0 +1,3 @@
+reader = new FileReader();
+content = reader.readAsText("input.txt");
+printContent(content);
