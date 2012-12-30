@@ -54,12 +54,13 @@ The thread is in an idle state while it is waiting which allows another process
 or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
-In multithreaded applications several threads can run simultaniously within one
+In multithreaded applications several threads can run simultaniously within one 
 process. Several threads can access shared memory concurrently which can
 cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
-execution order to effectively avoid program defects. This can be time consuming
-and often results in error-prone code.\footcite[Cf.][TODO]{Breshears_2009}
+execution order to effectively avoid program defects such as data races and 
+deadlocks.\footcite[Cf.][10]{Breshears_2009}
+This can be time consuming and potentially results in error-prone code.
 
 A typical synchronous call is provided in listing \ref{lst:synchronous_call}. The
 contents of a file are read and displayed afterwards. The programm is blocked until the
