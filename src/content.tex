@@ -70,14 +70,32 @@ read operation has finished.
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 
-% writing event-driven code might be easier
 Asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.
+event-driven programming. In listing \ref{lst:asynchronous_call} the call
+to the \textit{readAsText} function is done asynchronously. There is no
+return value - instead an event handler is provided as a second argument.
+This function is also referred to as a callback function. It is called
+as soon as the read operation has completed.
 
 % same example as above but with callbacks / events
 \lstinputlisting[caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
+
+This concept is coupled with an event loop, which is a single thread that
+is running inside the main process.
+The loop constantly checks for new events. When an event is detected, the loop
+invokes the corresponding callback function. The callback is processed in the same thread
+which means that there is at most one callback running at a time. The
+event loop continues when the callback has completed.
+
+% programmer doesnt need to worry about concurrency at this point
+% every request is handled, however io intense callbacks could cause 
+% slow event processing. 
+% it is the programmers task to write light callbacks that can be
+% processed quickly
+% see: http://developer.yahoo.com/blogs/ydn/posts/2010/10/understanding-the-event-loops-and-writing-great-code-for-node-js-part-1/
+
 
 
 \subsection{Existing Asynchronous Frameworks}
