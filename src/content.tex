@@ -54,22 +54,49 @@ The thread is in an idle state while it is waiting which allows another process
 or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
-In multithreaded applications several threads can run simultaniously within one
-process. Several threads can access a shared memory state concurrently which can
-cause inconcistent states. This means that programmers need to take into account every possible
-execution order to effectively avoid program defects such as data races and deadlocks.\footcite[Cf.][10]{Breshears_2009}
+In multithreaded applications several threads can run simultaniously within one 
+process. Several threads can access shared memory concurrently which can
+cause inconcistent states. This can be avoided by synchronizing threads - e.g.
+with locks. This means that programmers need to take into account every possible
+execution order to effectively avoid program defects such as data races and 
+deadlocks.\footcite[Cf.][10]{Breshears_2009}
 This can be time consuming and potentially results in error-prone code.
 
-% TODO: listing or figure for demonstration
-% example of reading a file
+A typical synchronous call is provided in listing \ref{lst:synchronous_call}. The
+contents of a file are read and displayed afterwards. The programm is blocked until the
+read operation has finished.
 
-% writing event-driven code might be easier
+% reading a file and displaying it, pseudo code
+\lstinputlisting[caption={Pseudocode: Synchronously reading and displaying a file's contents},
+label=lst:synchronous_call]{lst/synchronous_call.txt}
+
+
 Asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.
+event-driven programming. In listing \ref{lst:asynchronous_call} the call
+to the \textit{readAsText} function is done asynchronously. There is no
+return value - instead an event handler is provided as a second argument.
+This function is also referred to as a callback function. It is called
+as soon as the read operation has completed.
 
-% TODO: listing or figure for demonstration
 % same example as above but with callbacks / events
+\lstinputlisting[caption={Pseudocode: Asynchronously reading and displaying a file's contents},
+label=lst:asynchronous_call]{lst/asynchronous_call.txt}
+
+This concept is coupled with an event loop, which is a single thread that
+is running inside the main process.
+The loop constantly checks for new events. When an event is detected, the loop
+invokes the corresponding callback function. The callback is processed in the same thread
+which means that there is at most one callback running at a time. The
+event loop continues when the callback has completed.
+
+% programmer doesnt need to worry about concurrency at this point
+% every request is handled, however io intense callbacks could cause 
+% slow event processing. 
+% it is the programmers task to write light callbacks that can be
+% processed quickly
+% see: http://developer.yahoo.com/blogs/ydn/posts/2010/10/understanding-the-event-loops-and-writing-great-code-for-node-js-part-1/
+
 
 
 \subsection{Existing Asynchronous Frameworks}
