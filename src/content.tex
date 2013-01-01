@@ -72,7 +72,7 @@ label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 Asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.\footcite[Cf.][TODO]{teixeira_2012} In listing \ref{lst:asynchronous_call} the call
+event-driven programming.\footcite[Cf.][16]{teixeira_2012} In listing \ref{lst:asynchronous_call} the call
 to the \textit{readAsText} function is done asynchronously. There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
@@ -91,7 +91,10 @@ The event loop continues when the callback has completed. As a result the
 developer does not need to take care of concurrency issues during development.
 But the developer's task is to write light event handlers that can be processed
 quickly as every callback is an interruption of the event processing in the
-event loop. \footcite[Cf.][]{Croucher_2010}
+event loop. \footcite[Cf.][]{Croucher_2010} Memory or processor intense callbacks
+can lead to growing queues of unserved events which eventuelly results
+in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
+
 
 % implication: 
 % all code should be as non-blocking and asynchronous as possible
