@@ -44,7 +44,6 @@ evaluated based on two sample implementations in Node.js  and Vert.x.
 
 \subsection{Comparison between Asynchronous and Synchronous Processing}
 \label{comparison}
-TODO: Benefits of this approach vs synchronous (literature: distributed systems)
 
 %Synchronous calls -> idling threads -> 
 A common case in programming is access to I/O.
@@ -148,6 +147,7 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.
 
+Some success stories are available on \url{http://nodejs.org/}.
 
 
 \section{Exemplary Implementations}
@@ -178,15 +178,31 @@ importance for the evaluation.
 \section{Evaluation of Non-functional Attributes}
 \label{evaluation_nonfunctional}
 
+\subsection{Maintainability}
+\label{maintainability}
+Language: JavaScript is wide spread, same for Java. However JavaScript offers
+better flexibility and native constructs for these types of applications.
+(Java 8 might improve things a bit).
+Node's API is undergoing backwards incompatible changes from time to time.
+It is desired to updated some components of a Node based application from
+time to time.
+
 \subsection{Integration}
 \label{integration}
+Vert.x and Node.js are supposed to be used as fully event driven standalone
+applications that can be extended with event-driven modules.
+However it might be desired to reuse existing software that is not fully event
+driven.
+Dont make use of blocking apis.
+Consider connecting that software with a message bus.
+Separate IO intense tasks into ``web workers'' or similar constructs.
 
-
+\subsection{Scalability}
+\label{scalability}
+Support for single machine scaling using multiple threads exists.
+Deployment on distributed systems differs in node.js and vert.x.
+Vert.x. uses its own communication bus to share information between verticles.
 
 
 \section{Conclusion}
 \label{conclusion}
-
-
-
-
