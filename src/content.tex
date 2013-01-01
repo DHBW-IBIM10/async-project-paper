@@ -73,7 +73,7 @@ label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 Asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming. In listing \ref{lst:asynchronous_call} the call
+event-driven programming.\footcite[Cf.][TODO]{teixeira_2012} In listing \ref{lst:asynchronous_call} the call
 to the \textit{readAsText} function is done asynchronously. There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
@@ -83,19 +83,22 @@ as soon as the read operation has completed.
 \lstinputlisting[caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
-This concept is coupled with an event loop, which is a single thread that
-is running inside the main process.
+This concept is coupled with an event loop, which is a single thread that is
+running inside the main process.
 The loop constantly checks for new events. When an event is detected, the loop
-invokes the corresponding callback function. The callback is processed in the same thread
-which means that there is at most one callback running at a time. The
-event loop continues when the callback has completed.
+invokes the corresponding callback function. The callback is processed in the
+same thread which means that there is at most one callback running at a time.
+The event loop continues when the callback has completed. As a result the
+developer does not need to take care of concurrency issues during development.
+But the developer's task is to write light event handlers that can be processed
+quickly as every callback is an interruption of the event processing in the
+event loop. \footcite[Cf.][]{Croucher_2010}
 
-% programmer doesnt need to worry about concurrency at this point
-% every request is handled, however io intense callbacks could cause 
-% slow event processing. 
-% it is the programmers task to write light callbacks that can be
-% processed quickly
-% see: http://developer.yahoo.com/blogs/ydn/posts/2010/10/understanding-the-event-loops-and-writing-great-code-for-node-js-part-1/
+% implication: 
+% all code should be as non-blocking and asynchronous as possible
+% using blocking APIs inside the asynchronous code can cause blocking of the event loop
+% which is evil. This is why node.js is based on javacript. Other languages already have
+% lots of modules with blocking APIs which could confuse developers.
 
 
 
@@ -106,23 +109,37 @@ node.js, twisted, EventMachine, etc.
 
 A table with short descriptions should be sufficient.
 
+\begin{savenotes} %alloows proper citation marks inside tables
 \begin{table}[h]
 \centering
-\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.23\textwidth} p{0.47\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
 \toprule
 \textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
-\midrule
-Node.js			& JavaScript		& Based on Googles V8 engine\\
+\midrule 
+Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
+									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
+									  Twisted is not fully threadsafe and implements the event
+									  loop via a library.\\
+									  
+EventMachine	& Ruby				& Similar to Twisted.\\
+
+Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
+									  The platform is fully event-driven and offers core
+									  functionalities for network programming. Its functionality
+									  can be extended with a large number of modules using an
+									  integrated package management system.
+									  Node.js started development in XXX and the community
+									  is growing since that.\\
+									  
 Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
-									& JVM based, inspired by node.js\\
-Twisted			& Python			& Python stuff, not fully threadsafe\\
-EventMachine	& Ruby				& Event-driven software system for concurrent programming.\\
+									& A JVM based platform for network applications which is
+									  inspired by Node.js.\\
 \bottomrule 
 \end{tabular*}
   \captionof{table}{Existing asynchronous programming frameworks}
   \label{tab:existing_frameworks}
 \end{table}
-
+\end{savenotes}
 
 
 \section{Areas of Application}
