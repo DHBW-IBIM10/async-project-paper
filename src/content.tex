@@ -28,8 +28,8 @@ is necessary to extend the connection's lifespan to the duration of the whole
 session which results in many simultaniously open connections.
 Assigning one thread for each open connection would cause a large overhead for
 the server even though most threads would be inactive. This is due to the data
-associated with each thread and the process of switching between all
-threads.\footnote{TODO: there's probably a better term than switching}\\
+associated with each thread and the process of context switching between all
+threads.\\
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
 multiple simultanious connections with a single thread by using an event-driven approach.
@@ -106,10 +106,10 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-list of recent asynchronous programming models and frameworks such as vert.x,
-node.js, twisted, EventMachine, etc.
 
-A table with short descriptions should be sufficient.
+
+\subsubsection{Overview}
+\label{frameworks_overview}
 
 \begin{savenotes} %alloows proper citation marks inside tables
 \begin{table}[h]
@@ -142,6 +142,18 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
   \label{tab:existing_frameworks}
 \end{table}
 \end{savenotes}
+
+
+
+\subsubsection{Node.js}
+\label{node.js}
+
+
+
+\subsubsection{Vert.x}
+\label{vert.x}
+
+
 
 
 \section{Areas of Application}
