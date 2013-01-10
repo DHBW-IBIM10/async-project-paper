@@ -135,7 +135,9 @@ Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V
 									  
 Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
 									& A JVM based platform for network applications which is
-									  inspired by Node.js.\\
+									  inspired by Node.js. Vert.x comes with its own event
+									  bus system that allows distributing applications
+									  among multiple network nodes.\\
 \bottomrule 
 \end{tabular*}
   \captionof{table}{Existing asynchronous programming frameworks}
@@ -148,10 +150,32 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \subsubsection{Node.js}
 \label{node.js}
 
+%
 
 
 \subsubsection{Vert.x}
 \label{vert.x}
+
+
+% Features
+\begin{itemize}
+  \item Polyglot (multiple languages supported, can be mixed in one project)
+  \item Concept of ``verticles'' (every instance is one verticle)
+  \item features a distributed event bus that can be shared among verticles
+  		and the UI javascript
+  \item worker threads for heavy tasks that would otherwise block the event loop as described in section \ref{sec:comparison}
+  \item comes with modules that allow persistency, work queues, web server
+  \item supports websockets and sockjs
+  \item good scalability due to messaging passing, shared immutable data
+  \item easy to run multiple instances on one server, getting the most out of a 
+  		multicore machine
+  \item libraries can be embedded in own java or groovy application
+  \item good coverage with documentation. Sample code for all supported languages and
+most available features is available in a public git
+repository\footcite[Cf.][]{Fox_2013}
+  \item open source and licensed under the Apache Software License 2.0. Commercial redistribution (in closed source projects) should not be an issue
+\end{itemize}
+
 
 
 
