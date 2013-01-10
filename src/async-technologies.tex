@@ -1,0 +1,158 @@
+\documentclass[11pt, a4paper]{scrartcl}
+%---------------------------------------------------------
+% Package imports
+%---------------------------------------------------------
+
+% Language and encoding
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[USenglish]{babel}
+\usepackage[T1]{fontenc}
+
+% Hyperrefs / links
+\usepackage{hyperref}
+
+% Tables
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{1.4} % increase spacing for table rows
+\usepackage{longtable}
+\usepackage{booktabs}
+
+% Graphics / figures
+\usepackage{graphicx}
+\usepackage{wrapfig}
+
+% Used to restrict floating of tables/illustrations
+\usepackage{float}
+\usepackage{placeins}
+
+% Graphics / figures
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{tikz}
+
+% Footnotes + captions
+\usepackage{caption}
+\usepackage{footnote}
+
+% Bibliography - Biblatex
+\usepackage[style=dhbw_ibim,firstinits=true,backend=biber]{biblatex}
+\bibliography{bibliography} % Bibliography file
+
+% Abbreviations
+\usepackage{nomencl}
+\setlength{\nomlabelwidth}{.25\hsize}
+\renewcommand{\nomlabel}[1]{#1 \dotfill}
+\makenomenclature
+
+% The Euro Symbol Package for LaTeX
+\usepackage[right]{eurosym}
+
+%\usepackage[usenames,dvipsnames]{xcolor} 
+% color definitions for listings
+\definecolor{lstkeyword}{RGB}{0,0,110}
+\definecolor{lstidentifier}{RGB}{0,0,0}
+\definecolor{lstcomment}{RGB}{70,70,70}
+\definecolor{lststring}{RGB}{34,84,34}
+
+% Listings
+\usepackage{listings}
+
+\lstset{ %
+	basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+	numbers=left,                   % where to put the line-numbers
+	numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+	lineskip={0.8pt},				% line spacing
+	stepnumber=1,                   % the step between two line-numbers. If it's 1
+	numbersep=10pt,                 % how far the line-numbers are from the code
+	backgroundcolor=\color{white},  % choose the background color. You must add
+	showspaces=false,               % show spaces adding particular underscores
+	showstringspaces=false,         % underline spaces within strings
+	showtabs=false,                 % show tabs within strings adding particular underscores
+	frame=single,                   % adds a frame around the code
+	tabsize=2,                      % sets default tabsize to 2 spaces
+	captionpos=b,                   % sets the caption-position to bottom
+	breaklines=true,                % sets automatic line breaking
+	breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+	title=\lstname,                 % show the filename of files included with \lstinputlisting;
+	keywordstyle=\color{lstkeyword}\bfseries,
+	identifierstyle=\color{lstidentifier},	
+	commentstyle=\color{lstcomment}, 	
+	stringstyle=\color{lststring}\ttfamily,		% typewriter type for strings	
+}
+
+
+%---------------------------------------------------------
+% Settings & Layout
+%---------------------------------------------------------
+
+% Substitutions for re-use in several places
+\newcommand{\papertitle}{Evaluation of Asynchronous Server Technologies}
+\newcommand{\papertype}{Seminar Paper}
+\newcommand{\paperauthor}{Rocco Schulz, Robert Wawrzyniak, Joe Boden, Max V��kler, Can Paul Bineytioglu}
+% Paper
+\newcommand{\pdfkeywords}{node.js vert.x asynchronous network programming} % separated by whitespace
+
+\newcommand{\studyprogram}{Int. Business Information Management}
+\newcommand{\studycourse}{WWI 2010 I}
+\newcommand{\schoolof}{Business}
+
+
+% Information for distiller pdftex:
+\hypersetup{ 
+	pdfauthor={Rocco Schulz},
+	pdftitle={\papertitle},
+	pdfsubject={\papertype - Program:  \studyprogram| Course: \studycourse},
+	pdfkeywords = \pdfkeywords,
+	linkcolor={black},
+	pdfview=FitV,     % FitH
+	pdfstartview=FitV,
+	urlcolor=black,   
+	breaklinks=true,   
+	citebordercolor=0 0 0, 
+	filebordercolor=0 0 0,
+	linkbordercolor=0 0 0,
+	menubordercolor=0 0 0,
+	urlbordercolor=0 0 0,
+	pdfhighlight=/I,
+	pdfborder=0 0 0,   % no boxes for hyperrefs
+} 
+
+
+% Depth for the table of contents
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% No clubpenalty & widowpenalty
+\clubpenalty = 10000
+\widowpenalty = 10000 
+\displaywidowpenalty = 10000
+
+
+%---------------------------------------------------------
+% Contents
+%---------------------------------------------------------
+
+\input{content}
+
+%---------------------------------------------------------
+% BIBLIOGRAPHY
+%---------------------------------------------------------
+
+\newpage
+
+\section{Lists of References}
+% Set headings for bibliographies
+\defbibheading{literatur}{\subsection*{List of Literature}}
+\defbibheading{www}{\subsection*{List of Internet and Intranet Resources}}
+
+% Show bibliographies
+\printbibliography[nottype=online,heading=literatur]
+% warning: includes ALL types but online.
+% Check your bibfile to avoid wrong entries here
+\printbibliography[type=online,heading=www]
+
+\end{document}
+
