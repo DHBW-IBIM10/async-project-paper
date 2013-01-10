@@ -32,3 +32,11 @@
 *.tdo
 *.pdf
 *.~
+*.run.xml
+*.mp
+*.tmp
+*.ui
+*.synctex.gz(busy)
+*.synctex.gz
+*.nls
+*.bcf
