@@ -100,7 +100,7 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 % all code should be as non-blocking and asynchronous as possible
 % using blocking APIs inside the asynchronous code can cause blocking of the event loop
 % which is evil. This is why node.js is based on javacript. Other languages already have
-% lots of modules with blocking APIs which could confuse developers.
+% lots of modules with blocking APIs which could confuse dumb developers.
 
 
 
@@ -120,10 +120,14 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \midrule 
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
 									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
-									  Twisted is not fully threadsafe and implements the event
-									  loop via a library.\\
+									  Twisted is a mature framework with a large number of supported networking
+									  protocols. Its development is backed by an active
+									  community.\footcite[Cf.][12]{fettig_2005}
+									  \\
 									  
-EventMachine	& Ruby				& Similar to Twisted.\\
+EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
+									  programs. It provides event-driven I/O using the Reactor 
+									  pattern."\footcite[][]{eventmachine_2012}\\
 
 Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
 									  The platform is fully event-driven and offers core
@@ -159,7 +163,7 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 
 Vertx is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
 possible to scale over available cores without manually forking multiple
-servers.\\ %TODO: how are requests distributed in the background?
+servers.\\
 The application API is exposed in multiple programming lanugages (see table
 \ref{tab:existing_frameworks}).
 % Implication: use case, code reuse from different legacy systems written in
@@ -200,13 +204,14 @@ larger projects.\\
 As opposed to Node.js, the core functionality and API can be considered quite
 static as changes need to be done in all supported
 languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
-Additional features that are provided by optional modules that can be obtained
-over a public git-based module repository.\footcite[Cf.][]{vertx_mod_2012}.
+The core can be exctended with additional features that are provided by optional
+modules that can be obtained over a public git-based module
+repository.\footcite[Cf.][]{vertx_mod_2012}.
 The repository currently contains 16 distinct modules in different
 versions.\footcite[Cf.][]{Vertx_repository_2012}
 
 An extensive online documentation is available for all supported languages.
-Additionally code examples are available for all languages and most features in
+Additionally, code examples for most features are available for all supported languages in
 a public repository\footcite[Cf.][]{Fox_2013}.\\
 Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
@@ -220,9 +225,28 @@ commecial redistribution in closed source projects should not be an issue.
 \label{areas_of_application}
 
 The non-blocking nature of asynchronous calls is important in all types of
-applications that need to handle a large number of requests in real time.
-
+applications that need to handle a large number of requests in real time.\\
 Some success stories are available on \url{http://nodejs.org/}.
+
+Could be used for: 
+\begin{itemize}
+  \item networked applications that tend to keep many inactive connections
+  \item web analytics / trackers
+  \item web servers
+  \item proxies
+  \item email and messaging systems
+  \item authorization processors
+\end{itemize}
+
+Should not be used for:
+\begin{itemize}
+  \item systems that do a lot of computing / IO access
+  \item \ldots
+\end{itemize}
+    
+    
+    
+
 
 
 \section{Exemplary Implementations}
