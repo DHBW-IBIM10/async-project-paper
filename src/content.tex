@@ -10,7 +10,6 @@
 
 \maketitle
 
-
 \begin{abstract}
 This paper evaluates asynchronous server technologies. Strenghts and weaknesses
 of asynchronous programming models are elaborated and a proof of concept 
@@ -23,6 +22,16 @@ maintainability. \ldots
 \newpage
 
 \section{Introduction}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/image01.png}
+\caption{REST request-response sequence diagram \footcite{req_res}\label{img_req_res}}
+\end{figure}
+
+
+
+
 In traditional Web applications a connection's lifespan starts with a request and
 ends with the servers response. Each connection is assigned a thread which
 processes the request and terminates afterwards.
