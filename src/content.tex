@@ -407,17 +407,61 @@ with these frameworks.
 
 \subsection{Software Description}
 \label{software_description}
-Brief description of the insurance fee calculator
+\FloatBarrier
+The exemplary implementation consists of a web service that can be used to calculate
+the expected fee for an insurance. However this application should only serve as a 
+demonstration of the used asynchronous frameworks and is hence very simplified.
 
+The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
+first step the user opens the website in a browser and is shown a form that
+consists of two parts - the first part being a section for personal details and
+the second part for parameters that will be used to determine the fee for the
+insurance.\\
+The user then fills in all necessary form fields and instantly gets feedback on
+the vailidy of the entered values. Once all fields are filled correctly the form
+can be submitted to the application via HTTP or HTTPS. The data received by the server
+then gets validated again to avoid processing of manipulated requests. Eventually
+the valid data is passe dinto the calculation routine which returns its result
+to the user by triggering the according callback.
+
+\nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
+\nomenclature{HTTP}{Hyper Text Transfer Protocol}
+
+
+
+
+
+\begin{figure}[h]
+	\centering
+	\setlength\fboxsep{2pt}
+	\fbox{
+	TODO: add image
+% 	1. User fills form
+% 	2. User submits form
+% 	3. Server calculates fee
+% 	4. User gets result
+% 	5. possible repetition of steps 2-4
+	%\includegraphics[width=0.4\textwidth]{img/workflow.pdf}
+	}
+	\caption{Usage workflow of the exemplary application}
+	\label{fig:application_workflow}
+\end{figure}
+
+\FloatBarrier
 \subsection{Software Design}
 \label{software_design}
-High level design\\
-Interface description, and differences between Node.js and Vert.x
 
+
+\FloatBarrier
 \subsection{Software Implementation}
 \label{software_implementation}
-Complications or any other notes on the implementation process that might be of
-importance for the evaluation.
+Complications or any other notes on the
+implementation process that might be of importance for the evaluation.
+
+\subsubsection{Vert.x}
+\label{implementation_vertx}
+
+
 
 
 
