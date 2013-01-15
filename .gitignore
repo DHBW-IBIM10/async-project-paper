@@ -39,3 +39,4 @@
 *.synctex.gz
 *.nls
 *.bcf
+*.DS_Store
