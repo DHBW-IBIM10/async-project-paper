@@ -7,8 +7,17 @@
 \date{\today}
 
 \begin{document}
+% roman numerals
+\renewcommand{\thepage}{\Roman{page}}
+
+%----------------------------------------------------------------------------
+% Title Page
+%----------------------------------------------------------------------------
+
 
 \maketitle
+% no page numbering on title page
+\thispagestyle{empty}
 
 \begin{abstract}
 This paper evaluates asynchronous server technologies. Strenghts and weaknesses
@@ -18,16 +27,56 @@ maintainability. \ldots
 \end{abstract}
 \newpage
 
+
+
+
+
+
+
+\renewcommand{\baselinestretch}{1.5}\normalsize
+
+
+%----------------------------------------------------------------------------
+% Table of Contents
+%----------------------------------------------------------------------------
 \tableofcontents
 \newpage
 
-\listoffigures
-\addcontentsline{toc}{section}{List of Figures}
+
+%----------------------------------------------------------------------------
+% Abbreviations
+%----------------------------------------------------------------------------
+% List needs to be indexed after each change.
+% This is done by executing the following command:
+% ~$ makeindex [filename].nlo -s nomencl.ist -o [filename].nls
+\printnomenclature
+\addcontentsline{toc}{section}{List of Abbreviations}
 \newpage
 
-\printnomenclature
-\addcontentsline{toc}{section}{\nomname}
+
+%----------------------------------------------------------------------------
+% List Of Tables
+%----------------------------------------------------------------------------
+\listoftables
+\addcontentsline{toc}{section}{\listtablename}
 \newpage
+
+
+%----------------------------------------------------------------------------
+% List of Figures
+%----------------------------------------------------------------------------
+\listoffigures
+\addcontentsline{toc}{section}{\listfigurename}
+\newpage
+
+% Arabic numerals for page numbering
+\renewcommand{\thepage}{\arabic{page}}
+
+% Set page number to 1: 
+\setcounter{page}{1} 
+
+
+
 
 \section{Introduction}
 
