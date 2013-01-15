@@ -1,15 +1,23 @@
 
 
 \title{\papertitle}
-\author{Rocco Schulz, Max Vökler, Joe Boden,\\ Robert Wawrzyniak, Can Paul Bineytioglu\\\\
+\author{Rocco Schulz, Max V\"{o}kler, Joe Boden,\\ Robert Wawrzyniak, Can Paul Bineytioglu\\\\
 	Corporate State University\\Baden-Wuerttemberg - Stuttgart}
 
 \date{\today}
 
 \begin{document}
+% roman numerals
+\renewcommand{\thepage}{\Roman{page}}
+
+%----------------------------------------------------------------------------
+% Title Page
+%----------------------------------------------------------------------------
+
 
 \maketitle
-
+% no page numbering on title page
+\thispagestyle{empty}
 
 \begin{abstract}
 This paper evaluates asynchronous server technologies. Strenghts and weaknesses
@@ -17,19 +25,79 @@ of asynchronous programming models are elaborated and a proof of concept
 based on node.js and vert.x is used to evaluate non-functional attributes such as
 maintainability. \ldots
 \end{abstract}
+\newpage
+
+
+
+
+
+
+
+\renewcommand{\baselinestretch}{1.5}\normalsize
+
+
+%----------------------------------------------------------------------------
+% Table of Contents
+%----------------------------------------------------------------------------
+\tableofcontents
+\newpage
+
+
+%----------------------------------------------------------------------------
+% Abbreviations
+%----------------------------------------------------------------------------
+% List needs to be indexed after each change.
+% This is done by executing the following command:
+% ~$ makeindex [filename].nlo -s nomencl.ist -o [filename].nls
+\printnomenclature
+\addcontentsline{toc}{section}{List of Abbreviations}
+\newpage
+
+
+%----------------------------------------------------------------------------
+% List Of Tables
+%----------------------------------------------------------------------------
+\listoftables
+\addcontentsline{toc}{section}{\listtablename}
+\newpage
+
+
+%----------------------------------------------------------------------------
+% List of Figures
+%----------------------------------------------------------------------------
+\listoffigures
+\addcontentsline{toc}{section}{\listfigurename}
+\newpage
+
+% Arabic numerals for page numbering
+\renewcommand{\thepage}{\arabic{page}}
+
+% Set page number to 1: 
+\setcounter{page}{1} 
+
+
+
 
 \section{Introduction}
-In traditional Web applications a connection's lifespan starts with a request and
-ends with the servers response. Each connection is assigned a thread which
-processes the request and terminates afterwards.
-However in order to allow real-time\footnote{proper real time, as opposed to
-ancient definitions. TODO: reference} communication between client and server it
-is necessary to extend the connection's lifespan to the duration of the whole
-session which results in many simultaniously open connections.
-Assigning one thread for each open connection would cause a large overhead for
-the server even though most threads would be inactive. This is due to the data
-associated with each thread and the process of context switching between all
-threads.\\
+
+In traditional web application development data is transmitted synchronously, i.e. upon a GET/POST request the result can be displayed only after transmission and processing are finished, as highlighted in figure \ref{img_req_res}\footcite{req_res}. While maintaining simplicity and predictability this can cause serious latency when uploading large pieces of data most commonly complex forms for registration. Naturally rich content such as images and videos causes even more waiting.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.75]{img/image01.png}
+\caption{REST request-response sequence diagram\label{img_req_res}}
+\end{figure}
+
+As demands around collaborative access and media richness evolved, this became a serious bottleneck, essentially preventing these types of applications. On the client-, i.e. browser-, side developers were able to work around the issue of synchronous transmission using the XmlHttpRequest object which allows to request resources programmatically (using JS\nomenclature{JS}{JavaScript}) while deferring handling of the response to a callback (see figure \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/ajax-diagram}
+\caption{AJAX Diagram\label{img_ajax}}
+\end{figure}
+
+Although this addressed the issue on the client-side, server-side request were still handled very much in a synchronous fashion. For example the popular Apache web server forks a new process for each incoming request\footnote{TODO: find source}. As popular applications have to cope with unprecedented amounts of concurrent users in conjunctions with massive request counts, this obviously causes performance issues.\\
+
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
 multiple simultanious connections with a single thread by using an event-driven approach.
@@ -39,6 +107,9 @@ This paper elaborates the concepts behind these young frameworks and analyses th
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
+
+
+\newpage
 \section{Setting the context}
 \label{setting_the_context}
 
@@ -66,7 +137,7 @@ contents of a file are read and displayed afterwards. The programm is blocked un
 read operation has finished.
 
 % reading a file and displaying it, pseudo code
-\lstinputlisting[caption={Pseudocode: Synchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's contents},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 
@@ -79,7 +150,7 @@ This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
 
 % same example as above but with callbacks / events
-\lstinputlisting[caption={Pseudocode: Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 This concept is coupled with an event loop, which is a single thread that is
@@ -107,10 +178,10 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
 
-
 \subsubsection{Overview}
 \label{frameworks_overview}
 
+\FloatBarrier
 
 \begin{savenotes} %alloows proper citation marks inside tables
 \begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
@@ -144,18 +215,67 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 									  among multiple network nodes. Support for the languages
 									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
 \bottomrule 
-%\end{tabular*}
   \caption{Existing asynchronous programming frameworks}
   \label{tab:existing_frameworks}
 \end{longtable}
 \end{savenotes}
 
 
+\FloatBarrier
 
 \subsubsection{Node.js}
 \label{node.js}
 
-%
+To put it in a nutshell one can say, that Node.js is JavaScript on a server.\\
+Besides, Node.js is a young platform with a lot of buzz around it. Due to the
+rising of the Web 2.0 and widely accessible internet through smartphones,
+demanding users expect more complex and more interactive forms of application usage. 
+The challenge even gets harder considering the steep number of
+devices that are interacting with online services.%TODO: reference?
+To overcome those problems Node.js lays it's foundations on an event driven
+computing architecture for web servers.\\
+% The paradigm of the event driven programming style is easily explained using a
+% real world example. What would you do if you are slicing onions while the turkey
+% is nearly on fire in the stove? Right, finishing the slice, turning down the
+% heat and opening the oven before getting back to slice some onion rings would be
+% a reasonable behavior. The truth is, that browser based programming isn't that
+% real life oriented. A lot of techniques try to make real-time and parallelism
+% work. Which means continuing slicing during you try to safe the turkey.
+Node.js doesn't try to make you perform undoable things. It rather lets events drive the
+action, so that it is single-threaded and only one thing happens at once. This
+is why an event loop is a fundamental part of Node.js. It includes the concept
+of nonblocking I/O activities. A result is that actions that cause the program
+to wait like database requests and file I/O  do not halt execution until they
+return data. In contrast they process independently and raise an event when the
+data is accessible. It is therefore necessary to use callbacks for dealing with
+different kinds of I/O.\\
+An exemplary code for a basic HTTP server in Node.js is shown in listing
+\ref{lst:simple_server} to deepen the understandin gof the event loop and
+callback in Node.js.
+
+% reading a file and displaying it
+\lstinputlisting[language=JavaScript,caption={The simplest way to programm a server in Node.js},
+label=lst:simple_server]{lst/simple_server.txt}
+
+
+
+The code uses a factory method to create a new HTTP server and attaches the
+argument of the createServer function as a callback to the request event. The
+first run of this code is also called setup. When a HTTP request arrives the
+anonymous callback function is processed and "Hello World" appears on the
+browser.\\
+That the basic code above isn't the most sophisticated way to write Node.js code
+explains the following thought experiment: Assuming that the Hello World page
+would be popular and had a lot of requests from different devices to handle and
+in addition the callback processing would take one second, it is obvious that the second
+request would already have to wait for one second until it gets served. This is far away 
+from the near-real-time requirement Node.js is confronted with.\\
+Two programming rules in Node.js can be inferred from the basic server and it's
+event loop blocking problem, which is described in section \ref{setting_the_context}.
+First, once the setup is in place all actions should be programmed event-driven.
+Second, if a workload requires Node.js to process something for a long time,
+it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
+
 
 
 \subsubsection{Vert.x}
@@ -220,10 +340,12 @@ commecial redistribution in closed source projects should not be an issue.
 
 
 
-
+\newpage
 \section{Areas of Application}
 \label{areas_of_application}
 
+\subsection{Use Cases}
+\label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.\\
 Some success stories are available on \url{http://nodejs.org/}.
@@ -231,24 +353,51 @@ Some success stories are available on \url{http://nodejs.org/}.
 Could be used for: 
 \begin{itemize}
   \item networked applications that tend to keep many inactive connections
-  \item web analytics / trackers
+  \item web trackers
   \item web servers
+  \item lightweight json APIs (non-blocking I/O model 
+  		combined with JavaScript make it a great choice for
+  		wrapping other data sources such as databases or web 
+  		services and exposing them via a JSON interface)%see http://nodeguide.com/convincing_the_boss.htm
   \item proxies
   \item email and messaging systems
   \item authorization processors
+  \item Streaming data (e.g. file uploads in real time)
 \end{itemize}
 
-Should not be used for:
+\subsection{Don't use cases and anticipated issues}
+\label{dont_use_cases}
+
+
+As with all technologies one has to carefully decide whether or not it suits the requirements
+of a project.
+
+
 \begin{itemize}
-  \item systems that do a lot of computing / IO access
+  \item Systems that do a lot of computing / IO access
+  \item Datawarehousing with analytics / analytical tasks on large filesets
+  \item CRUD / HTML applications*: At present node and vertx do not provide additional
+  		benefits to acalability for these types of web applications.
+  		Powerfull frameworks like Ruby On Rails,
+  		Grails and Django are currently better suited. Providing an app that is suited for 
+  		millions of requests does not automatically increase the number of requests.
+  \item Desktop applications*: Some frameworks are suited for this, but not node.js.
+  		JavaScript is missing operators for good OS integration.
+\end{itemize}
+
+Anticipated issues\\
+
+\begin{itemize}
+  \item running worker threads does introduce the concurrency issues that were
+  		avoided with the event loop again as they could concurrently access IO
   \item \ldots
 \end{itemize}
     
+
     
-    
 
 
-
+\newpage
 \section{Exemplary Implementations}
 \label{exemplary_implementations}
 
@@ -273,7 +422,7 @@ importance for the evaluation.
 
 
 
-
+\newpage
 \section{Evaluation of Non-functional Attributes}
 \label{evaluation_nonfunctional}
 
