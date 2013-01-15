@@ -85,7 +85,7 @@ contents of a file are read and displayed afterwards. The programm is blocked un
 read operation has finished.
 
 % reading a file and displaying it, pseudo code
-\lstinputlisting[caption={Pseudocode: Synchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's contents},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 
@@ -98,7 +98,7 @@ This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
 
 % same example as above but with callbacks / events
-\lstinputlisting[caption={Pseudocode: Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 This concept is coupled with an event loop, which is a single thread that is
@@ -200,8 +200,9 @@ to wait like database requests and file I/O  do not halt execution until they
 return data. In contrast they process independently and raise an event when the
 data is accessible. It is therefore necessary to use callbacks for dealing with
 different kinds of I/O.\\
-An exemplary code for a basic HTTP server in Node.js is shown in listing \ref{lst:simple_server}
-to deepen the understandin gof the event loop and callback in Node.js.
+An exemplary code for a basic HTTP server in Node.js is shown in listing
+\ref{lst:simple_server} to deepen the understandin gof the event loop and
+callback in Node.js.
 
 % reading a file and displaying it
 \lstinputlisting[language=JavaScript,caption={The simplest way to programm a server in Node.js},
@@ -294,6 +295,8 @@ commecial redistribution in closed source projects should not be an issue.
 \section{Areas of Application}
 \label{areas_of_application}
 
+\subsection{Use Cases}
+\label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.\\
 Some success stories are available on \url{http://nodejs.org/}.
@@ -301,20 +304,47 @@ Some success stories are available on \url{http://nodejs.org/}.
 Could be used for: 
 \begin{itemize}
   \item networked applications that tend to keep many inactive connections
-  \item web analytics / trackers
+  \item web trackers
   \item web servers
+  \item lightweight json APIs (non-blocking I/O model 
+  		combined with JavaScript make it a great choice for
+  		wrapping other data sources such as databases or web 
+  		services and exposing them via a JSON interface)%see http://nodeguide.com/convincing_the_boss.htm
   \item proxies
   \item email and messaging systems
   \item authorization processors
+  \item Streaming data (e.g. file uploads in real time)
 \end{itemize}
 
-Should not be used for:
+\subsection{Don't use cases and anticipated issues}
+\label{dont_use_cases}
+
+
+As with all technologies one has to carefully decide whether or not it suits the requirements
+of a project.
+
+
 \begin{itemize}
-  \item systems that do a lot of computing / IO access
+  \item Systems that do a lot of computing / IO access
+  \item Datawarehousing with analytics / analytical tasks on large filesets
+  \item CRUD / HTML applications*: At present node and vertx do not provide additional
+  		benefits to acalability for these types of web applications.
+  		Powerfull frameworks like Ruby On Rails,
+  		Grails and Django are currently better suited. Providing an app that is suited for 
+  		millions of requests does not automatically increase the number of requests.
+  \item Desktop applications*: Some frameworks are suited for this, but not node.js.
+  		JavaScript is missing operators for good OS integration.
+\end{itemize}
+
+Anticipated issues\\
+
+\begin{itemize}
+  \item running worker threads does introduce the concurrency issues that were
+  		avoided with the event loop again as they could concurrently access IO
   \item \ldots
 \end{itemize}
     
-    
+
     
 
 
