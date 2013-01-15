@@ -80,7 +80,13 @@ maintainability. \ldots
 
 \section{Introduction}
 
-In traditional web application development data is transmitted synchronously, i.e. upon a GET/POST request the result can be displayed only after transmission and processing are finished, as highlighted in figure \ref{img_req_res}\footcite{req_res}. While maintaining simplicity and predictability this can cause serious latency when uploading large pieces of data most commonly complex forms for registration. Naturally rich content such as images and videos causes even more waiting.
+In traditional web application development data is transmitted synchronously,
+i.e. upon a GET/POST request the result can be displayed only after transmission
+and processing are finished, as highlighted in figure
+\ref{img_req_res}\footcite{req_res}. While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more waiting.
 
 \begin{figure}[hbtp]
 \centering
@@ -88,7 +94,13 @@ In traditional web application development data is transmitted synchronously, i.
 \caption{REST request-response sequence diagram\label{img_req_res}}
 \end{figure}
 
-As demands around collaborative access and media richness evolved, this became a serious bottleneck, essentially preventing these types of applications. On the client-, i.e. browser-, side developers were able to work around the issue of synchronous transmission using the XmlHttpRequest object which allows to request resources programmatically (using JS\nomenclature{JS}{JavaScript}) while deferring handling of the response to a callback (see figure \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+As demands around collaborative access and media richness evolved, this became a
+serious bottleneck, essentially preventing these types of applications. On the
+client-, i.e. browser-, side developers were able to work around the issue of
+synchronous transmission using the XmlHttpRequest object which allows to request
+resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
+deferring handling of the response to a callback (see figure
+\ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
@@ -96,7 +108,12 @@ As demands around collaborative access and media richness evolved, this became a
 \caption{AJAX Diagram\label{img_ajax}}
 \end{figure}
 
-Although this addressed the issue on the client-side, server-side request were still handled very much in a synchronous fashion. For example the popular Apache web server forks a new process for each incoming request\footnote{TODO: find source}. As popular applications have to cope with unprecedented amounts of concurrent users in conjunctions with massive request counts, this obviously causes performance issues.\\
+Although this addressed the issue on the client-side, server-side request were
+still handled very much in a synchronous fashion. For example the popular Apache
+web server forks a new process for each incoming request\footnote{TODO: find
+source}. As popular applications have to cope with unprecedented amounts of
+concurrent users in conjunctions with massive request counts, this obviously
+causes performance issues.\\
 
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
