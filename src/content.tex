@@ -130,6 +130,8 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \subsubsection{Overview}
 \label{frameworks_overview}
 
+\FloatBarrier
+
 \begin{savenotes} %alloows proper citation marks inside tables
 \begin{table}[h]
 \centering
@@ -170,14 +172,36 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \end{savenotes}
 
 
+\FloatBarrier
 
 \subsubsection{Node.js}
 \label{node.js}
 
 To put it in a nutshell one can say, that Node.js is JavaScript on a server.
-Besides, Node.js is a young platform with a lot of buzz around it. Due to the rising of the Web 2.0 and widely accessible internet through smartphones, demanding user users expect more complex and more interactive from the developer. The challenge even gets harder considering the steep number of devices that are interacting with online services. To overcome those problems Node.js lays it's foundations on an event driven computing architecture for web servers. 
-The paradigm of the event driven programming style is easily explained using a real world example. What would you do if you are slicing onions while the turkey is nearly on fire in the stove? Right, finishing the slice, turning down the heat and opening the oven before getting back to slice some onion rings would be a reasonable behavior. The truth is, that browser based programming isn't that real life oriented. A lot of techniques try to make real-time and parallelism work. Which means continuing slicing during you try to safe the turkey. Node.js doesn't try to make you perform undoable things. It rather lets events drive the action, so that it is single-threaded and only one thing happens at once. This is why an event loop is a fundamental part of Node.js. It includes the concept of nonblocking I/O activities. A result is that actions that cause the program to wait like database requests and file I/O  do not halt execution until they return data. In contrast they process independently and raise an event when the data is accessible. It is therefore necessary to use callbacks for dealing with different kinds of I/O.
-To further the understanding of the event loop and callback Example xxx shows the code for a basic HTTP server.
+Besides, Node.js is a young platform with a lot of buzz around it. Due to the
+rising of the Web 2.0 and widely accessible internet through smartphones,
+demanding user users expect more complex and more interactive from the
+developer. The challenge even gets harder considering the steep number of
+devices that are interacting with online services. To overcome those problems
+Node.js lays it's foundations on an event driven computing architecture for web
+servers.
+The paradigm of the event driven programming style is easily explained using a
+real world example. What would you do if you are slicing onions while the turkey
+is nearly on fire in the stove? Right, finishing the slice, turning down the
+heat and opening the oven before getting back to slice some onion rings would be
+a reasonable behavior. The truth is, that browser based programming isn't that
+real life oriented. A lot of techniques try to make real-time and parallelism
+work. Which means continuing slicing during you try to safe the turkey. Node.js
+doesn't try to make you perform undoable things. It rather lets events drive the
+action, so that it is single-threaded and only one thing happens at once. This
+is why an event loop is a fundamental part of Node.js. It includes the concept
+of nonblocking I/O activities. A result is that actions that cause the program
+to wait like database requests and file I/O  do not halt execution until they
+return data. In contrast they process independently and raise an event when the
+data is accessible. It is therefore necessary to use callbacks for dealing with
+different kinds of I/O.
+To further the understanding of the event loop and callback Example xxx shows
+the code for a basic HTTP server.
 
 % reading a file and displaying it
 \lstinputlisting[caption={The simplest way to programm a server in Node.js},
@@ -185,9 +209,22 @@ label=lst:simple_server]{lst/simple_server.txt}
 
 
 
-The code uses a factory method to create a new HTTP server and attaches the the argument of the createServer function as a callback to the request event. The first run of this code is also called setup. When a HTTP request arrives the anonymous callback function is processed and "Hello World" appears on the browser.  
-That the basic code above isn't the most sophisticated way to write Node.js code explains the following gedankenexperiment. Assuming that the Hello World page would be popular and had a lot of request from different devices to handle and in addition the displaying would take one second, it is obvious that the second request would already have to wait for one second, which is far away from the near-real-time requirement Node.js is confronted with. 
-Two programming rules in Node.js can be inferred from the basic server and it's event loop blocking problem. First, once the setup is in place all actions should be programmed event-driven. Second, if a workload requires Node.js to process something for a long time, it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
+The code uses a factory method to create a new HTTP server and attaches the the
+argument of the createServer function as a callback to the request event. The
+first run of this code is also called setup. When a HTTP request arrives the
+anonymous callback function is processed and "Hello World" appears on the
+browser.
+That the basic code above isn't the most sophisticated way to write Node.js code
+explains the following gedankenexperiment. Assuming that the Hello World page
+would be popular and had a lot of request from different devices to handle and
+in addition the displaying would take one second, it is obvious that the second
+request would already have to wait for one second, which is far away from the
+near-real-time requirement Node.js is confronted with.
+Two programming rules in Node.js can be inferred from the basic server and it's
+event loop blocking problem. First, once the setup is in place all actions
+should be programmed event-driven. Second, if a workload requires Node.js to
+process something for a long time, it should be outsourced to web
+workers.\footcite[Cf.][]{Croucher_2012}
 
 
 %
