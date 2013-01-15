@@ -412,25 +412,6 @@ The exemplary implementation consists of a web service that can be used to calcu
 the expected fee for an insurance. However this application should only serve as a 
 demonstration of the used asynchronous frameworks and is hence very simplified.
 
-The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
-first step the user opens the website in a browser and is shown a form that
-consists of two parts - the first part being a section for personal details and
-the second part for parameters that will be used to determine the fee for the
-insurance.\\
-The user then fills in all necessary form fields and instantly gets feedback on
-the vailidy of the entered values. Once all fields are filled correctly the form
-can be submitted to the application via HTTP or HTTPS. The data received by the server
-then gets validated again to avoid processing of manipulated requests. Eventually
-the valid data is passe dinto the calculation routine which returns its result
-to the user by triggering the according callback.
-
-\nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
-\nomenclature{HTTP}{Hyper Text Transfer Protocol}
-
-
-
-
-
 \begin{figure}[h]
 	\centering
 	\setlength\fboxsep{2pt}
@@ -447,9 +428,52 @@ to the user by triggering the according callback.
 	\label{fig:application_workflow}
 \end{figure}
 
+
+The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
+first step the user opens the website in a browser and is shown a form that
+consists of two parts - the first part being a section for personal details and
+the second part for parameters that will be used to determine the fee for the
+insurance.\\
+The user then fills in all necessary form fields and instantly gets feedback on
+the vailidy of the entered values. Once all fields are filled correctly the form
+can be submitted to the application via HTTP or HTTPS. The data received by the server
+then gets validated again to avoid processing of manipulated requests. Eventually
+the valid data is passed into the calculation routine which returns its result
+to the user by triggering the according callback.
+
+\nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
+\nomenclature{HTTP}{Hyper Text Transfer Protocol}
+
+
+
+
+
+
+
 \FloatBarrier
 \subsection{Software Design}
 \label{software_design}
+
+This simple usage scenario leads to a few simple requirements and
+design decisions.
+The user interface consists of HTML, CSS and JavaScript files as it 
+will be used in a web browser. In general these files are not initially
+available on the clients machine and need to be delivered via HTTP by the
+server.\\
+In addition to the static files, the server will also need to process
+requests that are sent via POST in order receive the form data for the
+fee calculation.\\
+
+
+\begin{figure}[h]
+	\centering
+	\setlength\fboxsep{2pt}
+	\fbox{
+	TODO: add image to show relations between UI, core and modules/plugins
+	}
+	\caption{High level design of the application}
+	\label{fig:application_workflow}
+\end{figure}
 
 
 \FloatBarrier
