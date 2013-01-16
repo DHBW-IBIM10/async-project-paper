@@ -80,7 +80,13 @@ maintainability. \ldots
 
 \section{Introduction}
 
-In traditional web application development data is transmitted synchronously, i.e. upon a GET/POST request the result can be displayed only after transmission and processing are finished, as highlighted in figure \ref{img_req_res}\footcite{req_res}. While maintaining simplicity and predictability this can cause serious latency when uploading large pieces of data most commonly complex forms for registration. Naturally rich content such as images and videos causes even more waiting.
+In traditional web application development data is transmitted synchronously,
+i.e. upon a GET/POST request the result can be displayed only after transmission
+and processing are finished, as highlighted in figure
+\ref{img_req_res}\footcite{req_res}. While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more waiting.
 
 \begin{figure}[hbtp]
 \centering
@@ -88,7 +94,13 @@ In traditional web application development data is transmitted synchronously, i.
 \caption{REST request-response sequence diagram\label{img_req_res}}
 \end{figure}
 
-As demands around collaborative access and media richness evolved, this became a serious bottleneck, essentially preventing these types of applications. On the client-, i.e. browser-, side developers were able to work around the issue of synchronous transmission using the XmlHttpRequest object which allows to request resources programmatically (using JS\nomenclature{JS}{JavaScript}) while deferring handling of the response to a callback (see figure \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+As demands around collaborative access and media richness evolved, this became a
+serious bottleneck, essentially preventing these types of applications. On the
+client-, i.e. browser-, side developers were able to work around the issue of
+synchronous transmission using the XmlHttpRequest object which allows to request
+resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
+deferring handling of the response to a callback (see figure
+\ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
@@ -96,7 +108,12 @@ As demands around collaborative access and media richness evolved, this became a
 \caption{AJAX Diagram\label{img_ajax}}
 \end{figure}
 
-Although this addressed the issue on the client-side, server-side request were still handled very much in a synchronous fashion. For example the popular Apache web server forks a new process for each incoming request\footnote{TODO: find source}. As popular applications have to cope with unprecedented amounts of concurrent users in conjunctions with massive request counts, this obviously causes performance issues.\\
+Although this addressed the issue on the client-side, server-side request were
+still handled very much in a synchronous fashion. For example the popular Apache
+web server forks a new process for each incoming request\footnote{TODO: find
+source}. As popular applications have to cope with unprecedented amounts of
+concurrent users in conjunctions with massive request counts, this obviously
+causes performance issues.\\
 
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
@@ -178,19 +195,17 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
 
-
 \subsubsection{Overview}
 \label{frameworks_overview}
 
 \FloatBarrier
 
 \begin{savenotes} %alloows proper citation marks inside tables
-\begin{table}[h]
-\centering
-\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
 \toprule
 \textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
 \midrule 
+\endhead
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
 									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
 									  Twisted is a mature framework with a large number of supported networking
@@ -217,10 +232,9 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 									  among multiple network nodes. Support for the languages
 									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
 \bottomrule 
-\end{tabular*}
-  \captionof{table}{Existing asynchronous programming frameworks}
+  \caption{Existing asynchronous programming frameworks}
   \label{tab:existing_frameworks}
-\end{table}
+\end{longtable}
 \end{savenotes}
 
 
@@ -410,17 +424,85 @@ with these frameworks.
 
 \subsection{Software Description}
 \label{software_description}
-Brief description of the insurance fee calculator
+\FloatBarrier
+The exemplary implementation consists of a web service that can be used to calculate
+the expected fee for an insurance. However this application should only serve as a 
+demonstration of the used asynchronous frameworks and is hence very simplified.
 
+\begin{figure}[h]
+	\centering
+	\setlength\fboxsep{2pt}
+	\fbox{
+	TODO: add image
+% 	1. User fills form
+% 	2. User submits form
+% 	3. Server calculates fee
+% 	4. User gets result
+% 	5. possible repetition of steps 2-4
+	%\includegraphics[width=0.4\textwidth]{img/workflow.pdf}
+	}
+	\caption{Usage workflow of the exemplary application}
+	\label{fig:application_workflow}
+\end{figure}
+
+
+The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
+first step the user opens the website in a browser and is shown a form that
+consists of two parts - the first part being a section for personal details and
+the second part for parameters that will be used to determine the fee for the
+insurance.\\
+The user then fills in all necessary form fields and instantly gets feedback on
+the vailidy of the entered values. Once all fields are filled correctly the form
+can be submitted to the application via HTTP or HTTPS. The data received by the server
+then gets validated again to avoid processing of manipulated requests. Eventually
+the valid data is passed into the calculation routine which returns its result
+to the user by triggering the according callback.
+
+\nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
+\nomenclature{HTTP}{Hyper Text Transfer Protocol}
+
+
+
+
+
+
+
+\FloatBarrier
 \subsection{Software Design}
 \label{software_design}
-High level design\\
-Interface description, and differences between Node.js and Vert.x
 
+This simple usage scenario leads to a few simple requirements and
+design decisions.
+The user interface consists of HTML, CSS and JavaScript files as it 
+will be used in a web browser. In general these files are not initially
+available on the clients machine and need to be delivered via HTTP by the
+server.\\
+In addition to the static files, the server will also need to process
+requests that are sent via POST in order receive the form data for the
+fee calculation.\\
+
+
+\begin{figure}[h]
+	\centering
+	\setlength\fboxsep{2pt}
+	\fbox{
+	TODO: add image to show relations between UI, core and modules/plugins
+	}
+	\caption{High level design of the application}
+	\label{fig:application_workflow}
+\end{figure}
+
+
+\FloatBarrier
 \subsection{Software Implementation}
 \label{software_implementation}
-Complications or any other notes on the implementation process that might be of
-importance for the evaluation.
+Complications or any other notes on the
+implementation process that might be of importance for the evaluation.
+
+\subsubsection{Vert.x}
+\label{implementation_vertx}
+
+
 
 
 
