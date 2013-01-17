@@ -90,7 +90,7 @@ as images and videos causes even more waiting.
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.75]{img/image01.png}
+\includegraphics[scale=0.75]{img/rest_call.png}
 \caption{REST request-response sequence diagram\label{img_req_res}}
 \end{figure}
 
@@ -347,6 +347,10 @@ repository.\footcite[Cf.][]{vertx_mod_2012}.
 The repository currently contains 16 distinct modules in different
 versions.\footcite[Cf.][]{Vertx_repository_2012}
 
+%TODO: http://vertx.io/manual.html#message-passing
+% add info on message passing. vert.x makes use of shared maps to avoid issues
+% in distributed systems. how does node handle that?
+
 An extensive online documentation is available for all supported languages.
 Additionally, code examples for most features are available for all supported languages in
 a public repository\footcite[Cf.][]{Fox_2013}.\\
@@ -382,33 +386,54 @@ Could be used for:
   \item Streaming data (e.g. file uploads in real time)
 \end{itemize}
 
-\subsection{Don't use cases and anticipated issues}
+\subsection{Don't use cases}
 \label{dont_use_cases}
 
 
-As with all technologies one has to carefully decide whether or not it suits the requirements
-of a project.
+As with all technologies one has to carefully decide whether or not it suits the
+requirements of a project. Besides those use cases listed in the previous
+section there are also a few usage scenarios where one should not use
+asynchronous frameworks like Node.js or Vert.x.\\
+In general it can be said that these frameworks are not suited for tasks that
+require a lot of computation and IO access. These heavy tasks would have to be
+moved to worker threads. However having most of the computation logic in
+constructs that are not of the event loop contradicts the point of these
+frameworks. Running worker threads does partially introduce concurrency issues that were
+avoided with the event loop again as multiple threads could concurrently access IO.\\
+Another thing to note is that one should not choose these frameworks when
+there are other concepts or frameworks that might better fulfill the 
+projects requirements.
+A selection of such cases is shown in the list below. 
 
+Criticism on these concepts:\\
+\url{http://xquerywebappdev.wordpress.com/2011/11/18/node-js-is-good-for-solving-problems-i-dont-have/}\\
+\url{http://www.theserverside.com/discussions/thread.tss?thread_id=61693}\\
+\url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
+and some more. Why not use message queues that make use of a thread pool?
 
-\begin{itemize}
-  \item Systems that do a lot of computing / IO access
-  \item Datawarehousing with analytics / analytical tasks on large filesets
-  \item CRUD / HTML applications*: At present node and vertx do not provide additional
-  		benefits to acalability for these types of web applications.
-  		Powerfull frameworks like Ruby On Rails,
-  		Grails and Django are currently better suited. Providing an app that is suited for 
-  		millions of requests does not automatically increase the number of requests.
-  \item Desktop applications*: Some frameworks are suited for this, but not node.js.
-  		JavaScript is missing operators for good OS integration.
-\end{itemize}
+Node.js and Vert.x do not offer any possibility to speed up a single request. These requests will aways
+run at the same speed. What it does is to maximise the number of possible requests while keeping the speed
+steady. This is why it scales so well. The only additional delay between request and response is the time
+that a request waits in the event loop until it gets processed.\\
+In many cases however it is desirable to minimize the computation time itself for a single request.
+Once this is achieved it becomes a goal to keep that speed for a larger amount of requests.
 
-Anticipated issues\\
-
-\begin{itemize}
-  \item running worker threads does introduce the concurrency issues that were
-  		avoided with the event loop again as they could concurrently access IO
-  \item \ldots
-\end{itemize}
+\begin{description}
+  \item[Datawarehousing with analytics] Doing analytical and complex computations
+  	on large data sets at runtime usually requires a lot of computing power.
+  	It can be expected that each request will require quite some time to be processed.
+  	This computation time cannot be shortened much when run on a single thread but 
+  	could potentially be speed up significantly when run on multiple cores in parallel. 
+  \item[CRUD / HTML applications] \nomenclature{CRUD}{Create Read Update Delete}
+	This refers to classical websites that basically only serve as an interface for
+	an object relational model.
+	At present Node.js and Vert.x do not provide additional benefits to scalability
+	for these types of web applications. Unless the page has to deal with a large number of
+	concurrent requests it should be considered to use a more powerfull frameworks
+	like Ruby On Rails, Grails or Django. These are currently better suited for quickly
+	developing such an application. Providing a site that is suited for 
+	millions of requests does not automatically increase the number of users.
+\end{description}
     
 
     
@@ -502,6 +527,25 @@ implementation process that might be of importance for the evaluation.
 \subsubsection{Vert.x}
 \label{implementation_vertx}
 
+The vertx application is written in Java. Static files are served using a web
+server module from the module repository. The setup of this module was rather
+simple. The main of the application is a starter class that instantiates all
+necessary verticles and modules and connects them to the event bus.\\ %TODO. not yet implemented
+A global configuration is done using a json file and includes settings for the
+webserver module that is used to serve the static UI files. Vert.x allows either
+running verticles by providing the compiled Java class or by providing the
+source file which is then compiled automatically by Vert.x. However in this
+setup we experienced some issues with the Vert.x run command when we tried to
+use it with the source files. The issues observed where partially related to
+Vert.x bug 444 (see \url{https://github.com/vert-x/vert.x/issues/444}).
+However the main reason for this behaviour was due to incomplete dependency
+resolution and missing classes in the path at runtime.
+These startup isues can easily be avoided by using compiled classes instead of
+the source files when multiple verticles need to be started programmatically.
+
+The calculation process has been moved into a worker verticle to avoid blocking the
+event loop. Due to Vert.x's event bus system it was rather easy to combine these
+constructs.
 
 
 
