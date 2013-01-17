@@ -580,6 +580,8 @@ systems that are not fully event driven.\\
 %Consider connecting that software with a message bus.
 %Separate IO intense tasks into ``web workers'' or similar constructs.
 
+\subsubsection{Node.js Integration}
+\label{node_integration}
 Node.js is not designed to handle CPU-intensive tasks efficiently. However,
 there is a way a Node process can perform such tasks without impairing the
 application performance. Node.js uses so-called child processes for this
@@ -607,11 +609,23 @@ allows registering callbacks for certain events (see lines 4,8 and 12).
 {lst/node_child_process.js}
 
 
-
 Invoking processes on a different machine across the network still
 requires a remote API or a distributed message bus system.
 
-%TODO: Vert.x integration
+
+\subsubsection{Vert.x Integration}
+\label{vertx_integration}
+In Vert.x there are multiple ways to communicate with external programs.
+Depending on the used language there are already multiple libraries that can be
+used to invoke child processes. However these libraries usually only expose
+synchronous APIs, so that these calls need to be done inside a worker verticle
+that doesn't block the event loop.\\
+Listing \ref{vertx_child} shows a minimal worker verticle written in
+Java that invokes \textit{ls -lh /usr} via the \textit{Apache Commons Exec}
+library.\footnote{See \url{http://commons.apache.org/exec/}}
+
+\lstinputlisting[language=Java,caption={Example of running \textit{ls -lh /usr} in Vert.x from within a worker verticle},label=lst:vertx_child]%
+{lst/vertx_child_process.java}
 
 
 \subsection{Scalability}
