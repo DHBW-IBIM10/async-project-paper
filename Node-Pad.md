@@ -23,8 +23,9 @@ https://devcenter.heroku.com/articles/nodejs
 
 # Node Use Cases
 * Wordsquared
-** http://wordsquared.com/
-** Scrabble-artiges Spiel realisiert mit Node
+
+	** http://wordsquared.com/
+	** Scrabble-artiges Spiel realisiert mit Node
 
 * Etherpad
 	** http://etherpad.org/
