@@ -299,6 +299,10 @@ First, once the setup is in place all actions should be programmed event-driven.
 Second, if a workload requires Node.js to process something for a long time,
 it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
 
+Node.js large performance benefits are caused through the use of Google's new JavaScript engine V8, that ships naturally
+with the web browser Chrome. Due to the fact that V8 compiles JavaScript into
+real machine code before executing it, Node.js has an advantage over 
+traditional techniques such as executing bytecode or interpreting it. \footnote{See \url{https://developers.google.com/v8/intro}}
 
 
 \subsubsection{Vert.x}
