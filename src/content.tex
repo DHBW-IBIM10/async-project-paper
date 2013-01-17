@@ -649,3 +649,40 @@ Vert.x. uses its own communication bus to share information between verticles.
 
 \section{Conclusion}
 \label{conclusion}
+
+%----------------------------------------------------------------------------
+% APPENDIX
+%----------------------------------------------------------------------------
+% Appendix sections need to be within the subappendices environment.
+% Use the command \appsection{title} instead of \section to introduce each
+% appendix. This will add each appendix to the list of appendices.
+
+% sets the appendix environment and resets the section counters
+\newpage \begin{appendices} 
+\appendixtocon %adds an 'Appendices' entry to the toc
+
+\appendixpage %prints the title on the page
+
+\subsection*{\listappendixname}
+%--------------------------------
+% style of the \listofappendices command is defined in header.tex
+\listofappendices
+
+% begin appendices on a new page
+\newpage
+
+%start environment for subappendices, so that new sections are formatted as
+%subsections of appendix
+\begin{subappendices}
+\renewcommand{\setthesubsection}{\arabic{subsection}:}%
+
+
+\appsection{MapReduce Examples}
+% include your appendix with the LaTeX include command
+\label{appendix1}
+lklkjlkjl
+
+%--------------------------------
+% close the appendices environment
+\end{subappendices}
+\end{appendices}
