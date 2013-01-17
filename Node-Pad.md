@@ -21,6 +21,9 @@ http://www.twilio.com/blog/2013/01/building-a-real-time-sms-voting-app-part-3-sc
 ## Deploy on Heroku
 https://devcenter.heroku.com/articles/nodejs
 
+# Links
+* https://github.com/learnboost/kue
+
 # Node Use Cases
 * Wordsquared
 	* http://wordsquared.com/
