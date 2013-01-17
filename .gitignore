@@ -40,3 +40,4 @@
 *.nls
 *.bcf
 *.DS_Store
+*/.texpadtmp
