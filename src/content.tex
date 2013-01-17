@@ -411,6 +411,12 @@ Criticism on these concepts:\\
 \url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
 and some more. Why not use message queues that make use of a thread pool?
 
+Node.js and Vert.x do not offer any possibility to speed up a single request. These requests will aways
+run at the same speed. What it does is to maximise the number of possible requests while keeping the speed
+steady. This is why it scales so well. The only additional delay between request and response is the time
+that a request waits in the event loop until it gets processed.\\
+In many cases however it is desirable to minimize the computation time itself for a single request.
+Once this is achieved it becomes a goal to keep that speed for a larger amount of requests.
 
 \begin{description}
   \item[Datawarehousing with analytics] Doing analytical and complex computations
