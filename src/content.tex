@@ -524,11 +524,45 @@ time to time.
 \label{integration}
 Vert.x and Node.js are supposed to be used as fully event driven standalone
 applications that can be extended with event-driven modules.
-However it might be desired to reuse existing software that is not fully event
-driven.
-Dont make use of blocking apis.
-Consider connecting that software with a message bus.
-Separate IO intense tasks into ``web workers'' or similar constructs.
+However when introducing a Node.js or Vert.x application into the current
+application landscape it might be desired to reuse or communicate with existing
+systems that are not fully event driven.\\
+%Consider connecting that software with a message bus.
+%Separate IO intense tasks into ``web workers'' or similar constructs.
+
+Node.js is not designed to handle CPU-intensive tasks efficiently. However,
+there is a way a Node process can perform such tasks without impairing the
+application performance. Node.js uses so-called child processes for this
+(provided by the \textit{child process}
+module). The module is basically a wrapper around the unix tool \textit{popen} and
+provides access to a child process' communication streams (stdin, stdout, stderr).
+\footcite[Cf.][]{node_child_process}
+There are two cases child processes are used for:\\
+First, CPU-intensive tasks can be performed outside Node by assigning them to a
+different process (which is then called a child process) in order not to block
+the event loop. Output data from the child process is then sent back to the
+parent process.\footcite[Cf.][63]{teixeira_2012} In this case, the child process is used to
+outsource a task that requires high computation work and would otherwise block
+the event loop. This approach however requires routines that should run
+within the child process to be written in JavaScript as well, so that it is not
+usable to properly connect an existing application with the Node application.\\
+A second way of using the child process module is to actually run external
+commands, scripts, files and other utilities that cannot directly be executed inside Node.\footcite[Cf.][63]{teixeira_2012}
+This characteristic lets external processes get well integrated with Node.js.
+A basic example of the child process module is shown in listing \ref{lst:node_child}.
+The child process instance that is created in lines 1 and 2 is an event emitter that
+allows registering callbacks for certain events (see lines 4,8 and 12).
+
+\lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code{\footcite[Taken from][]{node_child_process}}},label=lst:node_child]%
+{lst/node_child_process.js}
+
+
+
+Invoking processes on a different machine across the network still
+requires a remote API or a distributed message bus system.
+
+%TODO: Vert.x integration
+
 
 \subsection{Scalability}
 \label{scalability}
