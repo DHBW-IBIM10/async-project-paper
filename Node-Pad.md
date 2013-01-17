@@ -9,6 +9,10 @@ http://codeslinger.posterous.com/if-youre-using-nodejs-youre-doing-life-wrong
 * Non-blocking != fast != scalable
 	** Node runs in a single thread
 
+## Tracking Down Memory Leaks in Node.js
+https://hacks.mozilla.org/2012/11/tracking-down-memory-leaks-in-node-js-a-node-js-holiday-season/
+* V8 can become very aggressve about garbage collection -> always an issue in Java
+* mostly about memory leaks
 
 # Node Use Cases
 * Wordsquared
