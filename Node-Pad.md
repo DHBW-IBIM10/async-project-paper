@@ -14,6 +14,13 @@ https://hacks.mozilla.org/2012/11/tracking-down-memory-leaks-in-node-js-a-node-j
 * V8 can become very aggressve about garbage collection -> always an issue in Java
 * mostly about memory leaks
 
+## Building a Real-time SMS Voting App Part 3: Scaling Node.js and CouchDB
+http://www.twilio.com/blog/2013/01/building-a-real-time-sms-voting-app-part-3-scaling-node-js-and-couchdb.html
+* Aktikelserie über "Hochskalierende" SMS Voting App
+
+## Deploy on Heroku
+https://devcenter.heroku.com/articles/nodejs
+
 # Node Use Cases
 * Wordsquared
 	** http://wordsquared.com/
