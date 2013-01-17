@@ -627,6 +627,14 @@ library.\footnote{See \url{http://commons.apache.org/exec/}}
 \lstinputlisting[language=Java,caption={Example of running \textit{ls -lh /usr} in Vert.x from within a worker verticle},label=lst:vertx_child]%
 {lst/vertx_child_process.java}
 
+When writing verticles in Java it is also possible to make use of Javas Remote
+Method Invocation (RMI) mechanism to communicate with services that are on different
+machines in the network.
+The most natural way for inter-application communication is by using the integrated message bus.
+Vert.x can be embedded in any JVM based program by including the according
+libraries in the path, so that these applications can use the bus system as
+well. \footcite{TODO: just a wild guess. find supporting documents}
+
 
 \subsection{Scalability}
 \label{scalability}
