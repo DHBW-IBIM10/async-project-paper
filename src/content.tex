@@ -94,8 +94,8 @@ existing application landscape.
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
-and processing are finished, as highlighted in figure
-\ref{img_req_res}\footcite{req_res}. While maintaining simplicity and
+and processing are finished, as highlighted in Fig. \ref{img_req_res}\footcite{req_res}.
+While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
 data most commonly complex forms for registration. Naturally rich content such
 as images and videos causes even more waiting.
@@ -333,10 +333,15 @@ commecial redistribution in closed source projects should not be an issue.
 \subsubsection{Market Overview}
 \label{frameworks_overview}
 
-Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite{g_trends}.
-% TODO insert charts from CSVs found in doc folder
+Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
 
-Looking at the charts it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0]{img/googletrend_nodevertx}
+\caption{Google search volume of node.js and Vert.x compared\footcite[Cf.][]{g_trends}\label{img_googletrend_nodevertx}}
+\end{figure}
+
+Looking at the charts in Fig. \ref{img_googletrend_nodevertx}, it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
 
 The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
 
@@ -352,7 +357,7 @@ Theory (2) is based around technical considerations. Because of the dogmatic nat
 \midrule 
 \endhead
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
+									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
 									  Twisted is a mature framework with a large number of supported networking
 									  protocols. Its development is backed by an active
 									  community.\footcite[Cf.][12]{fettig_2005}
@@ -360,7 +365,7 @@ Twisted			& Python			& ``Twisted is an event-driven networking engine written in
 									  
 EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
 									  programs. It provides event-driven I/O using the Reactor 
-									  pattern."\footcite[][]{eventmachine_2012}\\
+									  pattern."\footcite[]{eventmachine_2012}\\
 
 Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
 									  The platform is fully event-driven and offers core
@@ -685,7 +690,7 @@ label=lst:simple_server]{lst/appVariable.txt}
 
 
 The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/UI” is made the root directory for a http://localhost:[port]/
-<<<<<<< HEAD
+
 \begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
@@ -858,7 +863,7 @@ well.\footcite[Cf.][]{vertx_2012}
 "The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
 interaction among distributed software modules."\footcite[]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
 
-The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).
+The git runderlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).
 
 One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}\\
 
