@@ -511,26 +511,35 @@ to the user by triggering the according callback.
 \subsection{Software Design}
 \label{software_design}
 
-This simple usage scenario leads to a few simple requirements and
+This simple usage scenario leads to a few requirements and
 design decisions.
-The user interface consists of HTML, CSS and JavaScript files as it 
-will be used in a web browser. In general these files are not initially
+The user interface has to consist of HTML, CSS and JavaScript files as it 
+will be displayed in a web browser. In general these files are not initially
 available on the clients machine and need to be delivered via HTTP by the
 server.\\
-In addition to the static files, the server will also need to process
-requests that are sent via POST in order receive the form data for the
-fee calculation.\\
-
 
 \begin{figure}[h]
 	\centering
 	\setlength\fboxsep{2pt}
 	\fbox{
-	TODO: add image to show relations between UI, core and modules/plugins
+	\includegraphics[width=0.8\textwidth]{img/high_level_architecture.pdf}
 	}
-	\caption{High level design of the application}
+	\caption{High level architecture of the application}
 	\label{fig:application_workflow}
 \end{figure}
+
+In addition to the static files, the server will also need to process
+requests that are sent via POST in order to receive the form data for the
+fee calculation.\\
+In reality these calculations are much complexer than in this simple scenario,
+so that they have to be done outside of the event loop in a separate thread.
+In the implementation these long running calculations are only simulated for
+demonstration purposes.\\
+Additional features in the backend can be integrated via existing modules from
+the repositories of Vert.x or Node.js.
+
+
+
 
 
 \FloatBarrier
