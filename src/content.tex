@@ -349,13 +349,14 @@ Theory (1) would be that by the time Vert.x became complete enough to develop pr
 Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
 
 \FloatBarrier
-
 \begin{savenotes} %alloows proper citation marks inside tables
-\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\begin{table}
+%\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
 \toprule
 \textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
 \midrule 
-\endhead
+%\endhead
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
 									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
 									  Twisted is a mature framework with a large number of supported networking
@@ -382,9 +383,11 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 									  among multiple network nodes. Support for the languages
 									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
 \bottomrule 
+\end{tabular*}
   \caption{Existing asynchronous programming frameworks}
   \label{tab:existing_frameworks}
-\end{longtable}
+%\end{longtable}
+\end{table}
 \end{savenotes}
 
 
@@ -709,21 +712,38 @@ label=lst:simple_server]{lst/staticFiles.txt}
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 67879a094390af2a77b4776f7ae35c807a7f505a
 Another Express feature is the “bodyParser”, which is used as middleware to parse request bodies, for this Proof of Concept especially JSON.
 
 % reading a file and displaying it
 \lstinputlisting[language=JavaScript,caption={bodyParser: used to parse JSON},
 label=lst:simple_server]{lst/parseJSON.txt}
+<<<<<<< HEAD
 >>>>>>> 4.3.2 Node.js implementation inserted
 
 
 <<<<<<< HEAD
+=======
+
+>>>>>>> 67879a094390af2a77b4776f7ae35c807a7f505a
 \begin{lstlisting}[language=javascript,caption={Handling an HTTP POST request with Node.js}]
 app.post('/insurances', function (req, res) {
 =======
 >>>>>>> 4.3.2 Node.js implementation inserted
 
+<<<<<<< HEAD
 Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in node.js on http://localhost:8888/insurances:
+=======
+// iterating through the array that contains JSON-objects
+// write the value of the "name" attribute of each JSON-object into the console
+    for(var i = 0; i < req.body.length; i++) {
+        console.log(req.body[i].name);
+}
+>>>>>>> 67879a094390af2a77b4776f7ae35c807a7f505a
 
 % reading a file and displaying it
 \lstinputlisting[language=JavaScript,caption={Catching a AJAX driven POST-request in Node.js},

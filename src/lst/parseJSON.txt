@@ -1,0 +1,3 @@
+app.configure(function(){
+    app.use(express.bodyParser());
+});
