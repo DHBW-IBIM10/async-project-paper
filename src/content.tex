@@ -200,51 +200,7 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-
-\subsubsection{Overview}
-\label{frameworks_overview}
-
-\FloatBarrier
-
-\begin{savenotes} %alloows proper citation marks inside tables
-\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
-\toprule
-\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
-\midrule 
-\endhead
-Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
-									  Twisted is a mature framework with a large number of supported networking
-									  protocols. Its development is backed by an active
-									  community.\footcite[Cf.][12]{fettig_2005}
-									  \\
-									  
-EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
-									  programs. It provides event-driven I/O using the Reactor 
-									  pattern."\footcite[][]{eventmachine_2012}\\
-
-Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
-									  The platform is fully event-driven and offers core
-									  functionalities for network programming. Its functionality
-									  can be extended with a large number of modules using an
-									  integrated package management system.
-									  Node.js started development in 2009 and the community
-									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
-									  
-Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
-									& A JVM based platform for network applications which is
-									  inspired by Node.js. Vert.x comes with its own event
-									  bus system that allows distributing applications
-									  among multiple network nodes. Support for the languages
-									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
-\bottomrule 
-  \caption{Existing asynchronous programming frameworks}
-  \label{tab:existing_frameworks}
-\end{longtable}
-\end{savenotes}
-
-
-\FloatBarrier
+This sub-section will introduce two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x followed by a brief outline of their potential market success.
 
 \subsubsection{Node.js}
 \label{node.js}
@@ -368,7 +324,60 @@ Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
 commecial redistribution in closed source projects should not be an issue.
 
+\subsubsection{Market Overview}
+\label{frameworks_overview}
 
+Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite{g_trends}.
+% TODO insert charts from CSVs found in doc folder
+
+Looking at the charts it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
+
+The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
+
+Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
+Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
+
+\FloatBarrier
+
+\begin{savenotes} %alloows proper citation marks inside tables
+\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\toprule
+\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
+\midrule 
+\endhead
+Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
+									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
+									  Twisted is a mature framework with a large number of supported networking
+									  protocols. Its development is backed by an active
+									  community.\footcite[Cf.][12]{fettig_2005}
+									  \\
+									  
+EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
+									  programs. It provides event-driven I/O using the Reactor 
+									  pattern."\footcite[][]{eventmachine_2012}\\
+
+Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
+									  The platform is fully event-driven and offers core
+									  functionalities for network programming. Its functionality
+									  can be extended with a large number of modules using an
+									  integrated package management system.
+									  Node.js started development in 2009 and the community
+									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
+									  
+Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
+									& A JVM based platform for network applications which is
+									  inspired by Node.js. Vert.x comes with its own event
+									  bus system that allows distributing applications
+									  among multiple network nodes. Support for the languages
+									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
+\bottomrule 
+  \caption{Existing asynchronous programming frameworks}
+  \label{tab:existing_frameworks}
+\end{longtable}
+\end{savenotes}
+
+
+\FloatBarrier
 
 
 \newpage
