@@ -41,3 +41,4 @@
 *.bcf
 *.DS_Store
 */.texpadtmp
+*.app
