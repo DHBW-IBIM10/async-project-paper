@@ -514,7 +514,7 @@ to the user by triggering the according callback.
 \label{software_design}
 
 \nomenclature{CSS}{Cascading Style Sheets}
-\nomenclature{HTML}{HyperText Mearkup Language}
+\nomenclature{HTML}{HyperText Markup Language}
 
 This simple usage scenario leads to a few requirements and
 design decisions.
@@ -552,8 +552,6 @@ the repositories of Vert.x or Node.js.
 \FloatBarrier
 \subsection{Software Implementation}
 \label{software_implementation}
-Complications or any other notes on the
-implementation process that might be of importance for the evaluation.
 
 \subsubsection{Vert.x}
 \label{implementation_vertx}
@@ -799,11 +797,11 @@ A second way of using the child process module is to actually run external
 commands, scripts, files and other utilities that cannot directly be executed inside Node.\footcite[Cf.][63]{teixeira_2012}
 
 This characteristic lets external processes get well integrated with Node.js.
-A basic example of the child process module is shown in listing \ref{lst:node_child}.
+A basic example of the child process module is shown in listing \ref{lst:node_child}\footcite[Taken from][]{node_child_process}.
 The child process instance that is created in lines 1 and 2 is an event emitter that
 allows registering callbacks for certain events (see lines 4,8 and 12).
 
-\lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code{\footcite[Taken from][]{node_child_process}}},label=lst:node_child]%
+\lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code},label=lst:node_child]%
 {lst/node_child_process.js}
 
 
@@ -819,7 +817,7 @@ used to invoke child processes. However these libraries usually only expose
 synchronous APIs, so that these calls need to be done inside a worker verticle
 that doesn't block the event loop.\\
 
-Listing \ref{vertx_child} shows a minimal worker verticle written in
+Listing \ref{lst:vertx_child} shows a minimal worker verticle written in
 Java that invokes \textit{ls -lh /usr} via the \textit{Apache Commons Exec}
 library.\footnote{See \url{http://commons.apache.org/exec/}}
 
@@ -829,10 +827,11 @@ library.\footnote{See \url{http://commons.apache.org/exec/}}
 When writing verticles in Java it is also possible to make use of Javas Remote
 Method Invocation (RMI) mechanism to communicate with services that are on different
 machines in the network.
-The most natural way for inter-application communication is by using the integrated message bus.
+The most natural way for inter-application communication is by either using the
+integrated message bus or by using a separate bus system.
 Vert.x can be embedded in any JVM based program by including the according
 libraries in the path, so that these applications can use the bus system as
-well. \footcite{TODO: just a wild guess. find supporting documents}
+well.\footcite[Cf.][]{vertx_2012}
 
 \subsubsection{Middleware}
 \label{middleware}
@@ -857,6 +856,7 @@ Etherpad is an online collaborative text editor. Etherpad nicely illustrates the
 Support for single machine scaling using multiple threads exists.
 Deployment on distributed systems differs in node.js and vert.x.
 Vert.x. uses its own communication bus to share information between verticles.
+Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering functionality internally to scale on multiple machines. 
 
 
 \section{Conclusion}
