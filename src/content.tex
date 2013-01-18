@@ -470,7 +470,7 @@ Once this is achieved it becomes a goal to keep that speed for a larger amount o
 
 A simple web form application has been implemented in Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
-with these frameworks.
+with these frameworks. These implementations are thoroughly described in the following sub-sections.
 
 \subsection{Software Description}
 \label{software_description}
@@ -488,8 +488,6 @@ demonstration of the used asynchronous frameworks and is hence very simplified.
 	\caption{Usage workflow of the exemplary application}
 	\label{fig:application_workflow}
 \end{figure}
-
-
 
 
 The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
@@ -511,18 +509,19 @@ to the user by triggering the according callback.
 
 
 
-
-
 \FloatBarrier
 \subsection{Software Design}
 \label{software_design}
+
+\nomenclature{CSS}{Cascading Style Sheets}
+\nomenclature{HTML}{HyperText Mearkup Language}
 
 This simple usage scenario leads to a few requirements and
 design decisions.
 The user interface has to consist of HTML, CSS and JavaScript files as it 
 will be displayed in a web browser. In general these files are not initially
 available on the clients machine and need to be delivered via HTTP by the
-server.\\
+server. These file requests are usually done via GET.\\
 
 \begin{figure}[h]
 	\centering
@@ -537,14 +536,16 @@ server.\\
 In addition to the static files, the server will also need to process
 requests that are sent via POST in order to receive the form data for the
 fee calculation.\\
+The body size of these requests is fairly small as the submitted values consist
+of plain text only. Therefore it is safe to assume that it won't be necessary to
+buffer each part of the requests body but start calculating once the data
+submission has completed.\\
 In reality these calculations are much complexer than in this simple scenario,
 so that they have to be done outside of the event loop in a separate thread.
-In the implementation these long running calculations are only simulated for
+In the implementation these long running calculations are simulated artificially for
 demonstration purposes.\\
 Additional features in the backend can be integrated via existing modules from
 the repositories of Vert.x or Node.js.
-
-
 
 
 
@@ -557,25 +558,74 @@ implementation process that might be of importance for the evaluation.
 \subsubsection{Vert.x}
 \label{implementation_vertx}
 
-The vertx application is written in Java. Static files are served using a web
-server module from the module repository. The setup of this module was rather
-simple. The main of the application is a starter class that instantiates all
-necessary verticles and modules and connects them to the event bus.\\ %TODO. not yet implemented
-A global configuration is done using a json file and includes settings for the
-webserver module that is used to serve the static UI files. Vert.x allows either
-running verticles by providing the compiled Java class or by providing the
+The vertx application is written in Java entirely, but it is also possible to
+write each verticle in a different language if desired. This could be done to
+maximize code reuse between frontend and backend.\\
+The business logic of the backend consists of three verticles and additional
+utility classes.
+One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
+requests are interpreted as file requests and are answered directly from within
+the verticle. POST requests are interpreted as form submissions. Whenever a POST
+requests arrives the verticle transforms the request body to a Json object and
+submits it via Vert.x' event bus.\\
+The second verticle is a worker verticle which does the CPU intense calculation
+tasks.This verticle listens on the event bus for incoming messages. Whenever
+such a message arrives it transforms the received Json object into a form
+instance for validation and fee calculation.The results are then sent back via
+the event bus of this operation has completed, so that the event loop can return
+the result to the client in its next iteration.\\
+The third verticle serves as a starter script which programmatically starts
+the previously mentioned verticles and terminates afterwards as it does not
+define any callbacks itself (see listing \ref{lst:starter_verticle}).
+
+\lstinputlisting[language=Java,caption={Verticle that starts two other verticles},
+label=lst:starter_verticle]{lst/starter_verticle.java}
+
+The actual deployment of the other verticles happen in lines 13 and 14.
+An important detail is the 2nd parameter in the \texttt{deployWorkerVerticle} method.
+Vert.x allows deploying multiple instances of a verticle programmatically
+which eases scaling an application to the number of available processors of a machine.
+In this case the main loop is single-threaded and for each remaining processor
+there is one worker verticle. Vert.x automatically distributes requests among
+these worker verticles (as described in section \ref{vert.x}).
+
+A global configuration file is read in line 12. These configuration file is
+formatted as Json string and can include settings for modules or verticles. The
+path to the configuration file has to be provided to the \texttt{vertx} command
+upon server start to allow access to it from within the verticles. For this implementation the command that
+has to be invoked is shown in listing \ref{lst:vertx_start}.
+
+\lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
+label=lst:vertx_start]{lst/vertx_start_command.sh}
+
+Vert.x allows either running verticles by providing the compiled Java class or by providing the
 source file which is then compiled automatically by Vert.x. However in this
 setup we experienced some issues with the Vert.x run command when we tried to
 use it with the source files. The issues observed where partially related to
-Vert.x bug 444 (see \url{https://github.com/vert-x/vert.x/issues/444}).
-However the main reason for this behaviour was due to incomplete dependency
-resolution and missing classes in the path at runtime.
-These startup isues can easily be avoided by using compiled classes instead of
+Vert.x bug 444\footnote{see \url{https://github.com/vert-x/vert.x/issues/444}}.
+Due to incomplete dependency resolution, not all classes were compiled so that
+Vert.x could not find all required classes in the path at runtime.
+These startup issues can easily be avoided by using compiled classes instead of
 the source files when multiple verticles need to be started programmatically.
+The path to the compiled classes has to be provided with the \texttt{cp} switch as
+shown in listing \ref{lst:vertx_start}.
 
-The calculation process has been moved into a worker verticle to avoid blocking the
-event loop. Due to Vert.x's event bus system it was rather easy to combine these
-constructs.
+
+\lstinputlisting[language=Java,caption={Command for starting the Vert.x application},
+label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
+
+
+The implementation of the communication between the web server and the worker
+verticle was rather easy by using the event bus. The event bus has a very
+simple adressing mechanism where the address consists of a normal string.
+Listing \ref{lst:vertx_form_handler} shows the form handler which is defined
+in the web server verticle and gets called whenever a form submission arrives.
+The handler registers another handler that is called as soon as the entire
+request body has arrived (line 3). The data that arrives as a buffer is than
+turned into a JsonArray (line 7) and submitted to the event bus (line 9).
+As soon as a reply is returned over the event bus it is forwarded to the client (line 12).
+
+
 
 \subsubsection{Node.js}
 \label{implementation_node}
