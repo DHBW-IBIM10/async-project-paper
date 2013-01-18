@@ -741,28 +741,31 @@ Another important issue is the unstable state of the Vert.x codebase as essentia
 
 TCO is difficult to estimate for Vert.x for a lack of success/failure stories, it can be said though that because Vert.x requires Java hosting infrastructure ther emight be an associated licensing cost for application servers.
 
-\begin{table}[hbtp]
-\centering
-\begin{tabular}{|c|p{5cm}|p{5cm}|}
-\hline 
-• & Node.js & Vert.x \\ 
-\hline 
-Skill Availability & Good & None \\ 
-\hline
-Skills Transferable? & Yes (from est. JS frameworks) & No (very different from conventional J2EE\nomenclature{J2EE}{Java 2 Enterprise Edition} \\
-\hline
-Available Material & A lot (books, blogs, documentation) & Project documentation \\
-\hline
-License Cost & None & None \\
-\hline
-TTM & Low (transferable skills + material) & High (learning curve) \\
-\hline
-TCO & Medium (low TTM but may be high maintenance) & Medium (takes longer to develop, but JVM maintenance is well known) \\
-\hline
-\end{tabular} 
-\caption{Maintainability comparison of Node and Vert.x}
-\label{tbl_maintain}
-\end{table}
+
+
+\begin{savenotes}
+\begin{longtable}[c]{p{0.27\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
+\toprule
+				& \textbf{Node.js} & \textbf{Vert.x} \\
+\midrule 
+\endhead
+\textbf{Skill Availability}		& Good			& None%TODO: WTF, you jokin', right?
+\\							  
+\textbf{Skills Transferable?}	& Yes (from est. JS frameworks)	& No (very different from conventional J2EE\nomenclature{J2EE}{Java 2 Enterprise  Edition}
+\\
+\textbf{Available Material}		& A lot (books, blogs, documentation) & Project documentation and users group
+\\
+\textbf{License Cost}			& None 			& None
+ \\
+ \textbf{TTM} 					& Low (transferable skills + material) & High (learning curve)
+ \\
+ \textbf{TCO}					& Medium (low TTM but may be high maintenance) & Medium (takes longer to develop, but JVM maintenance is well known)
+ \\
+\bottomrule 
+  \caption{Maintainability comparison of Node and Vert.x}
+  \label{tbl_maintain}
+\end{longtable}
+\end{savenotes}
 
 \subsection{Integration}
 \label{integration}
