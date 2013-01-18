@@ -582,7 +582,7 @@ In addition, the “fs” (FileSystem ) module is necessary to read the encrypti
 and will therefore be used for convenience purposes, as recommended by Roden, G. (2012). 
 Express can be installed using the following command-line command:
 
-$ npm install express
+\lstinline|$ npm install express|
 
 To demonstrate an HTTP and HTTPS server likewise, the application includes two webservers, 
 both of which serve the same functionality. In order to enable HTTPS by leveraging 
@@ -624,9 +624,9 @@ label=lst:simple_server]{lst/appVariable.txt}
 
 
 
-The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/UI” is made the root directory for a http://localhost:[port]/
+The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory ``/UI'' is made the root directory for a \lstinline$http://localhost:[port]/$
 
-app.use(express.static(__dirname + '/UI'));
+\lstinline[language=JavaScript]$app.use(express.static(__dirname + '/UI'));$
 
 Another Express feature is the “bodyParser”, which is used as middleware to parse request bodies, for this Proof of Concept especially JSON.
 
