@@ -1,0 +1,4 @@
+var httpsOptions = {
+    key: fs.readFileSync(__dirname + '/privatekey.pem')
+    , cert: fs.readFileSync(__dirname + '/certificate.pem')
+}
