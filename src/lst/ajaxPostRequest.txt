@@ -1,0 +1,12 @@
+app.post('/insurances', function (req, res) {
+
+// iterating through the array that contains JSON-objects
+// write the value of the “name” attribute of each JSON-object into the console
+    for(var i = 0; i < req.body.length; i++) {
+        console.log(req.body[i].name);
+}
+
+    res.contentType("text/plain");
+res.send(200, OK)
+
+}
