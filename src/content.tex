@@ -200,51 +200,7 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-
-\subsubsection{Overview}
-\label{frameworks_overview}
-
-\FloatBarrier
-
-\begin{savenotes} %alloows proper citation marks inside tables
-\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
-\toprule
-\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
-\midrule 
-\endhead
-Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
-									  Twisted is a mature framework with a large number of supported networking
-									  protocols. Its development is backed by an active
-									  community.\footcite[Cf.][12]{fettig_2005}
-									  \\
-									  
-EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
-									  programs. It provides event-driven I/O using the Reactor 
-									  pattern."\footcite[][]{eventmachine_2012}\\
-
-Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
-									  The platform is fully event-driven and offers core
-									  functionalities for network programming. Its functionality
-									  can be extended with a large number of modules using an
-									  integrated package management system.
-									  Node.js started development in 2009 and the community
-									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
-									  
-Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
-									& A JVM based platform for network applications which is
-									  inspired by Node.js. Vert.x comes with its own event
-									  bus system that allows distributing applications
-									  among multiple network nodes. Support for the languages
-									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
-\bottomrule 
-  \caption{Existing asynchronous programming frameworks}
-  \label{tab:existing_frameworks}
-\end{longtable}
-\end{savenotes}
-
-
-\FloatBarrier
+This sub-section will introduce two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x followed by a brief outline of their potential market success.
 
 \subsubsection{Node.js}
 \label{node.js}
@@ -368,7 +324,60 @@ Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
 commecial redistribution in closed source projects should not be an issue.
 
+\subsubsection{Market Overview}
+\label{frameworks_overview}
 
+Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite{g_trends}.
+% TODO insert charts from CSVs found in doc folder
+
+Looking at the charts it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
+
+The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
+
+Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
+Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
+
+\FloatBarrier
+
+\begin{savenotes} %alloows proper citation marks inside tables
+\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\toprule
+\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
+\midrule 
+\endhead
+Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
+									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
+									  Twisted is a mature framework with a large number of supported networking
+									  protocols. Its development is backed by an active
+									  community.\footcite[Cf.][12]{fettig_2005}
+									  \\
+									  
+EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
+									  programs. It provides event-driven I/O using the Reactor 
+									  pattern."\footcite[][]{eventmachine_2012}\\
+
+Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
+									  The platform is fully event-driven and offers core
+									  functionalities for network programming. Its functionality
+									  can be extended with a large number of modules using an
+									  integrated package management system.
+									  Node.js started development in 2009 and the community
+									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
+									  
+Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
+									& A JVM based platform for network applications which is
+									  inspired by Node.js. Vert.x comes with its own event
+									  bus system that allows distributing applications
+									  among multiple network nodes. Support for the languages
+									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
+\bottomrule 
+  \caption{Existing asynchronous programming frameworks}
+  \label{tab:existing_frameworks}
+\end{longtable}
+\end{savenotes}
+
+
+\FloatBarrier
 
 
 \newpage
@@ -573,7 +582,7 @@ In addition, the “fs” (FileSystem ) module is necessary to read the encrypti
 and will therefore be used for convenience purposes, as recommended by Roden, G. (2012). 
 Express can be installed using the following command-line command:
 
-\lstinline|$ npm install express|
+$ npm install express $
 
 To demonstrate an HTTP and HTTPS server likewise, the application includes two webservers, 
 both of which serve the same functionality. In order to enable HTTPS by leveraging 
@@ -584,13 +593,13 @@ and a public key, because the handshake prior to an HTTPS session follows a spec
  (3) The client certifies that the certificate is valid (e.g. by trusted authorities).
  (4) Once the certificate is validated, the one-time session key generated by the client will be used to encrypt all communication with the server.
  (6) The client encrypts the session key with the public key of the server. Only the server can decipher the data using the private key.
-The generation of private and public keys can be done by using the following commands, leveraging OpenSSL, an Open Source toolkit for implementing secure protocols:
+The generation of private and public keys can be done be using the following commands, leveraging OpenSSL, an Open Source toolkit to implementing secure protocols :
 
-\lstinputlisting[language=Bash,caption={Key generation using openssl},label=lst:openssl]{
+\begin{verbatim}
 openssl genrsa -out privatekey.pem 1024
 openssl req -new -key privatekey.pem -out certrequest.csr 
 openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
-}
+\end{verbatim}
 As soon as the privatekey.pem and certificate.pem files are available, their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync():
 
 % reading a file and displaying it
@@ -616,18 +625,21 @@ label=lst:simple_server]{lst/appVariable.txt}
 
 
 
-The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory ``/UI'' is made the root directory for a \lstinline$http://localhost:[port]/$
-
-\lstinline[language=JavaScript]$app.use(express.static(__dirname + '/UI'));$
-
+The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/UI” is made the root directory for a http://localhost:[port]/
+\begin{verbatim}
+app.use(express.static(__dirname + '/UI'));
+\end{verbatim}
 Another Express feature is the “bodyParser”, which is used as middleware to parse request bodies, for this Proof of Concept especially JSON.
 
+\begin{verbatim}
 app.configure(function(){
     app.use(express.bodyParser());
 });
+\end{verbatim}
 
 Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in node.js on http://localhost:8888/insurances:
 
+\begin{verbatim}
 app.post('/insurances', function (req, res) {
 
 // iterating through the array that contains JSON-objects
@@ -640,13 +652,12 @@ app.post('/insurances', function (req, res) {
 res.send(200, OK)
 
 }
+\end{verbatim}
 
 As the AJAX POST-request contains an array filled with JSON-objects, this example demonstrates how to access each item. Within the proof of concept, this for-loop is used to apply regular expressions in order to validate each form field.
 
 The node.js servers can be started by using the command-line. After navigating into the project’s folder using cd, the only command needed is:
-
-node [filename].js
-
+$node [filename].js$
 
 
 \newpage
@@ -668,7 +679,7 @@ Vert.x and Node.js are supposed to be used as fully event driven standalone
 applications that can be extended with event-driven modules.
 However when introducing a Node.js or Vert.x application into the current
 application landscape it might be desired to reuse or communicate with existing
-systems that are not fully event driven.\\
+systems that are not fully event driven. Furthermore, integration of these technologies might not be limited to mere IPC\nomenclature{IPC}{InterProcess Communication} but instead as a new middleware-layer beneath current and new applications.\\
 %Consider connecting that software with a message bus.
 %Separate IO intense tasks into ``web workers'' or similar constructs.
 
@@ -727,6 +738,23 @@ Vert.x can be embedded in any JVM based program by including the according
 libraries in the path, so that these applications can use the bus system as
 well. \footcite{TODO: just a wild guess. find supporting documents}
 
+\subsubsection{Middleware}
+\label{middleware}
+Middleware is a layer of software providing standardized access to resources for many consumers and to increase code reuse. The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. The following sub-sub-section uses mostly examples from the Node.js community although they are also valid for Vert.x.
+
+The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (TODO: INSERT NUMBER + REF HERE) but also in new projects built on top of Node.
+
+\paragraph{Meteor and Opa}
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming. The difference (and main selling point) is that the framework decides at runtime (TODO: VERIFY WITH DOCS) which piece of is executed on the server or transmitted to the client for execution. An example of this methodology can be found in appendix \ref{appendix1}.
+
+The interesting part of these new frameworks beside the obvious is that by utilizing Node every part of the stack immediately becomes asynchronous and non-blocking. By further abstraction away from 'bare-metal' Node, leveraging its inherent advantages becomes much easier including enhanced code maintainability (TODO: VERIFY).
+
+\paragraph{Etherpad}
+Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node as middleware. By migrating to Node reductions of lines of code and memory usage(TODO: REF FROM GITHUB) allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
+
+
+% TODO insert image
+
 
 \subsection{Scalability}
 \label{scalability}
@@ -765,10 +793,10 @@ Vert.x. uses its own communication bus to share information between verticles.
 \renewcommand{\setthesubsection}{\arabic{subsection}:}%
 
 
-\appsection{MapReduce Examples}
+\appsection{METEOR OR OPA EXAMPLE}
 % include your appendix with the LaTeX include command
 \label{appendix1}
-lklkjlkjl
+CODE CODE CODE
 
 %--------------------------------
 % close the appendices environment
