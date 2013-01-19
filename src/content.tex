@@ -94,25 +94,20 @@ existing application landscape.
 
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Focus is espacially laid on an application in a business environment. 
-The authors' intention is to build a working prototype to present the advantages and
-disadvantages of this rising technologie. 
-
-\subsection{Composition of this paper}
-The paper is devided in four parts. The first one explains the scientific fundamentals of the asynchronous server
-technology. Afterwards the asynchronous programming frameworks Node.js and verte.x are used as a practical implementation.
-In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
-server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
-common server technologies. The last chapter combines the findings into a final conclusion.
-
-Relatively young frameworks such as Node.js and Vert.x try to address this issue 
-by providing a completely asynchronous programming model which allows associating
-multiple simultanious connections with a single thread by using an event-driven approach.
+technologies. Special emphasis is put on an application in a business environment. 
+The authors' intention is to build a working prototype in order to present the advantages and
+disadvantages of this rising technologie.
 
 %Goal of this paper and structure
-This paper elaborates the concepts behind these young frameworks and analyses their 
+This paper elaborates the concepts behind the young frameworks Node.js and Vert.x and analyses their 
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
+
+\subsection{Composition of this paper}
+The paper is divided into four parts. The first one explains the scientific fundamentals of asynchronous server
+technologies. Afterwards the asynchronous programming frameworks Node.js and Vert.x are used as a practical implementation.
+In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
+server- and client-side web application with non-blocking I/O featured. The subsequent part uses the POC to benchmark Vert.x and Node.js against common server technologies. The last chapter concludes on the findings and gives a final recommendation.
 
 
 \subsection{Technical foundation}
@@ -122,8 +117,8 @@ i.e. upon a GET/POST request the result can be displayed only after transmission
 and processing are finished, as highlighted in Fig. \ref{img_req_res}.
 While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
-data most commonly complex forms for registration. Naturally rich content such
-as images and videos causes even more waiting.
+data, most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more delays.
 
 \begin{figure}[hbtp]
 \centering
@@ -133,11 +128,10 @@ as images and videos causes even more waiting.
 
 As demands around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
-client-, i.e. browser-, side developers were able to work around the issue of
+client-side (browser-side) developers were able to work around the issue of
 synchronous transmission using the XmlHttpRequest object which allows to request
 resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
-deferring handling of the response to a callback (see figure
-\ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
@@ -166,50 +160,50 @@ causes performance issues.\\
 A common case in programming is access to I/O.
 In synchronous processing a running thread needs to wait for the completion of
 the I/O operation before it can continue.
-The thread is in an idle state while it is waiting which allows another process 
+The thread is in an idle state while it is waiting, which allows another process 
 or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
 In multithreaded applications several threads can run simultaneously within one 
-process. Several threads can access shared memory concurrently which can
+process. Several threads can access shared memory concurrently, which can
 cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
 execution order to effectively avoid program defects such as data races and 
 deadlocks.\footcite[Cf.][10]{Breshears_2009}
 This can be time consuming and potentially results in error-prone code.
 
-A typical synchronous call is provided in listing \ref{lst:synchronous_call}. The
-contents of a file are read and displayed afterwards. The programm is blocked until the
+A typical synchronous call is provided in Listing \ref{lst:synchronous_call}. The
+content of a file is read and displayed afterwards. The program is blocked until the
 read operation has finished.
 
 % reading a file and displaying it, pseudo code
-\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 
-Asynchronous programming style uses a different concept. The flow of an
+An asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.\footcite[Cf.][16]{teixeira_2012} In listing \ref{lst:asynchronous_call} the call
+event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
 to the \textit{readAsText} function is done asynchronously. There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
 
 % same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 This concept is coupled with an event loop, which is a single thread that is
 running inside the main process.
 The loop constantly checks for new events. When an event is detected, the loop
 invokes the corresponding callback function. The callback is processed in the
-same thread which means that there is at most one callback running at a time.
+same thread, which means that there is at most one callback running at a time.
 The event loop continues when the callback has completed. As a result the
 developer does not need to take care of concurrency issues during development.
 But the developer's task is to write light event handlers that can be processed
 quickly as every callback is an interruption of the event processing in the
 event loop. \footcite[Cf.][]{Croucher_2010} Memory or processor intense callbacks
-can lead to growing queues of unserved events which eventuelly results
+can lead to growing queues of unserved events, which eventually results
 in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 
@@ -223,13 +217,13 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-This sub-section will introduce two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x followed by a brief outline of their potential market success.
+This sub-section will give a brief market overview, which is follwed by the introduction of two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x
 
 
 \subsubsection{Market Overview}
 \label{frameworks_overview}
 
-Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
+Table \ref{tab:existing_frameworks} shows that there is actually competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
 
 \begin{figure}[hbtp]
 \centering
@@ -244,7 +238,7 @@ The gap in interest could be related to many reasons, two of which will be discu
 Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
 Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
 
-Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers.
+Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers of Node.js and Vert.x, which will be introduced in the next sub-section.
 
 \FloatBarrier
 \begin{savenotes} %alloows proper citation marks inside tables
@@ -299,8 +293,8 @@ Besides, Node.js is a young platform with a lot of buzz around it. Due to the
 rising of the Web 2.0 and widely accessible internet through smartphones,
 demanding users expect more complex and more interactive forms of application usage. 
 The challenge even gets harder considering the steep number of
-devices that are interacting with online services.%TODO: reference?
-To overcome those problems Node.js lays it's foundations on an event driven
+devices that are interacting with online services.%TODO: reference? 
+To overcome those problems Node.js lays its foundations on an event driven
 computing architecture for web servers.\\
 % The paradigm of the event driven programming style is easily explained using a
 % real world example. What would you do if you are slicing onions while the turkey
@@ -312,17 +306,17 @@ computing architecture for web servers.\\
 Node.js doesn't try to make you perform undoable things. It rather lets events drive the
 action, so that it is single-threaded and only one thing happens at once. This
 is why an event loop is a fundamental part of Node.js. It includes the concept
-of nonblocking I/O activities. A result is that actions that cause the program
+of non-blocking I/O activities. A result is that actions that cause the program
 to wait like database requests and file I/O  do not halt execution until they
 return data. In contrast they process independently and raise an event when the
 data is accessible. It is therefore necessary to use callbacks for dealing with
 different kinds of I/O.\\
-An exemplary code for a basic HTTP server in Node.js is shown in listing
+An exemplary code for a basic HTTP server in Node.js is shown in Listing
 \ref{lst:simple_server} to deepen the understanding of the event loop and
 callback in Node.js.
 
 % reading a file and displaying it
-\lstinputlisting[language=JavaScript,caption={The simplest way to programm a server in Node.js},
+\lstinputlisting[language=JavaScript,caption={The simplest way to program a server in Node.js},
 label=lst:simple_server]{lst/simple_server.txt}
 
 
@@ -353,7 +347,7 @@ traditional techniques such as executing bytecode or interpreting it. \footnote{
 \subsubsection{Vert.x}
 \label{vert.x}
 
-Vert.x is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
+Vert.x is a polyglot that runs on the Java Virtual Machine (JVM). It is hence
 possible to scale over available cores without manually forking multiple
 servers.\\
 The application API is exposed in multiple programming lanugages (see table
@@ -362,8 +356,8 @@ The application API is exposed in multiple programming lanugages (see table
 % different languages
 
 In Vert.x the smallest available deployment unit is a verticle, which runs
-inside an instance. Each instance runs singlethreaded.
-Multiple verticles can be run inside one instance as depicted in figure
+inside an instance. Each instance runs single-threaded.
+Multiple verticles can be run inside one instance as depicted in Fig.
 \ref{fig:vertx_constructs}.
 %http://vertx.io/core_manual_java.html scaling tcp servers
 
@@ -379,7 +373,7 @@ Multiple verticles can be run inside one instance as depicted in figure
 
 When multiple instances are run on one machine, Vert.x automatically distributes incoming
 requests among all running instances in a round-robin fashion, so that each
-vert.x verticle instance remains single threaded.
+vert.x verticle instance remains single-threaded.
 
 Vert.x also includes a distributed event bus, which enables verticles to
 communicate with each other, either within the same instance or across different
@@ -396,7 +390,7 @@ larger projects.\\
 As opposed to Node.js, the core functionality and API can be considered quite
 static as changes need to be done in all supported
 languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
-The core can be exctended with additional features that are provided by optional
+The core can be extended with additional features that are provided by optional
 modules that can be obtained over a public git-based module
 repository.\footcite[Cf.][]{vertx_mod_2012}.
 The repository currently contains 16 distinct modules in different
@@ -422,7 +416,7 @@ commecial redistribution in closed source projects should not be an issue.
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.
-The singlethreaded nature of event loops allows to make efficient use of the
+The single-threaded nature of event loops allows to make efficient use of the
 thread as long as callbacks don't take up too much time. This makes asynchronous
 server applications a good fit for most types of networked applications that
 either tend to keep many inactive connections or need to handle many concurrent 
@@ -450,20 +444,20 @@ A few possible use cases are described in the list below.
   connected to this instance via a websocket. Depending on the amount of visitors
   this could result in a large number of open connections. However due to the
   event loop based processing the server instance will always just use one
-  thread for all connections as opposed to a classical web server which would
+  thread for all connections as opposed to a classical web server, which would
   keep one thread for each connection. Thus the servers footprint is much
   smaller.\\
   \textbf{Known implementation:} Humingbird is a real time web traffic
   visualization tool that uses Node.js for all processing. When loading a
   website the browser sends a request for each file that is referenced in the
   HTML file. Hence each page that should be tracked by Hummingbird integrates a
-  reference to a tracking pixel which is served by the Hummingbird application.
+  reference to a tracking pixel, which is served by the Hummingbird application.
   \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
   over a websocket connection.
   
   
   
-  \item[Web servers] TODO: e.g. file server that is base don vert.x and returns files directly from disc instead of
+  \item[Web servers] TODO: e.g. file server that is based on vert.x and returns files directly from disc instead of
   	moving it through userspace (not possible with SSL enabled)
   \item[Lightweight json APIs] TODO: Non-blocking I/O model 
   		combined with JavaScript make it a great choice for
@@ -503,7 +497,7 @@ Criticism on these concepts:\\
 \url{http://xquerywebappdev.wordpress.com/2011/11/18/node-js-is-good-for-solving-problems-i-dont-have/}\\
 \url{http://www.theserverside.com/discussions/thread.tss?thread_id=61693}\\
 \url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
-and some more. Why not use message queues that make use of a thread pool?
+and some more. TODO: Why not use message queues that make use of a thread pool?
 
 
 \begin{description}
@@ -511,7 +505,7 @@ and some more. Why not use message queues that make use of a thread pool?
   	on large data sets at runtime usually requires a lot of computing power.
   	It can be expected that each request will require quite some time to be processed.
   	This computation time cannot be shortened much when run on a single thread but 
-  	could potentially be speed up significantly when run on multiple cores in parallel. 
+  	could potentially be sped up significantly when run on multiple cores in parallel. 
   \item[CRUD / HTML applications] \nomenclature{CRUD}{Create Read Update Delete}
 	This refers to classical websites that basically only serve as an interface for
 	an object relational model.
@@ -603,7 +597,7 @@ The body size of these requests is fairly small as the submitted values consist
 of plain text only. Therefore it is safe to assume that it won't be necessary to
 buffer each part of the requests body but start calculating once the data
 submission has completed.\\
-In reality these calculations are much complexer than in this simple scenario,
+In reality these calculations are much more complex than in this simple scenario,
 so that they have to be done outside of the event loop in a separate thread.
 In the implementation these long running calculations are simulated artificially for
 demonstration purposes.\\
@@ -664,7 +658,7 @@ In this case the main loop is single-threaded and for each remaining processor
 there is one worker verticle. Vert.x automatically distributes requests among
 these worker verticles (as described in section \ref{vert.x}).
 
-A global configuration file is read in line 12. These configuration file is
+A global configuration file is read in line 12. This configuration file is
 formatted as Json string and can include settings for modules or verticles. The
 path to the configuration file has to be provided to the \texttt{vertx} command
 upon server start to allow access to it from within the verticles. For this implementation the command that
@@ -674,7 +668,7 @@ has to be invoked is shown in listing \ref{lst:vertx_start}.
 label=lst:vertx_start]{lst/vertx_start_command.sh}
 
 Vert.x allows either running verticles by providing the compiled Java class or by providing the
-source file which is then compiled automatically by Vert.x. However in this
+source file, which is then compiled automatically by Vert.x. However in this
 setup we experienced some issues with the Vert.x run command when we tried to
 use it with the source files. The issues observed where partially related to
 Vert.x bug 444\footnote{see \url{https://github.com/vert-x/vert.x/issues/444}}.
@@ -693,7 +687,7 @@ label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
 The implementation of the communication between the web server and the worker
 verticle was rather easy by using the event bus. The event bus has a very
 simple adressing mechanism where the address consists of a normal string.
-Listing \ref{lst:vertx_form_handler} shows the form handler which is defined
+Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
 in the web server verticle and gets called whenever a form submission arrives.
 The handler registers another handler that is called as soon as the entire
 request body has arrived (line 3). The data that arrives as a buffer is than
@@ -782,8 +776,8 @@ node [filename].js
 
 \subsection{Maintainability}
 \label{maintainability}
-Maintainability is one of the most important issues in the enterprise for developers typically switch between projects (or participate only in a temporary manner). Thus the time needed to become familiar with a framework and its language directly impact the development cost either because of the time needed related to the learning curve or because of resources invested in maintenance and bug-fixing.
-The results of this sub-section are summarized in table \ref{tbl_maintain}.\\
+Maintainability is one of the most important issues in the enterprise as developers typically switch between projects (or participate only in a temporary manner). Thus the time needed to become familiar with a framework and its language directly impact the development cost either because of the time needed related to the learning curve or because of resources invested in maintenance and bug-fixing.
+The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
 
 \paragraph{Node.JS}
 Node.js allows for leveraging the JS skills already in the market which significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market}) for its similarity to established libraries and conventions in web application development. Unfortunately TTM is not everything because equal attention needs to be given to Total Cost of Ownership (TCO\nomenclature{TCO}{Total Cost of Ownership}), i.e.\ the total expenditure required including costs incurred post-deployment. Here Node presents a challenge in its reliance on callback leading to hard-to-follow and hard-to-fix code driving up TCO significantly because patches become more and more difficult to write with increasing $\Delta t_{Launch<->Present}$, especially if the code is not to be maintained by the original developers.
