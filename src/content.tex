@@ -115,29 +115,32 @@ server- and client-side web application with non-blocking I/O featured. The subs
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
 and processing are finished, as highlighted in Fig. \ref{img_req_res}.
-While maintaining simplicity and
-predictability this can cause serious latency when uploading large pieces of
-data, most commonly complex forms for registration. Naturally rich content such
-as images and videos causes even more delays.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.75]{img/rest_call.png}
-\caption{REST request-response sequence diagram\footcite{req_res}\label{img_req_res}}
+\caption[REST request-response sequence diagram]{REST request-response sequence diagram\footnotemark\label{img_req_res}}
 \end{figure}
+\footcitetext{req_res}
+
+While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data, most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more delays.
 
 As demands around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
 synchronous transmission using the XmlHttpRequest object which allows to request
 resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
-deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+deferring handling of the response to a callback (see Fig. \ref{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{img/ajax-diagram}
-\caption{AJAX Diagram\label{img_ajax}}
+\caption[AJAX Ddiagram]{AJAX diagram\footnotemark\label{img_ajax}}
 \end{figure}
+\footcitetext{img_ajax}
 
 Although this addressed the issue on the client-side, server-side request were
 still handled very much in a synchronous fashion. For example the popular Apache
@@ -225,14 +228,26 @@ This sub-section will give a brief market overview, which is follwed by the intr
 
 Table \ref{tab:existing_frameworks} shows that there is actually competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
 
+% \begin{figure}[hbtp]
+% \centering
+% \includegraphics[width=\textwidth]{img/googletrend_nodevertx}
+% \caption[Google search volume of node.js and Vert.x compared]{Google search volume of node.js and Vert.x compared\footnotemark}
+% \label{img_googletrend_nodevertx}
+% \end{figure}
+% \footcitetext[Cf.][]{g_trends}
+
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.5]{img/googletrend_nodevertx}
-\caption{Google search volume of node.js and Vert.x compared\footcite[Cf.][]{g_trends}\label{img_googletrend_nodevertx}}
+\includegraphics[width=\textwidth]{img/googletrend_all.png}
+\caption[Google search volume of node.js, twisted, eventmachine and Vert.x compared]{Google search volume of node.js, twisted, eventmachine and Vert.x compared\footnotemark}
+\label{img_googletrend_all}
 \end{figure}
+\footcitetext[Cf.][]{g_trends}
 
-Looking at the charts in Fig. \ref{img_googletrend_nodevertx}, it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
-
+Looking at the charts in Fig. \ref{img_googletrend_all}, it can be
+concluded that interest in Node.js is very high at the moment in absolute terms as well
+as in relative terms when comparing it to peers at the same point in its lifecycle.
+Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
 The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
 
 Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
@@ -795,6 +810,7 @@ language directly impact the development cost either because of the time needed
 related to the learning curve or because of resources invested in maintenance
 and bug-fixing.
 The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
+%TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
 
 \paragraph{Node.JS}
 Node.js allows for leveraging the JavaScript skills already in the market which
