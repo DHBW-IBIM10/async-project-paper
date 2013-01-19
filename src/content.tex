@@ -797,26 +797,33 @@ and bug-fixing.
 The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
 
 \paragraph{Node.JS}
-Node.js allows for leveraging the JS skills already in the market which
+Node.js allows for leveraging the JavaScript skills already in the market which
 significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market})
 for its similarity to established libraries and conventions in web application
-development. Unfortunately TTM is not everything because equal attention needs
+development. JavaScript's lack of blocking I/O libraries allowed the project
+founder to establish a non-blocking standard for I/O operations.\footcite[Cf.][]{Croucher_2012}
+Unfortunately TTM is not everything because equal attention needs
 to be given to Total Cost of Ownership (TCO\nomenclature{TCO}{Total Cost of
 Ownership}), i.e.\ the total expenditure required including costs incurred
-post-deployment. Here Node presents a challenge in its reliance on callback
+post-deployment\footcite[Cf.][203-207]{holtsnider_2010}. 
+Here Node presents a challenge in its reliance on callback
 leading to hard-to-follow and hard-to-fix code driving up TCO significantly
 because patches become more and more difficult to write with increasing $\Delta
-t_{Launch<->Present}$, especially if the code is not to be maintained by the
+t_{Launch<->Present}$, especially if the code is not to be maintained by the %TODO: explain delta launch-present or remove it.
 original developers.
 
 Furthermore, Node is still at an unstable stage of code maturity (at time of
-writing, the current version is $0.9.6$ causing infrequent breaking changes to
-its APIs which usually is a no-go in the enterprise, this is reinforced by a
-community mindset of 'Upgrade Node, Update Code' based on a preference for new
-features. The unintended benefit of this is a lot of available material for Node
-programmers in blogs and on StackOverflow\footnote{\url{www.stackoverflow.com}}
-leading to the conclusion that the current pace of progress does not facilitate
-enterprise adoption, however it is not a showstopper.
+writing, the current version is $0.9.7$\footcite[Cf.][]{node_unstable_2013})
+causing infrequent breaking changes to its APIs which usually is a no-go in the enterprise.
+The API documentation distinguishes between five stability states (deprecated,
+experimental, unstable, stable, API frozen, locked), whereas the latter ones are
+rarely found in the documented features.\footcite[Cf.][] {node_2012}.
+This is reinforced by a community mindset of 'Upgrade Node, Update Code' based
+on a preference for new features. The unintended benefit of this is a lot of
+available material for Node programmers in blogs and on
+StackOverflow\footnote{See \url{www.stackoverflow.com}}.
+This leads to the conclusion that the current pace of progress does not
+facilitate enterprise adoption, however it is not a showstopper.
 
 \paragraph{Vert.x}
 Vert.x offers a similar picture to Node, however some of Node's shortcoming are
@@ -828,18 +835,28 @@ not seem to be able to recruit interest from this pool. Also its support for
 multiple programming languages (basically every JVM language) should lower the
 barrier for entry even more, as for example Groovy already features
 Vert.x-aligned language constructs. Unfortunately this means that new Vert.x
-programmers need to be trained increasing TTM significantly.
-Another important issue is the unstable state of the Vert.x codebase as
-essential features like code import do not work reliably or at
-all\footnote{TODO: INCLUDE REF TO BUG}. Section \ref{frameworks_overview}
-already mentioned the ease of calling synchronous code with Vert.x though this
+programmers need to be trained which increases TTM significantly.\\
+Another important issue is the unstable state of the Vert.x codebase. Due to the
+rather small community issues are often detected after new versions are considered final.
+At the time of writing there are currently 90 open issues on the project site.
+Section \ref{frameworks_overview} already mentioned the ease of calling synchronous code with Vert.x though this
 can be worked around with by placing the code in new verticles, this still
 requires a lot of vigilance.
 
 TCO is difficult to estimate for Vert.x for a lack of success/failure stories,
 it can be said though that because Vert.x requires Java hosting infrastructure
-ther emight be an associated licensing cost for application servers.
+there might be an associated licensing cost for application servers.
 
+At present there is a discussion in the google users group
+\footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of
+the Vert.x project which is owned by VMWare. The founder of the project and
+former employee of VMWare had to transfer ownership of the Github project,
+domain, gooole group and blog to VMWare after he left the company in December
+2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
+uncertainty in the community and might increase the entry barriers for new
+developers. So far there is no final decision made, however it seems likely that VMware
+submits the project as-is to a foundation, so that development can be continued
+within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_future_2013}.
 
 
 \begin{savenotes}
