@@ -851,13 +851,42 @@ Depending on the used language there are already multiple libraries that can be
 used to invoke child processes. However these libraries usually only expose
 synchronous APIs, so that these calls need to be done inside a worker verticle
 that doesn't block the event loop.\\
-
-Listing \ref{lst:vertx_child} shows a minimal worker verticle written in
-Java that invokes \textit{ls -lh /usr} via the \textit{Apache Commons Exec}
-library.\footnote{See \url{http://commons.apache.org/exec/}}
+Listing \ref{lst:vertx_child} shows a minimal worker verticle written in Java
+that invokes \textit{ls -lh /usr} via the \textit{Apache Commons Exec}
+library\footnote{See \url{http://commons.apache.org/exec/}} in a blocking way.
+This worker verticle runs the command whenever it receives a message via the event bus.
+The command to run could also be provided via the Json object that is passed
+into the verticle via the event bus for higher flexibility. A watchdog
+(instantiated in line 27) is used to terminate the process after six seconds.
+Otherwise a runaway process could block the worker thread so that it cannot be
+used anymore\footcite[Cf.][67]{Evi_2007}.
 
 \lstinputlisting[language=Java,caption={Example of running \textit{ls -lh /usr} in Vert.x from within a worker verticle},label=lst:vertx_child]%
 {lst/vertx_child_process.java}
+
+This approach might not be very satisfying, as the output is not captured and
+execution errors aren't handled properly. Luckily the \textit{Apache Commons Exec} library
+can be used in an event driven style as well. To achieve this one first needs to
+write a class that handles the outputstreams.
+An exemplary implementation of such a class is provided in listing
+\ref{lst:java_stream}.
+
+\lstinputlisting[language=Java,caption={Subclass of LogOutputStream as a handler for the stdout stream},label=lst:java_stream]%
+{lst/StdoutStream.java}
+
+An instance of this class can then be provided to the executor as shown in
+listing \ref{lst:external_process}, where the instance gets passed into a PumpStreamHandler (line 21)
+
+\lstinputlisting[language=Java,caption={Asynchronous process execution in Java},label=lst:external_process]%
+{lst/external_process.java}
+
+There are some more noteworthy details in listing \ref{lst:external_process}.
+The \texttt{DefaultExecuteResultHandler} which is defined in lines 5 to
+13 can be used to provide callbacks for successfull termination or failure of
+the external process. The call to \texttt{executor.execute} (line 23) automatically becomes
+asynchronous when a \texttt{StreamHandler} is set for the executor (line 19)\footcite[Cf.][]{apache_2010}.
+
+
 
 When writing verticles in Java it is also possible to make use of Javas Remote
 Method Invocation (RMI) mechanism to communicate with services that are on different
