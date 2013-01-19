@@ -442,17 +442,20 @@ Could be used for:
 \subsection{Don't use cases}
 \label{dont_use_cases}
 
-
 As with all technologies one has to carefully evaluate whether or not it suits the
 requirements of a project. Besides those use cases listed in the previous
 section there are also a few usage scenarios where one should not use
 asynchronous frameworks like Node.js or Vert.x.\\
-In general it can be said that these frameworks are not suited for tasks that
-require a lot of computation and IO access. These heavy tasks would have to be
-moved to worker threads. However having most of the computation logic in
-constructs that are not of the event loop contradicts the point of these
-frameworks. Running worker threads does partially introduce concurrency issues that were
-avoided with the event loop again as multiple threads could concurrently access IO.\\
+
+Since one key feature of asynchronous technologies is non-blocking I/O, use cases that hardly encompass interaction with external resources do not set a precedent and might even be penalized. This penelization would be caused by the fact that the strength of non-blocking I/O could not be leveraged on the one hand and on the other hand one thread would be busy through computations and cause long response times.\footcite[Cf.][14]{Roden_2012}\\
+
+Expanding upon the non-blocking I/O strenghts, it becomes obvious that asynchronous frameworks are not I/O bound. Consequently, they are, however, not designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
+
+Node.js and Vert.x do not offer any possibility to speed up a single request. These requests will aways
+run at the same speed. What it does is to maximise the number of possible requests while keeping the speed
+steady. This is why it scales so well. The only additional delay between request and response is the time
+that a request waits in the event loop until it gets processed.  In many cases however it is desirable to minimize the computation time itself for a single request. Once this is achieved it becomes a goal to keep that speed for a larger amount of requests.\\
+
 Another thing to note is that one should not choose these frameworks when
 there are other concepts or frameworks that might better fulfill the 
 projects requirements.
@@ -464,12 +467,6 @@ Criticism on these concepts:\\
 \url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
 and some more. Why not use message queues that make use of a thread pool?
 
-Node.js and Vert.x do not offer any possibility to speed up a single request. These requests will aways
-run at the same speed. What it does is to maximise the number of possible requests while keeping the speed
-steady. This is why it scales so well. The only additional delay between request and response is the time
-that a request waits in the event loop until it gets processed.\\
-In many cases however it is desirable to minimize the computation time itself for a single request.
-Once this is achieved it becomes a goal to keep that speed for a larger amount of requests.
 
 \begin{description}
   \item[Datawarehousing with analytics] Doing analytical and complex computations
@@ -481,7 +478,7 @@ Once this is achieved it becomes a goal to keep that speed for a larger amount o
 	This refers to classical websites that basically only serve as an interface for
 	an object relational model.
 	At present Node.js and Vert.x do not provide additional benefits to scalability
-	for these types of web applications. Unless the page has to deal with a large number of
+	for these types of web applications.\footcite[Cf.][15]{Roden_2012} Unless the page has to deal with a large number of
 	concurrent requests it should be considered to use a more powerfull frameworks
 	like Ruby On Rails, Grails or Django. These are currently better suited for quickly
 	developing such an application. Providing a site that is suited for 
@@ -888,12 +885,12 @@ well.\footcite[Cf.][]{vertx_2012}
 "The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
 interaction among distributed software modules."\footcite[]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
 
-The git runderlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).
+The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).\\
 
-One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}\\
+One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}
 
 \paragraph{Meteor and Opa}
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix TODO.
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
 
 Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
@@ -941,10 +938,27 @@ Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 \begin{subappendices}
 \renewcommand{\setthesubsection}{\arabic{subsection}:}%
 
+\appsection{Kue – A Message Queue (Job Queue) based on Node.js}
+\label{appendix_kue}
+
+A message queue is “an area where you can add messages representing a task”\footcite[][2]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][1]{McGlennon_2007}
+1. Unavailability of communications with servers or clients, and 
+2. Communications between disparate systems and components. 
+Another use case for message queues is storing less-important information in a message queue while your DBMS is busy serving customers during the day. 
+The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating , can then retrieve messages from the queue for processing (basically, the FIFO principle is applied). 
+A common scenario for message queues is when only a little amount of requests create high loads on the server, e.g. video platforms such as Youtube or Vimeo . In such cases, it is useful to externalize CPU-intensive tasks in order not to impair responsiveness of the application. 
+Asynchronous server technologies such as Node.js can leverage message queues very well. As a feature of the event-driven model, an event handler is triggered when a new message is available. Thus, the queue does not need to be constantly polled for messages. 
+
+Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to \ref{lst:installkue}.
+
+\begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
+$ npm install kue 
+\end{lstlisting}
+
 
 \appsection{METEOR OR OPA EXAMPLE}
 % include your appendix with the LaTeX include command
-\label{appendix1}
+\label{appendix_meteor}
 CODE CODE CODE
 
 %--------------------------------
