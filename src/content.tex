@@ -127,7 +127,6 @@ web server forks a new process for each incoming request\footnote{TODO: find
 source}. As popular applications have to cope with unprecedented amounts of
 concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
-<<<<<<< HEAD
 
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
@@ -142,9 +141,6 @@ In the following chapter the authors conceive a proof of concept, that guides th
 server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
 common server technologies. The last chapter combines the findings into a final conclusion.
 
-
-=======
->>>>>>> 2223916fc8595e9c8173bc89c2fb97fd072817e0
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
 multiple simultanious connections with a single thread by using an event-driven approach.
