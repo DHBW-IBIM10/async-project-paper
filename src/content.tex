@@ -92,10 +92,34 @@ existing application landscape.
 
 \section{Introduction}
 
+\subsection{Objectives}
+The main goal of this paper is to identify specific use cases for asynchronous server
+technologies. Focus is espacially laid on an application in a business environment. 
+The authors' intention is to build a working prototype to present the advantages and
+disadvantages of this rising technologie. 
+
+\subsection{Composition of this paper}
+The paper is devided in four parts. The first one explains the scientific fundamentals of the asynchronous server
+technology. Afterwards the asynchronous programming frameworks Node.js and verte.x are used as a practical implementation.
+In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
+server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
+common server technologies. The last chapter combines the findings into a final conclusion.
+
+Relatively young frameworks such as Node.js and Vert.x try to address this issue 
+by providing a completely asynchronous programming model which allows associating
+multiple simultanious connections with a single thread by using an event-driven approach.
+
+%Goal of this paper and structure
+This paper elaborates the concepts behind these young frameworks and analyses their 
+technical strengths and weaknesses. Furthermore non-functional attributes will be
+evaluated based on two sample implementations in Node.js  and Vert.x.
+
+
+\subsection{Technical foundation}
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
-and processing are finished, as highlighted in Fig. \ref{img_req_res}\footcite{req_res}.
+and processing are finished, as highlighted in Fig. \ref{img_req_res}.
 While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
 data most commonly complex forms for registration. Naturally rich content such
@@ -104,7 +128,7 @@ as images and videos causes even more waiting.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.75]{img/rest_call.png}
-\caption{REST request-response sequence diagram\label{img_req_res}}
+\caption{REST request-response sequence diagram\footcite{req_res}\label{img_req_res}}
 \end{figure}
 
 As demands around collaborative access and media richness evolved, this became a
@@ -127,30 +151,6 @@ web server forks a new process for each incoming request\footnote{TODO: find
 source}. As popular applications have to cope with unprecedented amounts of
 concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
-Relatively young frameworks such as Node.js and Vert.x try to address this issue 
-by providing a completely asynchronous programming model which allows associating
-multiple simultanious connections with a single thread by using an event-driven approach.
-
-%Goal of this paper and structure
-This paper elaborates the concepts behind these young frameworks and analyses their 
-technical strengths and weaknesses. Furthermore non-functional attributes will be
-evaluated based on two sample implementations in Node.js  and Vert.x.
-
-
-\subsection{Objectives}
-The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Focus is espacially laid on an application in a business environment. 
-The authors' intention is to build a working prototype to present the advantages and
-disadvantages of this rising technologie. 
-
-\subsection{Composition of this paper}
-The paper is devided in four parts. The first one explains the scientific fundamentals of the asynchronous server
-technology. Afterwards the asynchronous programming frameworks Node.js and verte.x are used as a practical implementation.
-In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
-server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
-common server technologies. The last chapter combines the findings into a final conclusion.
-
-
 
 
 
@@ -170,7 +170,7 @@ The thread is in an idle state while it is waiting which allows another process
 or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
-In multithreaded applications several threads can run simultaniously within one 
+In multithreaded applications several threads can run simultaneously within one 
 process. Several threads can access shared memory concurrently which can
 cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
@@ -225,6 +225,72 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \label{existing_frameworks}
 This sub-section will introduce two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x followed by a brief outline of their potential market success.
 
+
+\subsubsection{Market Overview}
+\label{frameworks_overview}
+
+Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/googletrend_nodevertx}
+\caption{Google search volume of node.js and Vert.x compared\footcite[Cf.][]{g_trends}\label{img_googletrend_nodevertx}}
+\end{figure}
+
+Looking at the charts in Fig. \ref{img_googletrend_nodevertx}, it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
+
+The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
+
+Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
+Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
+
+Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers.
+
+\FloatBarrier
+\begin{savenotes} %alloows proper citation marks inside tables
+\begin{table}
+%\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\toprule
+\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
+\midrule 
+%\endhead
+Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
+									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
+									  Twisted is a mature framework with a large number of supported networking
+									  protocols. Its development is backed by an active
+									  community.\footcite[Cf.][12]{fettig_2005}
+									  \\
+									  
+EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
+									  programs. It provides event-driven I/O using the Reactor 
+									  pattern."\footcite[]{eventmachine_2012}\\
+
+Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
+									  The platform is fully event-driven and offers core
+									  functionalities for network programming. Its functionality
+									  can be extended with a large number of modules using an
+									  integrated package management system.
+									  Node.js started development in 2009 and the community
+									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
+									  
+Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
+									& A JVM based platform for network applications which is
+									  inspired by Node.js. Vert.x comes with its own event
+									  bus system that allows distributing applications
+									  among multiple network nodes. Support for the languages
+									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
+\bottomrule 
+\end{tabular*}
+  \caption{Existing asynchronous programming frameworks}
+  \label{tab:existing_frameworks}
+%\end{longtable}
+\end{table}
+\end{savenotes}
+
+
+\FloatBarrier
+
 \subsubsection{Node.js}
 \label{node.js}
 
@@ -252,7 +318,7 @@ return data. In contrast they process independently and raise an event when the
 data is accessible. It is therefore necessary to use callbacks for dealing with
 different kinds of I/O.\\
 An exemplary code for a basic HTTP server in Node.js is shown in listing
-\ref{lst:simple_server} to deepen the understandin gof the event loop and
+\ref{lst:simple_server} to deepen the understanding of the event loop and
 callback in Node.js.
 
 % reading a file and displaying it
@@ -264,15 +330,15 @@ label=lst:simple_server]{lst/simple_server.txt}
 The code uses a factory method to create a new HTTP server and attaches the
 argument of the createServer function as a callback to the request event. The
 first run of this code is also called setup. When a HTTP request arrives the
-anonymous callback function is processed and "Hello World" appears on the
+anonymous callback function is processed and "Hello World" appears in the
 browser.\\
 That the basic code above isn't the most sophisticated way to write Node.js code
 explains the following thought experiment: Assuming that the Hello World page
-would be popular and had a lot of requests from different devices to handle and
+would be popular and had a lot of requests from different clients to handle and
 in addition the callback processing would take one second, it is obvious that the second
 request would already have to wait for one second until it gets served. This is far away 
 from the near-real-time requirement Node.js is confronted with.\\
-Two programming rules in Node.js can be inferred from the basic server and it's
+Two programming rules in Node.js can be inferred from the basic server and its
 event loop blocking problem, which is described in section \ref{setting_the_context}.
 First, once the setup is in place all actions should be programmed event-driven.
 Second, if a workload requires Node.js to process something for a long time,
@@ -287,7 +353,7 @@ traditional techniques such as executing bytecode or interpreting it. \footnote{
 \subsubsection{Vert.x}
 \label{vert.x}
 
-Vertx is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
+Vert.x is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
 possible to scale over available cores without manually forking multiple
 servers.\\
 The application API is exposed in multiple programming lanugages (see table
@@ -346,73 +412,6 @@ a public repository\footcite[Cf.][]{Fox_2013}.\\
 Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
 commecial redistribution in closed source projects should not be an issue.
-
-\subsubsection{Market Overview}
-\label{frameworks_overview}
-
-Table \ref{tab:existing_frameworks} shows that the previously introduced frameworks face stiff competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/googletrend_nodevertx}
-\caption{Google search volume of node.js and Vert.x compared\footcite[Cf.][]{g_trends}\label{img_googletrend_nodevertx}}
-\end{figure}
-
-Looking at the charts in Fig. \ref{img_googletrend_nodevertx}, it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
-
-The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
-
-Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
-Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
-
-Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers.
-
-
-\FloatBarrier
-\newpage
-\begin{savenotes} %alloows proper citation marks inside tables
-\begin{table}
-%\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
-\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
-\toprule
-\textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
-\midrule 
-%\endhead
-Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
-									  Twisted is a mature framework with a large number of supported networking
-									  protocols. Its development is backed by an active
-									  community.\footcite[Cf.][12]{fettig_2005}
-									  \\
-									  
-EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
-									  programs. It provides event-driven I/O using the Reactor 
-									  pattern."\footcite[]{eventmachine_2012}\\
-
-Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
-									  The platform is fully event-driven and offers core
-									  functionalities for network programming. Its functionality
-									  can be extended with a large number of modules using an
-									  integrated package management system.
-									  Node.js started development in 2009 and the community
-									  is growing since that.\footcite[Cf.][]{Mashtable_2011}\\
-									  
-Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript		
-									& A JVM based platform for network applications which is
-									  inspired by Node.js. Vert.x comes with its own event
-									  bus system that allows distributing applications
-									  among multiple network nodes. Support for the languages
-									  Scala and Clojure is scheduled for future releases.\footcite[Cf.][]{vertx_2012}\\
-\bottomrule 
-\end{tabular*}
-  \caption{Existing asynchronous programming frameworks}
-  \label{tab:existing_frameworks}
-%\end{longtable}
-\end{table}
-\end{savenotes}
-
-
-\FloatBarrier
 
 
 \newpage
@@ -535,7 +534,7 @@ Once this is achieved it becomes a goal to keep that speed for a larger amount o
 \section{Exemplary Implementations}
 \label{exemplary_implementations}
 
-A simple web form application has been implemented in Node.js and Vert.x to
+A simple web form application has been implemented in both Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
 with these frameworks. These implementations are thoroughly described in the following sub-sections.
 
