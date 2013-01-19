@@ -5,7 +5,7 @@
 \author{Can Paul Bineytioglu,
 		Joe André Boden,
 		Rocco Schulz,\\
-		Max V\"{o}kler
+		Max V\"{o}kler,
 		Robert Wawrzyniak}
 		
 \publishers{Corporate State University\\Baden-Wuerttemberg - Stuttgart}
@@ -473,7 +473,7 @@ A few possible use cases are described in the list below.
   \item[Email and messaging systems] TODO: mainly idling connections, but realtime communication important
   \item[Authorization processors] TODO:
   \item[Streaming] TODO: E.g file uploads in real time or video broadcasting.
-\end{itemize}
+\end{description}
 
 Some success stories are available on \url{http://nodejs.org/}.
 
@@ -982,18 +982,43 @@ Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 \label{appendix_kue}
 
 A message queue is “an area where you can add messages representing a task”\footcite[][2]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][1]{McGlennon_2007}
-1. Unavailability of communications with servers or clients, and 
-2. Communications between disparate systems and components. 
-Another use case for message queues is storing less-important information in a message queue while your DBMS is busy serving customers during the day. 
-The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating , can then retrieve messages from the queue for processing (basically, the FIFO principle is applied). 
-A common scenario for message queues is when only a little amount of requests create high loads on the server, e.g. video platforms such as Youtube or Vimeo . In such cases, it is useful to externalize CPU-intensive tasks in order not to impair responsiveness of the application. 
-Asynchronous server technologies such as Node.js can leverage message queues very well. As a feature of the event-driven model, an event handler is triggered when a new message is available. Thus, the queue does not need to be constantly polled for messages. 
+\begin{description}
+  \item Unavailability of communications with servers or clients, and 
+  \item Communications between disparate systems and components.
+\end{description}
+Another use case for message queues is storing less-important information in a message queue while your DBMS is busy serving customers during the day.\footcite[Cf.][449]{Thomson_2002}
+The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating system\footcite[Cf.][2]{McGlennon_2007}, can then retrieve messages from the queue for processing (basically, the FIFO principle is applied).\footcite[Cf.][450]{Thomson_2002}
+A common scenario for message queues is when only a little amount of requests create high loads on the server, e.g. video platforms such as Youtube or Vimeo.\footcite[Cf.][247]{Roden_2012} In such cases, it is useful to externalize CPU-intensive tasks in order not to impair responsiveness of the application.\footcite[Cf.][247]{Roden_2012}
+Asynchronous server technologies such as Node.js can leverage message queues very well. As a feature of the event-driven model, an event handler is triggered when a new message is available. Thus, the queue does not need to be constantly polled for messages.\footcite[Cf.][]{Knight_2011}
 
-Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to \ref{lst:installkue}.
+Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to Listing \ref{lst:installkue}.
 
 \begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
 $ npm install kue 
 \end{lstlisting}
+
+\appsection{Case Study – LinkedIn}
+In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
+LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
+LinkedIn therefore wanted to implement an event-driven model and tested and evaluated three possible candidates: Rails/Event Machine, Python/Twisted, and Node.js.
+Node.js was identified as the best solution for following benefits\footcite[Cf.][]{Avram_2012}:
+\begin{description}
+  \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
+  \item Programmers could make use of their JavaScript skills. 
+  \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
+  \item Servers were cut from 30 to 3, leaving headroom to handle 10x current levels of resource utilization.
+\end{description}
+
+\appsection{Case Study – AIRCODE}
+
+The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
+AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
+Node fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node uses the broadcast function from the socket.io module.
+
+\appsection{Case Study – Etherpad}
+On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
+Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
+
 
 
 \appsection{METEOR OR OPA EXAMPLE}
