@@ -367,7 +367,9 @@ Theory (2) is based around technical considerations. Because of the dogmatic nat
 
 Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers.
 
+
 \FloatBarrier
+\newpage
 \begin{savenotes} %alloows proper citation marks inside tables
 \begin{table}
 %\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
@@ -420,23 +422,61 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \subsection{Use Cases}
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
-applications that need to handle a large number of requests in real time.\\
-Some success stories are available on \url{http://nodejs.org/}.
+applications that need to handle a large number of requests in real time.
+The singlethreaded nature of event loops allows to make efficient use of the
+thread as long as callbacks don't take up too much time. This makes asynchronous
+server applications a good fit for most types of networked applications that
+either tend to keep many inactive connections or need to handle many concurrent 
+short-lived connections.\\
+A few possible use cases are described in the list below.
 
-Could be used for: 
-\begin{itemize}
-  \item networked applications that tend to keep many inactive connections
-  \item web trackers
-  \item web servers
-  \item lightweight json APIs (non-blocking I/O model 
+\begin{description}
+  \item[Web traffic monitoring] By getting notified of every single request that
+  arrives on an online service, an asynchronous application could keep track of the
+  current number of requests and the distribution of requests among all
+  available resources. These simple statistics could then be pushed to a Web interface
+  frequently to allow real time monitoring of a service in the browser.\\
+  \textbf{Realization:} All services that should be monitored could implement a
+  middleware that intercepts each request and fires a call to the asynchronous
+  server. However that would add a lot of overhead for the services that should
+  be monitored. Alternatively all clients that access these services could be forced to send a
+  second request to the asynchronous server.\\
+  The asynchronous server instance could then handle each request by adding
+  relevant information to an in-memory database. In the case of HTTP requests
+  these information could simply be taken from the various HTTP header fields.
+  \footcite[Cf.][]{http_rfc}\\
+  A second server instance could
+  be set up to handle the online dashboard.
+  In order to allow instantly updating the dashboard all clients should be
+  connected to this instance via a websocket. Depending on the amount of visitors
+  this could result in a large number of open connections. However due to the
+  event loop based processing the server instance will always just use one
+  thread for all connections as opposed to a classical web server which would
+  keep one thread for each connection. Thus the servers footprint is much
+  smaller.\\
+  \textbf{Known implementation:} Humingbird is a real time web traffic
+  visualization tool that uses Node.js for all processing. When loading a
+  website the browser sends a request for each file that is referenced in the
+  HTML file. Hence each page that should be tracked by Hummingbird integrates a
+  reference to a tracking pixel which is served by the Hummingbird application.
+  \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
+  over a websocket connection.
+  
+  
+  
+  \item[Web servers] TODO: e.g. file server that is base don vert.x and returns files directly from disc instead of
+  	moving it through userspace (not possible with SSL enabled)
+  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
   		combined with JavaScript make it a great choice for
   		wrapping other data sources such as databases or web 
-  		services and exposing them via a JSON interface)%see http://nodeguide.com/convincing_the_boss.htm
-  \item proxies
-  \item email and messaging systems
-  \item authorization processors
-  \item Streaming data (e.g. file uploads in real time)
+  		services and exposing them via a JSON interface%see http://nodeguide.com/convincing_the_boss.htm
+  \item[Proxies] TODO: intermediary that forwards requests and responses
+  \item[Email and messaging systems] TODO: mainly idling connections, but realtime communication important
+  \item[Authorization processors] TODO:
+  \item[Streaming] TODO: E.g file uploads in real time or video broadcasting.
 \end{itemize}
+
+Some success stories are available on \url{http://nodejs.org/}.
 
 \subsection{Don't use cases}
 \label{dont_use_cases}
