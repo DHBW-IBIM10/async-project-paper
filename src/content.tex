@@ -92,42 +92,6 @@ existing application landscape.
 
 \section{Introduction}
 
-
-In traditional web application development data is transmitted synchronously,
-i.e. upon a GET/POST request the result can be displayed only after transmission
-and processing are finished, as highlighted in Fig. \ref{img_req_res}\footcite{req_res}.
-While maintaining simplicity and
-predictability this can cause serious latency when uploading large pieces of
-data most commonly complex forms for registration. Naturally rich content such
-as images and videos causes even more waiting.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.75]{img/rest_call.png}
-\caption{REST request-response sequence diagram\label{img_req_res}}
-\end{figure}
-
-As demands around collaborative access and media richness evolved, this became a
-serious bottleneck, essentially preventing these types of applications. On the
-client-, i.e. browser-, side developers were able to work around the issue of
-synchronous transmission using the XmlHttpRequest object which allows to request
-resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
-deferring handling of the response to a callback (see figure
-\ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/ajax-diagram}
-\caption{AJAX Diagram\label{img_ajax}}
-\end{figure}
-
-Although this addressed the issue on the client-side, server-side request were
-still handled very much in a synchronous fashion. For example the popular Apache
-web server forks a new process for each incoming request\footnote{TODO: find
-source}. As popular applications have to cope with unprecedented amounts of
-concurrent users in conjunctions with massive request counts, this obviously
-causes performance issues.\\
-
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
 technologies. Focus is espacially laid on an application in a business environment. 
@@ -151,20 +115,42 @@ technical strengths and weaknesses. Furthermore non-functional attributes will b
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
 
-\subsection{Objectives}
-The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Focus is espacially laid on an application in a business environment. 
-The authors' intention is to build a working prototype to present the advantages and
-disadvantages of this rising technologie. 
+\subsection{Technical foundation}
 
-\subsection{Composition of this paper}
-The paper is devided in four parts. The first one explains the scientific fundamentals of the asynchronous server
-technology. Afterwards the asynchronous programming frameworks Node.js and verte.x are used as a practical implementation.
-In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
-server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
-common server technologies. The last chapter combines the findings into a final conclusion.
+In traditional web application development data is transmitted synchronously,
+i.e. upon a GET/POST request the result can be displayed only after transmission
+and processing are finished, as highlighted in Fig. \ref{img_req_res}.
+While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more waiting.
 
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.75]{img/rest_call.png}
+\caption{REST request-response sequence diagram\footcite{req_res}\label{img_req_res}}
+\end{figure}
 
+As demands around collaborative access and media richness evolved, this became a
+serious bottleneck, essentially preventing these types of applications. On the
+client-, i.e. browser-, side developers were able to work around the issue of
+synchronous transmission using the XmlHttpRequest object which allows to request
+resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
+deferring handling of the response to a callback (see figure
+\ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/ajax-diagram}
+\caption{AJAX Diagram\label{img_ajax}}
+\end{figure}
+
+Although this addressed the issue on the client-side, server-side request were
+still handled very much in a synchronous fashion. For example the popular Apache
+web server forks a new process for each incoming request\footnote{TODO: find
+source}. As popular applications have to cope with unprecedented amounts of
+concurrent users in conjunctions with massive request counts, this obviously
+causes performance issues.\\
 
 
 
