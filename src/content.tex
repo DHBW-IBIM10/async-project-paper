@@ -153,7 +153,7 @@ The thread is in an idle state while it is waiting which allows another process
 or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
-In multithreaded applications several threads can run simultaniously within one 
+In multithreaded applications several threads can run simultaneously within one 
 process. Several threads can access shared memory concurrently which can
 cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
@@ -208,127 +208,6 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \label{existing_frameworks}
 This sub-section will introduce two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x followed by a brief outline of their potential market success.
 
-\subsubsection{Node.js}
-\label{node.js}
-
-To put it in a nutshell one can say, that Node.js is JavaScript on a server.\\
-Besides, Node.js is a young platform with a lot of buzz around it. Due to the
-rising of the Web 2.0 and widely accessible internet through smartphones,
-demanding users expect more complex and more interactive forms of application usage. 
-The challenge even gets harder considering the steep number of
-devices that are interacting with online services.%TODO: reference?
-To overcome those problems Node.js lays it's foundations on an event driven
-computing architecture for web servers.\\
-% The paradigm of the event driven programming style is easily explained using a
-% real world example. What would you do if you are slicing onions while the turkey
-% is nearly on fire in the stove? Right, finishing the slice, turning down the
-% heat and opening the oven before getting back to slice some onion rings would be
-% a reasonable behavior. The truth is, that browser based programming isn't that
-% real life oriented. A lot of techniques try to make real-time and parallelism
-% work. Which means continuing slicing during you try to safe the turkey.
-Node.js doesn't try to make you perform undoable things. It rather lets events drive the
-action, so that it is single-threaded and only one thing happens at once. This
-is why an event loop is a fundamental part of Node.js. It includes the concept
-of nonblocking I/O activities. A result is that actions that cause the program
-to wait like database requests and file I/O  do not halt execution until they
-return data. In contrast they process independently and raise an event when the
-data is accessible. It is therefore necessary to use callbacks for dealing with
-different kinds of I/O.\\
-An exemplary code for a basic HTTP server in Node.js is shown in listing
-\ref{lst:simple_server} to deepen the understandin gof the event loop and
-callback in Node.js.
-
-% reading a file and displaying it
-\lstinputlisting[language=JavaScript,caption={The simplest way to programm a server in Node.js},
-label=lst:simple_server]{lst/simple_server.txt}
-
-
-
-The code uses a factory method to create a new HTTP server and attaches the
-argument of the createServer function as a callback to the request event. The
-first run of this code is also called setup. When a HTTP request arrives the
-anonymous callback function is processed and "Hello World" appears on the
-browser.\\
-That the basic code above isn't the most sophisticated way to write Node.js code
-explains the following thought experiment: Assuming that the Hello World page
-would be popular and had a lot of requests from different devices to handle and
-in addition the callback processing would take one second, it is obvious that the second
-request would already have to wait for one second until it gets served. This is far away 
-from the near-real-time requirement Node.js is confronted with.\\
-Two programming rules in Node.js can be inferred from the basic server and it's
-event loop blocking problem, which is described in section \ref{setting_the_context}.
-First, once the setup is in place all actions should be programmed event-driven.
-Second, if a workload requires Node.js to process something for a long time,
-it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
-
-Node.js large performance benefits are caused through the use of Google's new JavaScript engine V8, that ships naturally
-with the web browser Chrome. Due to the fact that V8 compiles JavaScript into
-real machine code before executing it, Node.js has an advantage over 
-traditional techniques such as executing bytecode or interpreting it. \footnote{See \url{https://developers.google.com/v8/intro}}
-
-
-\subsubsection{Vert.x}
-\label{vert.x}
-
-Vertx is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
-possible to scale over available cores without manually forking multiple
-servers.\\
-The application API is exposed in multiple programming lanugages (see table
-\ref{tab:existing_frameworks}).
-% Implication: use case, code reuse from different legacy systems written in
-% different languages
-
-In Vert.x the smallest available deployment unit is a verticle, which runs
-inside an instance. Each instance runs singlethreaded.
-Multiple verticles can be run inside one instance as depicted in figure
-\ref{fig:vertx_constructs}.
-%http://vertx.io/core_manual_java.html scaling tcp servers
-
-\begin{figure}[h]
-	\centering
-	\setlength\fboxsep{2pt}
-	\fbox{
-	\includegraphics[width=0.4\textwidth]{img/vertx_constructs.pdf}
-	}
-	\caption{Abstracted deployment units of Vert.x}
-	\label{fig:vertx_constructs}
-\end{figure}
-
-When multiple instances are run on one machine, Vert.x automatically distributes incoming
-requests among all running instances in a round-robin fashion, so that each
-vert.x verticle instance remains single threaded.
-
-Vert.x also includes a distributed event bus, which enables verticles to
-communicate with each other, either within the same instance or across different
-instances. The event bus allows direct communication with in-browser JavaScript as well.\\
-% Implication: ideal for real time applications. easy communication between client and server using JS
-Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
-so-called background pool as these tasks would otherwise block the event loop as
-described in section \ref{comparison}.
-
-The core functionality of Vert.x covers basic networking tasks and protocols,
-web servers, clients, access to the file system, shared maps and the event bus.
-The core libraries of Vert.x can be embedded in any JVM program for reuse in
-larger projects.\\
-As opposed to Node.js, the core functionality and API can be considered quite
-static as changes need to be done in all supported
-languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
-The core can be exctended with additional features that are provided by optional
-modules that can be obtained over a public git-based module
-repository.\footcite[Cf.][]{vertx_mod_2012}.
-The repository currently contains 16 distinct modules in different
-versions.\footcite[Cf.][]{Vertx_repository_2012}
-
-%TODO: http://vertx.io/manual.html#message-passing
-% add info on message passing. vert.x makes use of shared maps to avoid issues
-% in distributed systems. how does node handle that?
-
-An extensive online documentation is available for all supported languages.
-Additionally, code examples for most features are available for all supported languages in
-a public repository\footcite[Cf.][]{Fox_2013}.\\
-Vert.x is open source and licensed under the Apache Software License
-2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
-commecial redistribution in closed source projects should not be an issue.
 
 \subsubsection{Market Overview}
 \label{frameworks_overview}
@@ -394,6 +273,128 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 
 
 \FloatBarrier
+
+\subsubsection{Node.js}
+\label{node.js}
+
+To put it in a nutshell one can say, that Node.js is JavaScript on a server.\\
+Besides, Node.js is a young platform with a lot of buzz around it. Due to the
+rising of the Web 2.0 and widely accessible internet through smartphones,
+demanding users expect more complex and more interactive forms of application usage. 
+The challenge even gets harder considering the steep number of
+devices that are interacting with online services.%TODO: reference?
+To overcome those problems Node.js lays it's foundations on an event driven
+computing architecture for web servers.\\
+% The paradigm of the event driven programming style is easily explained using a
+% real world example. What would you do if you are slicing onions while the turkey
+% is nearly on fire in the stove? Right, finishing the slice, turning down the
+% heat and opening the oven before getting back to slice some onion rings would be
+% a reasonable behavior. The truth is, that browser based programming isn't that
+% real life oriented. A lot of techniques try to make real-time and parallelism
+% work. Which means continuing slicing during you try to safe the turkey.
+Node.js doesn't try to make you perform undoable things. It rather lets events drive the
+action, so that it is single-threaded and only one thing happens at once. This
+is why an event loop is a fundamental part of Node.js. It includes the concept
+of nonblocking I/O activities. A result is that actions that cause the program
+to wait like database requests and file I/O  do not halt execution until they
+return data. In contrast they process independently and raise an event when the
+data is accessible. It is therefore necessary to use callbacks for dealing with
+different kinds of I/O.\\
+An exemplary code for a basic HTTP server in Node.js is shown in listing
+\ref{lst:simple_server} to deepen the understanding of the event loop and
+callback in Node.js.
+
+% reading a file and displaying it
+\lstinputlisting[language=JavaScript,caption={The simplest way to programm a server in Node.js},
+label=lst:simple_server]{lst/simple_server.txt}
+
+
+
+The code uses a factory method to create a new HTTP server and attaches the
+argument of the createServer function as a callback to the request event. The
+first run of this code is also called setup. When a HTTP request arrives the
+anonymous callback function is processed and "Hello World" appears in the
+browser.\\
+That the basic code above isn't the most sophisticated way to write Node.js code
+explains the following thought experiment: Assuming that the Hello World page
+would be popular and had a lot of requests from different clients to handle and
+in addition the callback processing would take one second, it is obvious that the second
+request would already have to wait for one second until it gets served. This is far away 
+from the near-real-time requirement Node.js is confronted with.\\
+Two programming rules in Node.js can be inferred from the basic server and its
+event loop blocking problem, which is described in section \ref{setting_the_context}.
+First, once the setup is in place all actions should be programmed event-driven.
+Second, if a workload requires Node.js to process something for a long time,
+it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
+
+Node.js large performance benefits are caused through the use of Google's new JavaScript engine V8, that ships naturally
+with the web browser Chrome. Due to the fact that V8 compiles JavaScript into
+real machine code before executing it, Node.js has an advantage over 
+traditional techniques such as executing bytecode or interpreting it. \footnote{See \url{https://developers.google.com/v8/intro}}
+
+
+\subsubsection{Vert.x}
+\label{vert.x}
+
+Vert.x is a polyglot that runs on the JVM (Java Virtual Machine). It is hence
+possible to scale over available cores without manually forking multiple
+servers.\\
+The application API is exposed in multiple programming lanugages (see table
+\ref{tab:existing_frameworks}).
+% Implication: use case, code reuse from different legacy systems written in
+% different languages
+
+In Vert.x the smallest available deployment unit is a verticle, which runs
+inside an instance. Each instance runs singlethreaded.
+Multiple verticles can be run inside one instance as depicted in figure
+\ref{fig:vertx_constructs}.
+%http://vertx.io/core_manual_java.html scaling tcp servers
+
+\begin{figure}[h]
+	\centering
+	\setlength\fboxsep{2pt}
+	\fbox{
+	\includegraphics[width=0.4\textwidth]{img/vertx_constructs.pdf}
+	}
+	\caption{Abstracted deployment units of Vert.x}
+	\label{fig:vertx_constructs}
+\end{figure}
+
+When multiple instances are run on one machine, Vert.x automatically distributes incoming
+requests among all running instances in a round-robin fashion, so that each
+vert.x verticle instance remains single threaded.
+
+Vert.x also includes a distributed event bus, which enables verticles to
+communicate with each other, either within the same instance or across different
+instances. The event bus allows direct communication with in-browser JavaScript as well.\\
+% Implication: ideal for real time applications. easy communication between client and server using JS
+Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
+so-called background pool as these tasks would otherwise block the event loop as
+described in section \ref{comparison}.
+
+The core functionality of Vert.x covers basic networking tasks and protocols,
+web servers, clients, access to the file system, shared maps and the event bus.
+The core libraries of Vert.x can be embedded in any JVM program for reuse in
+larger projects.\\
+As opposed to Node.js, the core functionality and API can be considered quite
+static as changes need to be done in all supported
+languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
+The core can be exctended with additional features that are provided by optional
+modules that can be obtained over a public git-based module
+repository.\footcite[Cf.][]{vertx_mod_2012}.
+The repository currently contains 16 distinct modules in different
+versions.\footcite[Cf.][]{Vertx_repository_2012}
+
+%TODO: http://vertx.io/manual.html#message-passing
+% add info on message passing. vert.x makes use of shared maps to avoid issues
+% in distributed systems. how does node handle that?
+
+An extensive online documentation is available for all supported languages.
+Additionally, code examples for most features are available for all supported languages in
+a public repository\footcite[Cf.][]{Fox_2013}.\\
+Vert.x is open source and licensed under the Apache Software License
+2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
+commecial redistribution in closed source projects should not be an issue.
 
 
 \newpage
@@ -471,14 +472,12 @@ Once this is achieved it becomes a goal to keep that speed for a larger amount o
 \end{description}
     
 
-    
-
 
 \newpage
 \section{Exemplary Implementations}
 \label{exemplary_implementations}
 
-A simple web form application has been implemented in Node.js and Vert.x to
+A simple web form application has been implemented in both Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
 with these frameworks. These implementations are thoroughly described in the following sub-sections.
 
