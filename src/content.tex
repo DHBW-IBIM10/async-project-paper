@@ -127,6 +127,7 @@ web server forks a new process for each incoming request\footnote{TODO: find
 source}. As popular applications have to cope with unprecedented amounts of
 concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
+<<<<<<< HEAD
 
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
@@ -142,6 +143,8 @@ server- and client side based validation web application with non-blocking IO. T
 common server technologies. The last chapter combines the findings into a final conclusion.
 
 
+=======
+>>>>>>> 2223916fc8595e9c8173bc89c2fb97fd072817e0
 Relatively young frameworks such as Node.js and Vert.x try to address this issue 
 by providing a completely asynchronous programming model which allows associating
 multiple simultanious connections with a single thread by using an event-driven approach.
@@ -150,6 +153,23 @@ multiple simultanious connections with a single thread by using an event-driven 
 This paper elaborates the concepts behind these young frameworks and analyses their 
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
+
+
+\subsection{Objectives}
+The main goal of this paper is to identify specific use cases for asynchronous server
+technologies. Focus is espacially laid on an application in a business environment. 
+The authors' intention is to build a working prototype to present the advantages and
+disadvantages of this rising technologie. 
+
+\subsection{Composition of this paper}
+The paper is devided in four parts. The first one explains the scientific fundamentals of the asynchronous server
+technology. Afterwards the asynchronous programming frameworks Node.js and verte.x are used as a practical implementation.
+In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
+server- and client side based validation web application with non-blocking IO. The next part uses the POC to benchmark vertex and Node.js against 
+common server technologies. The last chapter combines the findings into a final conclusion.
+
+
+
 
 
 
