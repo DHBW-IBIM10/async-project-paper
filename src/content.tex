@@ -127,6 +127,15 @@ web server forks a new process for each incoming request\footnote{TODO: find
 source}. As popular applications have to cope with unprecedented amounts of
 concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
+Relatively young frameworks such as Node.js and Vert.x try to address this issue 
+by providing a completely asynchronous programming model which allows associating
+multiple simultanious connections with a single thread by using an event-driven approach.
+
+%Goal of this paper and structure
+This paper elaborates the concepts behind these young frameworks and analyses their 
+technical strengths and weaknesses. Furthermore non-functional attributes will be
+evaluated based on two sample implementations in Node.js  and Vert.x.
+
 
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
@@ -142,14 +151,7 @@ server- and client side based validation web application with non-blocking IO. T
 common server technologies. The last chapter combines the findings into a final conclusion.
 
 
-Relatively young frameworks such as Node.js and Vert.x try to address this issue 
-by providing a completely asynchronous programming model which allows associating
-multiple simultanious connections with a single thread by using an event-driven approach.
 
-%Goal of this paper and structure
-This paper elaborates the concepts behind these young frameworks and analyses their 
-technical strengths and weaknesses. Furthermore non-functional attributes will be
-evaluated based on two sample implementations in Node.js  and Vert.x.
 
 
 
