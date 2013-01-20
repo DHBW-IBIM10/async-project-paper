@@ -103,14 +103,16 @@ This paper elaborates the concepts behind the young frameworks Node.js and Vert.
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
-\subsection{Composition of this paper}
+\subsection{Methodology and structure}
 The paper is divided into four parts. The first one explains the scientific fundamentals of asynchronous server
 technologies. Afterwards the asynchronous programming frameworks Node.js and Vert.x are used as a practical implementation.
 In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
 server- and client-side web application with non-blocking I/O featured. The subsequent part uses the POC to benchmark Vert.x and Node.js against common server technologies. The last chapter concludes on the findings and gives a final recommendation.
 
-
-\subsection{Technical foundation}
+\newpage
+\section{Setting the context}
+\label{setting_the_context}
+\subsection{Web development basics}
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
@@ -150,14 +152,29 @@ concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
 
 
+\subsection{Potential web development issues}
+\label{potentialissues}
 
+\subsubsection{I/O bound applications}
+\label{issue_io}
 
-\newpage
-\section{Setting the context}
-\label{setting_the_context}
+\subsubsection{CPU bound applications}
+\label{issue_cpu}
 
-\subsection{Comparison between Asynchronous and Synchronous Processing}
-\label{comparison}
+\subsubsection{Single-/Multithreading}
+\label{issue_threads}
+
+\subsection{Concept of synchronous processing}
+\label{concept_sync}
+
+\subsection{Concept of asynchronous processing}
+\label{concept_async}
+
+\subsection{Technical comparison of asynchronous and synchronous processing}
+\label{comparison_syncasync}
+
+% code goes here...
+
 
 %Synchronous calls -> idling threads -> 
 A common case in programming is access to I/O.
@@ -321,14 +338,6 @@ be introduced in the next sub-section.
 \subsubsection{Node.js}
 \label{node.js}
 
-To put it in a nutshell one can say, that Node.js is JavaScript on a server.\\
-Besides, Node.js is a young platform with a lot of buzz around it. Due to the
-rising of the Web 2.0 and widely accessible internet through smartphones,
-demanding users expect more complex and more interactive forms of application usage. 
-The challenge even gets harder considering the steep number of
-devices that are interacting with online services.%TODO: reference? 
-To overcome those problems Node.js lays its foundations on an event driven
-computing architecture for web servers.\\
 % The paradigm of the event driven programming style is easily explained using a
 % real world example. What would you do if you are slicing onions while the turkey
 % is nearly on fire in the stove? Right, finishing the slice, turning down the
@@ -336,6 +345,8 @@ computing architecture for web servers.\\
 % a reasonable behavior. The truth is, that browser based programming isn't that
 % real life oriented. A lot of techniques try to make real-time and parallelism
 % work. Which means continuing slicing during you try to safe the turkey.
+
+
 Node.js doesn't try to make you perform undoable things. It rather lets events drive the
 action, so that it is single-threaded and only one thing happens at once. This
 is why an event loop is a fundamental part of Node.js. It includes the concept
@@ -492,13 +503,13 @@ A few possible use cases are described in the list below.
   
   \item[Web servers] TODO: e.g. file server that is based on vert.x and returns files directly from disc instead of
   	moving it through userspace (not possible with SSL enabled)
-  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
-  		combined with JavaScript make it a great choice for
-  		wrapping other data sources such as databases or web 
-  		services and exposing them via a JSON interface%see http://nodeguide.com/convincing_the_boss.htm
+%  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
+% 		combined with JavaScript make it a great choice for
+% 		wrapping other data sources such as databases or web 
+% 		services and exposing them via a JSON interface%see http://nodeguide.com/convincing_the_boss.htm
   \item[Proxies] TODO: intermediary that forwards requests and responses
   \item[Email and messaging systems] TODO: mainly idling connections, but realtime communication important
-  \item[Authorization processors] TODO:
+%  \item[Authorization processors] TODO:
   \item[Streaming] TODO: E.g file uploads in real time or video broadcasting.
 \end{description}
 
@@ -562,7 +573,7 @@ A simple web form application has been implemented in both Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
 with these frameworks. These implementations are thoroughly described in the following sub-sections.
 
-\subsection{Software Description}
+\subsection{Software description}
 \label{software_description}
 \FloatBarrier
 The exemplary implementation consists of a web service that can be used to calculate
@@ -604,7 +615,7 @@ when the three fields of the second part (being "career", "amount insured" and "
 
 
 \FloatBarrier
-\subsection{Software Design}
+\subsection{Software design}
 \label{software_design}
 
 \nomenclature{CSS}{Cascading Style Sheets}
@@ -656,7 +667,7 @@ follows a specific procedure\footcite[Cf.]{Nemati_2011} :
  the server can decipher the data using the private key.\\
 The generation of private and public keys can be done be using the following
 commands, leveraging OpenSSL, an Open Source toolkit to implementing secure
-protocols\footnote{See \url{ http://www.openssl.org/}} :\\
+protocols\footnote{See \url{ http://www.openssl.org/}}:\\
 
 \begin{lstlisting}[caption={Generating a new pair of public/private keys}]
 openssl genrsa -out privatekey.pem 1024
@@ -673,7 +684,7 @@ in the Proof of Concept are websockets. TODO: EXPLAIN websockets
 \nomenclature{AJAX}{Asynchronous JavaScript and XML}
 
 \FloatBarrier
-\subsection{Software Implementation}
+\subsection{Software implementation}
 \label{software_implementation}
 
 \subsubsection{Vert.x}
@@ -945,7 +956,7 @@ and bug-fixing.
 The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
 %TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
 
-\paragraph{Node.JS}
+\subsubsection{Node.js maintainability}
 
 Node.js allows for leveraging the JavaScript skills already in the market which
 significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market})
@@ -975,7 +986,7 @@ StackOverflow\footnote{See \url{www.stackoverflow.com}}.
 This leads to the conclusion that the current pace of progress does not
 facilitate enterprise adoption, however it is not a showstopper.
 
-\paragraph{Vert.x}
+\subsubsection{Vert.x maintainability}
 Vert.x offers a similar picture to Node, however some of Node's shortcoming are
 more pronounced on the Vert.x side of things. Whereas Node can recruit from
 established web developers, is Vert.x suffering from a curious conundrum. It is
@@ -1134,7 +1145,19 @@ Vert.x can be embedded in any JVM based program by including the according
 libraries in the path, so that these applications can use the bus system as
 well.\footcite[Cf.][]{vertx_2012}
 
-\subsubsection{Middleware}
+
+
+\subsection{Scalability}
+\label{scalability}
+Support for single machine scaling using multiple threads exists.
+Deployment on distributed systems differs in node.js and vert.x.
+Vert.x. uses its own communication bus to share information between verticles.
+Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering functionality internally to scale on multiple machines. 
+
+
+\section{Outlook}
+
+\subsection{Middleware as use case for Node.js}
 \label{middleware}
 "The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
 interaction among distributed software modules."\footcite[]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
@@ -1150,17 +1173,6 @@ Meteor leverages node.js that way that it makes use of its JavaScript-based conc
 
 \paragraph{Etherpad}
 Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node as middleware. By migrating to Node reductions of lines of code and memory usage\footcite[Cf.][]{Weissschuh_2013} allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
-
-
-% TODO insert image
-
-
-\subsection{Scalability}
-\label{scalability}
-Support for single machine scaling using multiple threads exists.
-Deployment on distributed systems differs in node.js and vert.x.
-Vert.x. uses its own communication bus to share information between verticles.
-Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering functionality internally to scale on multiple machines. 
 
 
 \section{Conclusion}
