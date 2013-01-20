@@ -741,9 +741,12 @@ As soon as a reply is returned over the event bus it is forwarded to the client 
 \label{implementation_node}
 The node.js implementation starts with four modules that are required to run the application:
 
-% reading a file and displaying it
-\lstinputlisting[language=JavaScript,caption={HTTP and HTTPS in Node.js},
-label=lst:simple_server]{lst/http_https.txt}
+\begin{lstlisting}[language=javascript,caption={Including modules}]
+var express = require('express');
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+\end{lstlisting}
 
 The HTTP and HTTPS modules are necessary to set up the webservers accordingly. 
 In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a webserver, like routing, 
@@ -754,26 +757,38 @@ Express can be installed using the following command-line command:\\
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync():
+In order to enable HTTPS by leveraging the node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
 
-\lstinputlisting[language=JavaScript,caption={FileSystem module},
-label=lst:simple_server]{lst/filesystem.txt}
+\begin{lstlisting}[language=javascript,caption={Reading encryption keys}]
+var httpsOptions = {
+    key: fs.readFileSync(__dirname + '/privatekey.pem')
+    , cert: fs.readFileSync(__dirname + '/certificate.pem')
+};
+\end{lstlisting}
 
-The files in this example are located in the same location as the application file. To run the HTTP/HTTPS servers, the following code is used:
+To run the HTTP/HTTPS servers, the following code is used, which first initialized express() and then creates the server using the express variable before the ports on which the servers are listening are defined:
 
-% reading a file and displaying it
-\lstinputlisting[language=JavaScript,caption={Running the server},
-label=lst:simple_server]{lst/serverrun.txt}
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
+var app = express();
+var server = http.createServer(app);
+var secureServer = https.createServer(httpsOptions, app);
+server.listen(8888);
+secureServer.listen(4431);
+\end{lstlisting}
 
-The HTTP server can be accessed using http://localhost:8888/ as opposed to the HTTPS server that is available at https://localhost:4431/.
+The HTTP server can be accessed using http://localhost:8888/ as opposed to the HTTPS server that is available at https://localhost:4431/. Afterwards, the socket.io module for web sockets comes into play. First of all, it needs to be installed using the following command-line command:
 
-To be able to use Express, a variable called “app” will be initialized:
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
+npm install socket.io
+\end{lstlisting}
 
-% reading a file and displaying it
-\lstinputlisting[language=JavaScript,caption={App variable},
-label=lst:simple_server]{lst/appVariable.txt}
+Afterwards, it is included and initialized by passing the secureServer variable (for the HTTPS server):
 
-The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/UI” is made the root directory for a http://localhost:[port]/
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
+var io = require('socket.io').listen(secureServer);
+\end{lstlisting}
+
+The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/” is made the root directory for a http[s]://localhost:[port]/
 
 \begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
 app.use(express.static(__dirname + '/UI'));
@@ -791,25 +806,114 @@ Moreover, Express is used to catch requests to specific URLs. As the AJAX call c
 
 \begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data}]
 app.post('/insurances', function (req, res) {
+	// iterating through the array that contains JSON-objects
+	// write the value of the name attribute of each JSON-object into the console
+	for(var i = 0; i < req.body.length; i++) {
+        	console.log(req.body[i].name);
+	}
 
-// iterating through the array that contains JSON-objects
-// write the value of the name attribute of each JSON-object into the console
-    for(var i = 0; i < req.body.length; i++) {
-        console.log(req.body[i].name);
-}
-
-    res.contentType("text/plain");
-res.send(200, OK)
-
+	res.contentType("text/plain");
+	res.send(200, OK)
 }
 \end{lstlisting}
 
 As the AJAX POST-request contains an array filled with JSON-objects, this
-example demonstrates how to access each item. Within the proof of concept, this
+example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
-field.
+field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-The node.js servers can be started by using the command-line. After navigating
+So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called web sockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable node.js in combination with socket.io to handle web socket connections:
+
+\begin{lstlisting}[language=javascript,caption={Using web sockets to distribute form inputs in real-time}]
+io.sockets.on('connection', function (socket) {
+
+    // create new form
+    socket.on('createForm', function (data) {
+        console.log('room:' + data);
+        socket.room = data;
+         socket.join(data);
+    } ) ;
+
+    socket.on('liveform', function (data) {
+        console.log(data);
+        io.sockets.in(socket.room).emit('liveform', data);
+    });
+
+});
+\end{lstlisting}
+
+The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
+
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how web sockets are used. First of all, the socket.io.js needs to be imported:
+
+\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript}]
+<script src="/socket.io/socket.io.js"></script>
+\end{lstlisting}
+
+Afterwards, a connection is established to https://localhost:4431/ using the following code:
+
+\begin{lstlisting}[language=javascript,caption={Establishing socket.io connection from the client-side}]
+var socket = io.connect('https://localhost:4431/');
+\end{lstlisting}
+
+Having established a connection, the following code refers to the variable formId, which was previously filled with the query string "formId" or left null in case there was none provided. In case it was left null, the user is asked (line two) for an ID. In Case it is there, the ID will be sent (line four) and as the code above shows, the ID is used as a room's name.
+
+\begin{lstlisting}[language=javascript,caption={Joining a specific area – "room"}]
+if (formId == null) {
+	socket.emit('createForm', prompt('What is your ID?'));
+} else {
+	socket.emit('createForm', formId);
+}
+\end{lstlisting}
+
+So far to the process of establishing a connection that enables interaction within a specific area. The following code demonstrates how to send data to the server using websockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line 7), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+
+\begin{lstlisting}[language=javascript,caption={Sending data to the server}]
+function sendToServer(fieldId) {
+    var JSONdata = {};
+    // write JSON, depending on INPUT or SELECT field
+    if (document.getElementById(fieldId).tagName == "SELECT") {
+        JSONdata[fieldId] = document.getElementById(fieldId).selectedIndex;
+    } else {
+        JSONdata[fieldId] = document.getElementById(fieldId).value;
+    }
+    socket.emit("liveform", JSONdata);
+}
+
+// trigger request for each key written in input/select fields
+$('input[type="text"]').on('keyup', function () {
+    sendToServer($(this).attr("id"));
+});
+$("select").on("change", function () {
+    sendToServer($(this).attr("id"));
+});
+\end{lstlisting}
+
+On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The following code demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
+
+\begin{lstlisting}[language=javascript,caption={Receiving data using websockets}]
+socket.on("liveform", function (data) {
+    // read (unknown) field from JSON
+    for (key in data) {
+        // distinction between select and input fields
+        if (document.getElementById(key).tagName == "SELECT") {
+            // write content into field
+            document.getElementById(key).selectedIndex = data[key];
+        } else {
+            // write content into field
+            document.getElementById(key).value = data[key];
+            // also trigger the price calculation when these fields are filled
+            if (key == "SummeInput" || key == "BehaltInput" || key == "BerufInput") {
+                f_req();
+            }
+        }
+        // trigger validation to have smiliar visual appearances (valid/invalid) for the fields
+        $('#' + key).h5Validate("isValid");
+    }
+});
+\end{lstlisting}
+
+To use the application, the node.js servers can be started by using the command-line. After navigating
 into the project’s folder using cd, the only command needed is:
 \begin{lstlisting}[caption={Executing Node.js code}]
 node [filename].js
@@ -1105,7 +1209,7 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
   \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
   \item Programmers could make use of their JavaScript skills. 
   \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
-  \item Servers were cut from 30 to 3, leaving headroom to handle 10x current levels of resource utilization.
+  \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
 \end{description}
 
 \appsection{Case Study – AIRCODE}
