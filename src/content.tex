@@ -115,29 +115,32 @@ server- and client-side web application with non-blocking I/O featured. The subs
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
 and processing are finished, as highlighted in Fig. \ref{img_req_res}.
-While maintaining simplicity and
-predictability this can cause serious latency when uploading large pieces of
-data, most commonly complex forms for registration. Naturally rich content such
-as images and videos causes even more delays.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.75]{img/rest_call.png}
-\caption{REST request-response sequence diagram\footcite{req_res}\label{img_req_res}}
+\caption[REST request-response sequence diagram]{REST request-response sequence diagram\footnotemark\label{img_req_res}}
 \end{figure}
+\footcitetext{req_res}
+
+While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data, most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more delays.
 
 As demands around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
 synchronous transmission using the XmlHttpRequest object which allows to request
 resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
-deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
+deferring handling of the response to a callback (see Fig. \ref{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{img/ajax-diagram}
-\caption{AJAX Diagram\label{img_ajax}}
+\caption[AJAX Ddiagram]{AJAX diagram\footnotemark\label{img_ajax}}
 \end{figure}
+\footcitetext{img_ajax}
 
 Although this addressed the issue on the client-side, server-side request were
 still handled very much in a synchronous fashion. For example the popular Apache
@@ -222,29 +225,49 @@ This sub-section will give a brief market overview, which is follwed by the intr
 
 \subsubsection{Market Overview}
 \label{frameworks_overview}
-
+\FloatBarrier
 Table \ref{tab:existing_frameworks} shows that there is actually competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
+
+% \begin{figure}[hbtp]
+% \centering
+% \includegraphics[width=\textwidth]{img/googletrend_nodevertx}
+% \caption[Google search volume of node.js and Vert.x compared]{Google search volume of node.js and Vert.x compared\footnotemark}
+% \label{img_googletrend_nodevertx}
+% \end{figure}
+% \footcitetext[Cf.][]{g_trends}
 
 \begin{figure}[hbtp]
 \centering
-\includegraphics[scale=0.5]{img/googletrend_nodevertx}
-\caption{Google search volume of node.js and Vert.x compared\footcite[Cf.][]{g_trends}\label{img_googletrend_nodevertx}}
+\includegraphics[width=\textwidth]{img/googletrend_all.png}
+\caption[Google search volume of node.js, twisted, eventmachine and Vert.x compared]{Google search volume of node.js, twisted, eventmachine and Vert.x compared\footnotemark}
+\label{img_googletrend_all}
 \end{figure}
+\footcitetext[Cf.][]{g_trends}
 
-Looking at the charts in Fig. \ref{img_googletrend_nodevertx}, it can be concluded that interest in Vert.x is low at the moment in absolute terms as well as in relative terms when comparing it to the Node at the same point in its lifecycle.
-
+Looking at the charts in Fig. \ref{img_googletrend_all}, it can be
+concluded that interest in Node.js is very high at the moment in absolute terms as well
+as in relative terms when comparing it to peers at the same point in its lifecycle.
+Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
 The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
 
-Theory (1) would be that by the time Vert.x became complete enough to develop productively (at least as productive as was possible with Node at the same point), Node already established itself as the dominant technology especially if mindshare is concerned, which is supported by the data from Google.
-Theory (2) is based around technical considerations. Because of the dogmatic nature of asynchronicity in the Node.js framework, every package available on NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the other hand is in a curious position here, Vert.x itself is architecturally similar to Node but its ecosystem of established Java libraries is not developed with these principles in mind. This poses the danger of executing synchronous/blocking code, negating all of Vert.x' advantages. Obviously this can limit interest from the outset.
+Theory (1) would be that by the time Vert.x became complete enough to develop
+productively (at least as productive as was possible with Node at the same
+point), Node already established itself as the dominant technology especially if
+mindshare is concerned, which is supported by the data from Google.
+Theory (2) is based around technical considerations. Because of the dogmatic
+nature of asynchronicity in the Node.js framework, every package available on
+NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling
+and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the
+other hand is in a curious position here, Vert.x itself is architecturally
+similar to Node but its ecosystem of established Java libraries is not developed
+with these principles in mind. This poses the danger of executing
+synchronous/blocking code, negating all of Vert.x' advantages. Obviously this
+can limit interest from the outset.
 
-Another important metric to assess the potential impact of a framework is the technical background and the availability of skilled developers. Redmonk investigated in three consecutive years the popularity of programming languages by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September 2012, JavaScript was ranked first before Java, PHP, Python and Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong performance over the past three years. This is an affirmative aspect with regard to the potential target audience of developers of Node.js and Vert.x, which will be introduced in the next sub-section.
-
-\FloatBarrier
 \begin{savenotes} %alloows proper citation marks inside tables
-\begin{table}
+\begin{table}[ht]
 %\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
-\begin{tabular*}{\textwidth}{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.14\textwidth} p{0.15\textwidth} p{0.65\textwidth}}
 \toprule
 \textbf{Name} & \textbf{Language/s} & \textbf{Description} \\
 \midrule 
@@ -282,6 +305,16 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \end{table}
 \end{savenotes}
 
+Another important metric to assess the potential impact of a framework is the
+technical background and the availability of skilled developers. Redmonk
+investigated in three consecutive years the popularity of programming languages
+by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and
+StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
+2012, JavaScript was ranked first before Java, PHP, Python and
+Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
+performance over the past three years. This is an affirmative aspect with regard
+to the potential target audience of developers of Node.js and Vert.x, which will
+be introduced in the next sub-section.
 
 \FloatBarrier
 
@@ -604,14 +637,22 @@ demonstration purposes.\\
 Additional features in the backend can be integrated via existing modules from
 the repositories of Vert.x or Node.js.
 
-To create a secure application, HTTPS is required. To demonstrate an HTTP and HTTPS server likewise, the application includes two webservers, both of which serve the same functionality. It is necessary to generate a pair consisting of a private 
-and a public key, because the handshake prior to an HTTPS session follows a specific procedure\footcite[Cf.]{Nemati_2011} :
+To create a secure application, HTTPS is required. To demonstrate an HTTP and
+HTTPS server likewise, the application includes two webservers, both of which
+serve the same functionality. It is necessary to generate a pair consisting of a
+private and a public key, because the handshake prior to an HTTPS session
+follows a specific procedure\footcite[Cf.]{Nemati_2011} :
  (1) Client contacts the server using a secured URL.
  (2) The server responds sending the digital certificate to the browser.
- (3) The client certifies that the certificate is valid (e.g. by trusted authorities).
- (4) Once the certificate is validated, the one-time session key generated by the client will be used to encrypt all communication with the server.
- (6) The client encrypts the session key with the public key of the server. Only the server can decipher the data using the private key.\\
-The generation of private and public keys can be done be using the following commands, leveraging OpenSSL, an Open Source toolkit to implementing secure protocols\footnote{See \url{ http://www.openssl.org/}} :\\
+ (3) The client certifies that the certificate is valid (e.g. by trusted
+ authorities).
+ (4) Once the certificate is validated, the one-time session key generated by
+ the client will be used to encrypt all communication with the server.
+ (6) The client encrypts the session key with the public key of the server. Only
+ the server can decipher the data using the private key.\\
+The generation of private and public keys can be done be using the following
+commands, leveraging OpenSSL, an Open Source toolkit to implementing secure
+protocols\footnote{See \url{ http://www.openssl.org/}} :\\
 
 \begin{lstlisting}[caption={Generating a new pair of public/private keys}]
 openssl genrsa -out privatekey.pem 1024
@@ -763,9 +804,13 @@ res.send(200, OK)
 }
 \end{lstlisting}
 
-As the AJAX POST-request contains an array filled with JSON-objects, this example demonstrates how to access each item. Within the proof of concept, this for-loop is used to apply regular expressions in order to validate each form field.
+As the AJAX POST-request contains an array filled with JSON-objects, this
+example demonstrates how to access each item. Within the proof of concept, this
+for-loop is used to apply regular expressions in order to validate each form
+field.
 
-The node.js servers can be started by using the command-line. After navigating into the project’s folder using cd, the only command needed is:
+The node.js servers can be started by using the command-line. After navigating
+into the project’s folder using cd, the only command needed is:
 \begin{lstlisting}[caption={Executing Node.js code}]
 node [filename].js
 \end{lstlisting}
@@ -776,20 +821,77 @@ node [filename].js
 
 \subsection{Maintainability}
 \label{maintainability}
-Maintainability is one of the most important issues in the enterprise as developers typically switch between projects (or participate only in a temporary manner). Thus the time needed to become familiar with a framework and its language directly impact the development cost either because of the time needed related to the learning curve or because of resources invested in maintenance and bug-fixing.
+Maintainability is one of the most important issues in the enterprise as
+developers typically switch between projects (or participate only in a temporary
+manner). Thus the time needed to become familiar with a framework and its
+language directly impact the development cost either because of the time needed
+related to the learning curve or because of resources invested in maintenance
+and bug-fixing.
 The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
+%TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
 
 \paragraph{Node.JS}
-Node.js allows for leveraging the JS skills already in the market, which significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market}) for its similarity to established libraries and conventions in web application development. Unfortunately TTM is not everything because equal attention needs to be given to Total Cost of Ownership (TCO\nomenclature{TCO}{Total Cost of Ownership}), i.e.\ the total expenditure required including costs incurred post-deployment. Here Node presents a challenge in its reliance on callback leading to hard-to-follow and hard-to-fix code driving up TCO significantly because patches become more and more difficult to write with increasing $\Delta t_{Launch<->Present}$, especially if the code is not to be maintained by the original developers.
 
-Furthermore, Node is still at an unstable stage of code maturity (at time of writing, the current version is $0.9.6$ causing infrequent breaking changes to its APIs, which usually is a no-go in the enterprise, this is reinforced by a community mindset of 'Upgrade Node, Update Code' based on a preference for new features. The unintended benefit of this is a lot of available material for Node programmers in blogs and on StackOverflow\footnote{\url{www.stackoverflow.com}} leading to the conclusion that the current pace of progress does not facilitate enterprise adoption, however it is not a showstopper.
+Node.js allows for leveraging the JavaScript skills already in the market which
+significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market})
+for its similarity to established libraries and conventions in web application
+development. JavaScript's lack of blocking I/O libraries allowed the project
+founder to establish a non-blocking standard for I/O operations.\footcite[Cf.][]{Croucher_2012}
+Unfortunately TTM is not everything because equal attention needs
+to be given to Total Cost of Ownership (TCO\nomenclature{TCO}{Total Cost of
+Ownership}), i.e.\ the total expenditure required including costs incurred
+post-deployment\footcite[Cf.][203-207]{holtsnider_2010}. 
+Here Node presents a challenge in its reliance on callback
+leading to hard-to-follow and hard-to-fix code driving up TCO significantly
+because patches become more and more difficult to write with increasing $\Delta
+t_{Launch<->Present}$, especially if the code is not to be maintained by the %TODO: explain delta launch-present or remove it.
+original developers.
+
+Furthermore, Node is still at an unstable stage of code maturity (at time of
+writing, the current version is $0.9.7$\footcite[Cf.][]{node_unstable_2013})
+causing infrequent breaking changes to its APIs which usually is a no-go in the enterprise.
+The API documentation distinguishes between five stability states (deprecated,
+experimental, unstable, stable, API frozen, locked), whereas the latter ones are
+rarely found in the documented features.\footcite[Cf.][] {node_2012}.
+This is reinforced by a community mindset of 'Upgrade Node, Update Code' based
+on a preference for new features. The unintended benefit of this is a lot of
+available material for Node programmers in blogs and on
+StackOverflow\footnote{See \url{www.stackoverflow.com}}.
+This leads to the conclusion that the current pace of progress does not
+facilitate enterprise adoption, however it is not a showstopper.
 
 \paragraph{Vert.x}
-Vert.x offers a similar picture to Node, however some of Node's shortcoming are more pronounced on the Vert.x side of things. Whereas Node can recruit from established web developers, is Vert.x suffering from a curious conundrum. It is based on the JVM, which has enormous amounts of talent (esp. in the enterprise) but because of its diametrical differences to the conventional libraries it does not seem to be able to recruit interest from this pool. Also its support for multiple programming languages (basically every JVM language) should lower the barrier for entry even more, as for example Groovy already features Vert.x-aligned language constructs. Unfortunately this means that new Vert.x programmers need to be trained increasing TTM significantly.
-Another important issue is the unstable state of the Vert.x codebase as essential features like code import do not work reliably or at all\footnote{TODO: INCLUDE REF TO BUG}. Section \ref{frameworks_overview} already mentioned the ease of calling synchronous code with Vert.x though this can be worked around with by placing the code in new verticles, this still requires a lot of vigilance.
+Vert.x offers a similar picture to Node, however some of Node's shortcoming are
+more pronounced on the Vert.x side of things. Whereas Node can recruit from
+established web developers, is Vert.x suffering from a curious conundrum. It is
+based on the JVM, which has enormous amounts of talent (esp. in the enterprise)
+but because of its diametrical differences to the conventional libraries it does
+not seem to be able to recruit interest from this pool. Also its support for
+multiple programming languages (basically every JVM language) should lower the
+barrier for entry even more, as for example Groovy already features
+Vert.x-aligned language constructs. Unfortunately this means that new Vert.x
+programmers need to be trained which increases TTM significantly.\\
+Another important issue is the unstable state of the Vert.x codebase. Due to the
+rather small community issues are often detected after new versions are considered final.
+At the time of writing there are currently 90 open issues on the project site.
+Section \ref{frameworks_overview} already mentioned the ease of calling synchronous code with Vert.x though this
+can be worked around with by placing the code in new verticles, this still
+requires a lot of vigilance.
 
-TCO is difficult to estimate for Vert.x for a lack of success/failure stories, it can be said though that because Vert.x requires Java hosting infrastructure ther emight be an associated licensing cost for application servers.
+TCO is difficult to estimate for Vert.x for a lack of success/failure stories,
+it can be said though that because Vert.x requires Java hosting infrastructure
+there might be an associated licensing cost for application servers.
 
+At present there is a discussion in the google users group
+\footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of
+the Vert.x project which is owned by VMWare. The founder of the project and
+former employee of VMWare had to transfer ownership of the Github project,
+domain, gooole group and blog to VMWare after he left the company in December
+2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
+uncertainty in the community and might increase the entry barriers for new
+developers. So far there is no final decision made, however it seems likely that VMware
+submits the project as-is to a foundation, so that development can be continued
+within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_future_2013}.
 
 
 \begin{savenotes}
@@ -822,7 +924,10 @@ Vert.x and Node.js are supposed to be used as fully event driven standalone
 applications that can be extended with event-driven modules.
 However when introducing a Node.js or Vert.x application into the current
 application landscape it might be desired to reuse or communicate with existing
-systems that are not fully event driven. Furthermore, integration of these technologies might not be limited to mere IPC\nomenclature{IPC}{InterProcess Communication} but instead as a new middleware-layer beneath current and new applications.\\
+systems that are not fully event driven. Furthermore, integration of these
+technologies might not be limited to mere IPC\nomenclature{IPC}{InterProcess
+Communication} but instead as a new middleware-layer beneath current and new
+applications.\\
 %Consider connecting that software with a message bus.
 %Separate IO intense tasks into ``web workers'' or similar constructs.
 
