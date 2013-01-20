@@ -588,9 +588,13 @@ insurance.\\
 The user then fills in all necessary form fields and instantly gets feedback on
 the vailidy of the entered values. Once all fields are filled correctly the form
 can be submitted to the application via HTTP or HTTPS. The data received by the server
-then gets validated again to avoid processing of manipulated requests. Eventually
-the valid data is passed into the calculation routine which returns its result
-to the user by triggering the according callback.
+then gets validated again to avoid processing of manipulated requests.\\
+
+While typing the data into the form fields, those inputs are instantly sent to the server using websockets.
+The server will distribute these inputs to all clients that have opened the same form,
+which is identified via a key. Furthermore, the user gets instant feedback on what the
+insurance rate would be like. This feature is, however, realized via an AJAX call, which is triggered
+when the three fields of the second part (being "career", "amount insured" and "ownership stake") are valid. Using two technologies is conceptually valuable to show serveral ways of communication.
 
 \nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
 \nomenclature{HTTP}{Hyper Text Transfer Protocol}
@@ -660,6 +664,13 @@ openssl req -new -key privatekey.pem -out certrequest.csr
 openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 \end{lstlisting}
 
+Another technology used is AJAX. TODO: EXPLAIN AJAX
+
+Moreover, a key technology to allow for real-time communiation that is leveraged
+in the Proof of Concept are websockets. TODO: EXPLAIN websockets
+
+
+\nomenclature{AJAX}{Asynchronous JavaScript and XML}
 
 \FloatBarrier
 \subsection{Software Implementation}
