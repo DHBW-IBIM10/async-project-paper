@@ -481,12 +481,16 @@ commecial redistribution in closed source projects should not be an issue.
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.
+A fairly obvious fit is given for I/O bound applications, as the single-threaded asynchronous processing
+does not wait for I/O streams to finish, but instead uses callbacks to come back to the processing part
+as soon as the I/O has finished.
 The single-threaded nature of event loops allows to make efficient use of the
-thread as long as callbacks don't take up too much time. This makes asynchronous
+thread as long as callback functions don't take up too much time. This makes asynchronous
 server applications a good fit for most types of networked applications that
 either tend to keep many inactive connections or need to handle many concurrent 
 short-lived connections.\\
-A few possible use cases are described in the list below.
+
+A few possible use cases are described in the list below and case studies are provided in Appendices TODO.
 
 \begin{description}
   \item[Web traffic monitoring] By getting notified of every single request that
@@ -586,7 +590,10 @@ Some success stories are available on \url{http://nodejs.org/}.
 As with all technologies one has to carefully evaluate whether or not it suits the
 requirements of a project. Besides those use cases listed in the previous
 section there are also a few usage scenarios where one should not use
-asynchronous frameworks like Node.js or Vert.x.\\
+asynchronous frameworks like Node.js or Vert.x. In general, the choice
+always depends on the very specific needs for every single use case.
+Critics argue that asynchronous frameworks are not necessarily the best choice
+only because they represent a new stream.\footcite[Cf.][]{semerau_2011},\footcite[Cf.][]{arranz_2011},\footcite[Cf.][]{behren_2003}\\
 
 Since one key feature of asynchronous technologies is non-blocking I/O, use
 cases that hardly encompass interaction with external resources do not set a
@@ -597,29 +604,7 @@ cause long response times.\footcite[Cf.][14]{Roden_2012}\\
 
 Expanding upon the non-blocking I/O strenghts, it becomes obvious that
 asynchronous frameworks are not I/O bound. Consequently, they are, however, not
-designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
-
-Node.js and Vert.x do not offer any possibility to speed up a single request.
-These requests will aways run at the same speed. What these frameworks do is to
-maximise the number of possible requests while keeping the processing speed
-steady. This is why it scales so well (see section \ref{scalability}). The only
-additional delay between request and response is the time that a request waits
-in the event loop until it gets processed.  In many cases however it is
-desirable to minimize the computation time itself for a single request. Once
-this is achieved it becomes a goal to keep that speed for a larger amount of
-requests.\\
-
-Another thing to note is that one should not choose these frameworks when
-there are other concepts or frameworks that might better fulfill the 
-projects requirements.
-A selection of such cases is shown in the list below. 
-
-Criticism on these concepts:\\
-\url{http://xquerywebappdev.wordpress.com/2011/11/18/node-js-is-good-for-solving-problems-i-dont-have/}\\
-\url{http://www.theserverside.com/discussions/thread.tss?thread_id=61693}\\
-\url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
-and some more. TODO: Why not use message queues that make use of a thread pool?
-
+designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}\\
 
 \begin{description}
   \item[Datawarehousing with analytics] Doing analytical and complex computations
@@ -638,7 +623,6 @@ and some more. TODO: Why not use message queues that make use of a thread pool?
 	millions of requests does not automatically increase the number of users.
   \item[Large session data volumes] TODO
   \item[Workflow-driven applications] TODO
-  \item[Proxy with extensive business logic] TODO - for example extensive ad filtering
   \item[XML-based environments] TODO - especially not suitable for Node.js
 \end{description}
 
@@ -1371,8 +1355,18 @@ data or communicate directly with each other.
 Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
 \url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
 \url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
-processes require access, depending on its ability to address parallel processing.\\
+processes require access, depending on its ability to address parallel processing.
 
+\paragraph{Speeding up single requests}
+Node.js and Vert.x do not offer any possibility to speed up a single request.
+These requests will aways run at the same speed. What these frameworks do is to
+maximise the number of possible requests while keeping the processing speed
+steady. This is why it scales so well (see section \ref{scalability}). The only
+additional delay between request and response is the time that a request waits
+in the event loop until it gets processed.  In many cases however it is
+desirable to minimize the computation time itself for a single request. Once
+this is achieved it becomes a goal to keep that speed for a larger amount of
+requests.\\
 
 
 \section{Outlook}
@@ -1431,7 +1425,7 @@ interaction among distributed software modules."\footcite[][]{Geihs_2001} This s
 
 The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js.\\
 
-One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
+One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
 
 Furthermore, in section TODO the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware.
 
