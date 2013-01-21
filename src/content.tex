@@ -111,10 +111,8 @@ technical strengths and weaknesses. Furthermore non-functional attributes will b
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
 \subsection{Methodology and structure}
-The paper is divided into four parts. The first one explains the scientific fundamentals of asynchronous server
-technologies. Afterwards the asynchronous programming frameworks Node.js and Vert.x are used as a practical implementation.
-In the following chapter the authors conceive a proof of concept, that guides through a step by step construction of a
-server- and client-side web application with non-blocking I/O featured. The subsequent part uses the POC to benchmark Vert.x and Node.js against common server technologies. The last chapter concludes on the findings and gives a final recommendation.
+
+Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and websockets).
 
 \newpage
 \section{Setting the context}
@@ -741,6 +739,7 @@ demonstration purposes.\\
 Additional features in the backend can be integrated via existing modules from
 the repositories of Vert.x or Node.js.
 
+\subsubsection{HTTPS}
 To create a secure application, HTTPS is required. To demonstrate an HTTP and
 HTTPS server likewise, the application includes two webservers, both of which
 serve the same functionality. It is necessary to generate a pair consisting of a
@@ -764,8 +763,10 @@ openssl req -new -key privatekey.pem -out certrequest.csr
 openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 \end{lstlisting}
 
+\subsubsection{AJAX - Asynchronous JavaScript and XML}
 Another technology used is AJAX. TODO: EXPLAIN AJAX
 
+\subsubsection{Websockets}
 Moreover, a key technology to allow for real-time communiation that is leveraged
 in the Proof of Concept are websockets. TODO: EXPLAIN websockets
 
