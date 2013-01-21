@@ -953,8 +953,6 @@ manner). Thus the time needed to become familiar with a framework and its
 language directly impact the development cost either because of the time needed
 related to the learning curve or because of resources invested in maintenance
 and bug-fixing.
-Table \ref{tbl_maintain} gives a quick overview over the differences between Node.js 
-and Vert.x in this context. Further details are provided in the following sub-sections.\\
 
 \begin{savenotes}
 \begin{table}[ht]
@@ -965,12 +963,20 @@ and Vert.x in this context. Further details are provided in the following sub-se
 \midrule 
 %\endhead
 \textbf{API stability}
-& Frequent changes
-& Rarely changes
-\\							  
+& Frequent changes\footcite[Cf.][]{node_api_changes_2012}
+& Rarely changes\footcite[Cf.][]{vertx_2012}
+\\	
+\textbf{Support of dated\newline versions}
+& No official policy known
+& No official policy known
+\\
+\textbf{Testing}
+& Has good test coverage. Various 3rd party test frameworks applicable\footcite[Cf.][]{node_testing_2013}
+& Has good test coverage and comes with an own testsuite.\footcite[Cf.][]{vertx_repository_2013} Established test libraries like JUnit can be used.
+\\						  
 \textbf{Skill transferability}	
 & Coding style is similar to established JavaScript guidelines\footcite[Cf.][]{node_style_2012}							
-& Depends on the used language. Java coding style in Vert.x e.g. differs from
+& Depends on the used language. Java coding style in Vert.x e.g. differs from J2EE practices
 \nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
 is similar to established JavaScript frameworks.
 \\
@@ -993,7 +999,13 @@ is similar to established JavaScript frameworks.
 \end{table}
 \end{savenotes}
 
-%TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
+Table \ref{tbl_maintain} gives a quick overview over the differences between
+Node.js and Vert.x in this context. For both, Vert.x and Node.js, there is no
+official policy how security issues or defects in dated versions are handled, so
+that upgrading to the latest stable versions is recommended for both frameworks.
+API changes need to be checked with every upgrade.
+Further framework-specific details are provided in the following sub-sections.\\
+
 
 \subsubsection{Node.js maintainability}
 
