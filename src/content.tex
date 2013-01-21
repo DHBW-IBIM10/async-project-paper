@@ -533,33 +533,35 @@ A few possible use cases are described in the list below.
   problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates 
   how this is realized.\footcite[Cf.][81]{teixeira_2012}
   \item[]
-%\begin{lstlisting}[language=javascript,caption={Controlling streams\footcite[Cf.][81]{teixeira_2012}},label=lst:streaming]
+
 \begin{lstlisting}[language=javascript,caption={Controlling streams},label=lst:streaming]
-%require('http').createServer(function(req, res) {
-%	var rs = fs.createReadStream('/path/to/big/file');
-%	
-%	rs.on('data', function(data) {
-%		if (!res.write(data)) {
-%			rs.pause();
-%		}
-%	});
-%
-%	res.on('drain', function() {
-%		rs.resume();
-%	});
-%
-%	rs.on('end', function() {
-%		res.end();
-%	});
-%}).listen(8080);
-var test;
+require('http').createServer(function(req, res) {
+	var rs = fs.createReadStream('/path/to/big/file');
+	
+	rs.on('data', function(data) {
+		if (!res.write(data)) {
+			rs.pause();
+		}
+	});
+
+	res.on('drain', function() {
+		rs.resume();
+	});
+
+	rs.on('end', function() {
+		res.end();
+	});
+}).listen(8080);
 \end{lstlisting}
+
 
 The data flow control process can be automated by using the stream.pipe() method. 
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] TODO: e.g. file server that is based on vert.x and returns files directly from disc instead of
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}\\
+\textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Connect_2013} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
+\textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
   	moving it through userspace (not possible with SSL enabled)
 %  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
 % 		combined with JavaScript make it a great choice for
@@ -839,7 +841,7 @@ As soon as a reply is returned over the event bus it is forwarded to the client 
 \label{implementation_node}
 The node.js implementation starts with four modules that are required to run the application:
 
-\begin{lstlisting}[language=javascript,caption={Including modules}]
+\begin{lstlisting}[language=javascript,caption={Including modules},label=lst:includenodemodules]
 var express = require('express');
 var http = require('http');
 var https = require('https');
