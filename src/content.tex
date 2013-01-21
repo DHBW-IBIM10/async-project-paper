@@ -1260,10 +1260,74 @@ well.\footcite[Cf.][]{vertx_2012}
 
 
 
-\subsection{Scalability}
+\subsection{Scalability and performance}
 \label{scalability}
-Support for single machine scaling using multiple threads exists.
-Deployment on distributed systems differs in node.js and vert.x.
+Both Vert.x and Node.js offer great performance and scalability under certain circumstances that were identified in section \ref{areas_of_application}.
+In order to allow a comparison for a very simple use case, a micro-benchmark was run to collect information on request handling of Node.js, Vert.x and
+the two popular web servers Apache2 and Nginx.
+\paragraph{Experiment setup} Each server was run isolated on a virtual machine
+that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
+of 2.5GHz (to make sure that the host system has enough free capacity). A static
+file with 200kb has been created using \texttt{dd}, which then had to be
+delivered by the web servers.\\
+Requests were then sent from another virtual machine on the same host system 
+to the running server using the benchmarking tool Apache Bench\footnote{TODO:link}.
+The benchmarking tool was configured to send 10,000 requests with a concurrency
+level of 50 (50 requests in parallel).\\
+Vert.x and Node.js were run single-threaded. Apache2 and Nginx were run in their
+default configuration. All servers were run without caching.
+\paragraph{Outcome} The results of this benchmark confirmed the strengths of asynchronous servers described in section \ref{areas_of_application}.
+Plotted results are shown in figures \ref{fig:benchmark_all} and \ref{fig:benchmark_async}.\\
+Apache2 had the worst respone times (y-axis), that were increasing rapidly with the number of requests sent (x-axis).
+Nginx was able to deliver an almost constant response time for up to 5000 requests before response times started to increase.
+Interesting is the fact, that Nginx response times where slightly below those of Node.js and Vert.x for up to 3000 requests.
+Both Node.js and Vert.x were able to deliver the file in almost constant time for up to 9500 requests. Node.js performed slightly better than
+Vert.x. A partial plot is shown in figure \ref{fig:benchmark_async} for better comparison between Node.js and Vert.x.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{img/200kb_benchmark.png}
+\caption[Plot of the web server benchmark results]{Plot of the web server benchmark results between Apache2, Nginx, Node.js, Vert.x (x-axis: requests, y-axis: time in ms)}
+\label{fig:benchmark_all}
+\end{figure}
+\footcitetext{req_res}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{img/200kb_benchmark_node_vertx.png}
+\caption[Plot of the web server benchmark results]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
+\label{fig:benchmark_async}
+\end{figure}
+\footcitetext{req_res}
+
+
+\paragraph{Conclusion} 
+Despite not being a representation for a real usage scenario, this benchmark
+gives a good representation of the scalability attributes of asynchronous 
+servers.
+
+\paragraph{Scaling on a single machine}
+Support for single machine scaling using multiple threads exists natively in
+Vert.x and can be accomplished easily on a per-instance basis. Each instance can
+be deployed multiple times. This allows configurations like having one instance
+for the main event loop and 4 instances for the worker verticles, so that
+computation intense tasks can be handled by a threadpool of 4 threads.\\
+Node.js is designed to run single-threaded and can only scale to all available
+cores with additional packages. The recommended procedure is to deploy a node
+application multiple times and to use an additional load balancer that
+distributes incoming requests among all running node processes. This has some
+implications:
+Due to the isolation in separate processes Node.js instances cannot share any
+data or communicate directly with each other.
+Instead data is usually stored in a database or key-value store like PRODUCT\footnote{TODO}.
+This database could then potentially become a bottleneck when multiple Node.js
+processes require access.\\
+Vert.x on the other hand was designed with this shortcoming in mind and provides
+threadsafe datastructures that developers can use to share data between multiple
+instances.\footcite[][]{TODO}
+
+\paragraph{Scaling on distributed machines}
+Deployment on distributed systems differs in Node.js and Vert.x.
 Vert.x. uses its own communication bus to share information between verticles.
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering functionality internally to scale on multiple machines. 
 

@@ -1,0 +1,244 @@
+#----------------------------------------------------------------------------
+#Node.js
+#----------------------------------------------------------------------------
+ab -n10000 -c50 -g 200kb.node.dat http://192.168.178.39:8000/file.200kb
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.178.39 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        
+Server Hostname:        192.168.178.39
+Server Port:            8000
+
+Document Path:          /file.200kb
+Document Length:        204800 bytes
+
+Concurrency Level:      50
+Time taken for tests:   23.428 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      2050780000 bytes
+HTML transferred:       2048000000 bytes
+Requests per second:    426.83 [#/sec] (mean)
+Time per request:       117.142 [ms] (mean)
+Time per request:       2.343 [ms] (mean, across all concurrent requests)
+Transfer rate:          85482.42 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   5.0      0     204
+Processing:    74  117 169.0     98    1992
+Waiting:        6   42  22.6     41    1436
+Total:         74  117 170.2     98    1992
+
+Percentage of the requests served within a certain time (ms)
+  50%     98
+  66%    102
+  75%    105
+  80%    107
+  90%    110
+  95%    112
+  98%    121
+  99%   1490
+ 100%   1992 (longest request)
+
+
+
+#----------------------------------------------------------------------------
+# Vert.x
+#----------------------------------------------------------------------------
+
+ab -n10000 -c50 -g 200kb.vertx.dat http://192.168.178.39:8000/file.200kb
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.178.39 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        
+Server Hostname:        192.168.178.39
+Server Port:            8000
+
+Document Path:          /file.200kb
+Document Length:        204800 bytes
+
+Concurrency Level:      50
+Time taken for tests:   42.570 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      2048430000 bytes
+HTML transferred:       2048000000 bytes
+Requests per second:    234.90 [#/sec] (mean)
+Time per request:       212.852 [ms] (mean)
+Time per request:       4.257 [ms] (mean, across all concurrent requests)
+Transfer rate:          46990.80 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   4.5      0     225
+Processing:    14  212 389.7    159    4176
+Waiting:        3  159  83.9    154    1970
+Total:         14  212 390.2    159    4176
+
+Percentage of the requests served within a certain time (ms)
+  50%    159
+  66%    176
+  75%    187
+  80%    195
+  90%    218
+  95%    252
+  98%    766
+  99%   2425
+ 100%   4176 (longest request)
+
+
+#----------------------------------------------------------------------------
+# Nginx
+#----------------------------------------------------------------------------
+
+ab -n10000 -c50 -g 200kb.nginx.dat http://192.168.178.39:8080/~rocco/file.200kb
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.178.39 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        nginx/1.2.1
+Server Hostname:        192.168.178.39
+Server Port:            8080
+
+Document Path:          /~rocco/file.200kb
+Document Length:        204800 bytes
+
+Concurrency Level:      50
+Time taken for tests:   194.599 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      2050280000 bytes
+HTML transferred:       2048000000 bytes
+Requests per second:    51.39 [#/sec] (mean)
+Time per request:       972.996 [ms] (mean)
+Time per request:       19.460 [ms] (mean, across all concurrent requests)
+Transfer rate:          10288.97 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   15 102.2      0    1006
+Processing:     1  958 1231.5    108    6404
+Waiting:        0  173 381.8     71    2007
+Total:          2  973 1235.4    109    6404
+
+Percentage of the requests served within a certain time (ms)
+  50%    109
+  66%   1072
+  75%   1838
+  80%   1998
+  90%   2665
+  95%   3957
+  98%   4120
+  99%   4875
+ 100%   6404 (longest request)
+
+
+
+#----------------------------------------------------------------------------
+# Apache2
+#----------------------------------------------------------------------------
+
+ab -n10000 -c50 -g 200kb.apache.dat http://192.168.178.39:80/~rocco/file.200kb
+This is ApacheBench, Version 2.3 <$Revision: 655654 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 192.168.178.39 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        Apache/2.2.22
+Server Hostname:        192.168.178.39
+Server Port:            80
+
+Document Path:          /~rocco/file.200kb
+Document Length:        204800 bytes
+
+Concurrency Level:      50
+Time taken for tests:   488.405 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      2050340000 bytes
+HTML transferred:       2048000000 bytes
+Requests per second:    20.47 [#/sec] (mean)
+Time per request:       2442.025 [ms] (mean)
+Time per request:       48.840 [ms] (mean, across all concurrent requests)
+Transfer rate:          4099.64 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   83 262.4      4    1008
+Processing:    18 2359 1455.8   2022    9009
+Waiting:        2  398 629.5     10    4683
+Total:         21 2442 1448.3   2033    9014
+
+Percentage of the requests served within a certain time (ms)
+  50%   2033
+  66%   3007
+  75%   3052
+  80%   3985
+  90%   4053
+  95%   5052
+  98%   6018
+  99%   6034
+ 100%   9014 (longest request)
+
