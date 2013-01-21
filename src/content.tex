@@ -1021,11 +1021,13 @@ within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_fu
 
 
 \begin{savenotes}
-\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
+\begin{table}[ht]
+%\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.27\textwidth} p{0.32\textwidth} p{0.35\textwidth}}
 \toprule
 				& \textbf{Node.js} & \textbf{Vert.x} \\
 \midrule 
-\endhead
+%\endhead
 \textbf{API stability}
 & Frequent changes
 & rarely changes
@@ -1049,9 +1051,10 @@ is similar to established JavaScript frameworks.
 & MIT license
  \\
 \bottomrule 
+\end{tabular*}
   \caption{Maintainability comparison of Node and Vert.x}
   \label{tbl_maintain}
-\end{longtable}
+\end{table}
 \end{savenotes}
 
 \subsection{Integration}
