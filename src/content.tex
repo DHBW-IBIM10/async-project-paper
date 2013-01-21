@@ -196,20 +196,29 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
 \subsection{Concept of synchronous processing}
 \label{concept_sync}
+\FloatBarrier
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=0.4\textwidth]{img/synch_call.png}
+\caption{Synchronous, blocking function call}
+\label{fig:asynch_call}
+\end{figure}
 
 In synchronous processing a running thread needs to wait for the completion of
 the I/O operation before it can continue.
 The thread is in an idle state while it is waiting, which allows another process 
 or thread to occupy the CPU in the meanwhile.
-
+\FloatBarrier
 \subsection{Concept of asynchronous processing}
 \label{concept_async}
+\FloatBarrier
 
-\begin{figure}
+\begin{figure}[hbtp]
 \centering
-\includegraphics[width=0.5\textwidth]{img/asynch_call.png}
-\caption{A caption}
-\label{figure:alabel}
+\includegraphics[width=0.4\textwidth]{img/asynch_call.png}
+\caption{Asynchronous, nonblocking function call}
+\label{fig:asynch_call}
 \end{figure}
 
 An asynchronous programming style uses a different concept. The flow of an
@@ -219,6 +228,8 @@ to the \textit{readAsText} function is done asynchronously. There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
+
+\FloatBarrier
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
 \label{comparison_syncasync}
