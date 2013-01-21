@@ -1334,22 +1334,14 @@ Vert.x and can be accomplished easily on a per-instance basis like shown in list
 Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
-computation intense tasks can be handled by a threadpool of 4 threads.\\
+computation intense tasks can be handled by a threadpool of 4 threads. 
+Vert.x provides  threadsafe datastructures that developers can be used to share data between multiple
+instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
+
 Node.js is designed to run single-threaded and can only scale to all available
-cores with additional packages. The recommended procedure is to deploy a node
-application multiple times and to use an additional load balancer that
-distributes incoming requests among all running node processes. This has some
-implications:
-Due to the isolation in separate processes Node.js instances cannot share any
-data or communicate directly with each other.
-Instead data is usually stored in a database like CouchDb\footnote{See
-\url{http://couchdb.apache.org/}} or key-value store like Redis\footnote{See
-\url{http://redis.io/}}.
-This database could then potentially become a bottleneck when multiple Node.js
-processes require access.\\
-Vert.x on the other hand was designed with this shortcoming in mind and provides
-threadsafe datastructures that developers can use to share data between multiple
-instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}
+cores using the Cluster module\footcite[Cf.][]{node_2012b}, which is, however, still in an experimental state.
+This module allows to take advantage of a multi-core system by launching a cluster of Node.js processes to handle the load. Basically it enables the developer to run several worker processes (depending on the number of cores) and create an HTTP server for each of them, whereby all of them share one port. 
+
 
 \paragraph{Scaling on distributed machines}
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
@@ -1367,27 +1359,39 @@ Each instance that is started in clustermode will have access to a distributed
 event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
 website.\\
-\textbf{TODO:} Node.js probably has a cluster module?
+
+Up to now, for Node.js there is no known way of distributing workloads among different servers, however that wish was addressed.\footcite[Cf.][]{node_clusterserver}
+
+
+\paragraph{General ways of distributing workload among distributed machines}
+One possible procedure is to deploy an application multiple times and to use an additional load balancer that
+distributes incoming requests among all running deployments. This has some
+implications: Due to the isolation in separate processes, application instances cannot share any
+data or communicate directly with each other.
+Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
+\url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
+\url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
+processes require access, depending on its ability to address parallel processing.\\
+
 
 
 \section{Outlook}
 
-\subsection{Middleware as use case for Node.js}
-\label{middleware}
-"The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
-interaction among distributed software modules."\footcite[]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.
 
-The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).\\
+TODO: Roadmaps
+TODO: PoC further development
 
-One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}
-
-\paragraph{Meteor and Opa}
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
-
-Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
-
-\paragraph{Etherpad}
-Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node.js as middleware. By migrating to Node.js reductions of lines of code and memory usage\footcite[Cf.][]{Weissschuh_2013} allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
+%
+%
+%
+%
+%
+%OUTLOOK
+%
+%
+%
+%
 
 
 \section{Conclusion}
@@ -1418,6 +1422,17 @@ Etherpad is an online collaborative text editor. Etherpad nicely illustrates the
 %subsections of appendix
 \begin{subappendices}
 \renewcommand{\setthesubsection}{\arabic{subsection}:}%
+
+
+\subsection{Middleware as use case for Node.js}
+\label{middleware}
+"The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
+interaction among distributed software modules."\footcite[][]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+
+The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).\\
+
+One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}
+
 
 \appsection{Kue – A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
@@ -1460,9 +1475,12 @@ Node.js fetches the news feeds and distributes them to every current visitor in 
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
+\appsection{Meteor and Opa}
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
+
+Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
 
-\appsection{METEOR OR OPA EXAMPLE}
 % include your appendix with the LaTeX include command
 \label{appendix_meteor}
 CODE CODE CODE
