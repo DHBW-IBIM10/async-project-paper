@@ -953,7 +953,46 @@ manner). Thus the time needed to become familiar with a framework and its
 language directly impact the development cost either because of the time needed
 related to the learning curve or because of resources invested in maintenance
 and bug-fixing.
-The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
+Table \ref{tbl_maintain} gives a quick overview over the differences between Node.js 
+and Vert.x in this context. Further details are provided in the following sub-sections.\\
+
+\begin{savenotes}
+\begin{table}[ht]
+%\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.27\textwidth} p{0.32\textwidth} p{0.35\textwidth}}
+\toprule
+				& \textbf{Node.js} & \textbf{Vert.x} \\
+\midrule 
+%\endhead
+\textbf{API stability}
+& Frequent changes
+& Rarely changes
+\\							  
+\textbf{Skill transferability}	
+& Coding style is similar to established JavaScript guidelines\footcite[Cf.][]{node_style_2012}							
+& Depends on the used language. Java coding style in Vert.x e.g. differs from
+\nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
+is similar to established JavaScript frameworks.
+\\
+\textbf{Official\newline documentation}
+& API documentation, manual\footcite[Cf.][]{node_2012}
+& API documentation, manual\footcite[Cf.][]{vertx_2012}, basic tutorial, code examples\footcite[Cf.][]{Fox_2013}
+\\
+\textbf{Additional\newline documentation}
+& Large number of books and blog articles
+& Few blog articles, users group
+\\
+\textbf{License}			
+& MIT license 			
+& MIT license
+ \\
+\bottomrule 
+\end{tabular*}
+  \caption{Maintainability comparison of Node and Vert.x}
+  \label{tbl_maintain}
+\end{table}
+\end{savenotes}
+
 %TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
 
 \subsubsection{Node.js maintainability}
@@ -1018,44 +1057,6 @@ uncertainty in the community and might increase the entry barriers for new
 developers. So far there is no final decision made, however it seems likely that VMware
 submits the project as-is to a foundation, so that development can be continued
 within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_future_2013}.
-
-
-\begin{savenotes}
-\begin{table}[ht]
-%\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
-\begin{tabular*}{\textwidth}{p{0.27\textwidth} p{0.32\textwidth} p{0.35\textwidth}}
-\toprule
-				& \textbf{Node.js} & \textbf{Vert.x} \\
-\midrule 
-%\endhead
-\textbf{API stability}
-& Frequent changes
-& rarely changes
-\\							  
-\textbf{Skill transferability}	
-& Coding style is similar to established JavaScript frameworks									
-& Depends on the used language. Java coding style in Vert.x e.g. differs from
-\nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
-is similar to established JavaScript frameworks.
-\\
-\textbf{Official\newline documentation}
-& API documentation, manual
-& API documentation, manual, basic tutorial, code examples
-\\
-\textbf{Additional\newline documentation}
-& Large number of books and blog articles
-& Few blog articles, users group
-\\
-\textbf{License}			
-& MIT license 			
-& MIT license
- \\
-\bottomrule 
-\end{tabular*}
-  \caption{Maintainability comparison of Node and Vert.x}
-  \label{tbl_maintain}
-\end{table}
-\end{savenotes}
 
 \subsection{Integration}
 \label{integration}
