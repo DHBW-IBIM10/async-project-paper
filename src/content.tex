@@ -1424,14 +1424,16 @@ TODO: PoC further development
 \renewcommand{\setthesubsection}{\arabic{subsection}:}%
 
 
-\subsection{Middleware as use case for Node.js}
+\appsection{Middleware as use case for Node.js}
 \label{middleware}
 "The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
-interaction among distributed software modules."\footcite[][]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+interaction among distributed software modules."\footcite[][]{Geihs_2001} This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
 
-The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).\\
+The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js.\\
 
-One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}
+One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
+
+Furthermore, in section TODO the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware.
 
 
 \appsection{Kue – A Message Queue (Job Queue) based on Node.js}
