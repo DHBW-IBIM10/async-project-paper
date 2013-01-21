@@ -112,7 +112,7 @@ evaluated based on two sample implementations in Node.js  and Vert.x.
 
 \subsection{Methodology and structure}
 
-Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and websockets).
+Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets).
 
 \newpage
 \section{Setting the context}
@@ -506,7 +506,7 @@ A few possible use cases are described in the list below.
   A second server instance could
   be set up to handle the online dashboard.
   In order to allow instantly updating the dashboard all clients should be
-  connected to this instance via a websocket. Depending on the amount of visitors
+  connected to this instance via a WebSocket. Depending on the amount of visitors
   this could result in a large number of open connections. However due to the
   event loop based processing the server instance will always just use one
   thread for all connections as opposed to a classical web server, which would
@@ -518,7 +518,7 @@ A few possible use cases are described in the list below.
   HTML file. Hence each page that should be tracked by Hummingbird integrates a
   reference to a tracking pixel, which is served by the Hummingbird application.
   \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
-  over a websocket connection.
+  over a WebSocket connection.
   
    \item[Streaming] Applications that involve a lot of streaming of data, such
    as file uploading or video broadcasting, represent another appropriate use
@@ -568,7 +568,7 @@ The data flow control process can be automated by using the stream.pipe() method
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}\\ However, the Proof of Concepts suggests that also other protocols, like websockets, can take a particular advantage from asynchronous technologies.
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}\\ However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.
 \textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Connect_2013} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
 \textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
   	moving it through userspace (not possible with SSL enabled)
@@ -688,7 +688,7 @@ the vailidy of the entered values. Once all fields are filled correctly the form
 can be submitted to the application via HTTP or HTTPS. The data received by the server
 then gets validated again to avoid processing of manipulated requests.\\
 
-While typing the data into the form fields, those inputs are instantly sent to the server using websockets.
+While typing the data into the form fields, those inputs are instantly sent to the server using WebSockets.
 The server will distribute these inputs to all clients that have opened the same form,
 which is identified via a key. Furthermore, the user gets instant feedback on what the
 insurance rate would be like. This feature is, however, realized via an AJAX call, which is triggered
@@ -744,7 +744,7 @@ To create a secure application, HTTPS is required. To demonstrate an HTTP and
 HTTPS server likewise, the application includes two webservers, both of which
 serve the same functionality. It is necessary to generate a pair consisting of a
 private and a public key, because the handshake prior to an HTTPS session
-follows a specific procedure\footcite[Cf.]{Nemati_2011}:
+follows a specific procedure\footcite[Cf.][]{Nemati_2011}:
  (1) Client contacts the server using a secured URL.
  (2) The server responds sending the digital certificate to the browser.
  (3) The client certifies that the certificate is valid (e.g. by trusted
@@ -779,13 +779,13 @@ $.ajax({
 });
 \end{lstlisting}
 
-
-\subsubsection{Websockets}
+\subsubsection{WebSockets}
 Moreover, a key technology to allow for real-time communiation that is leveraged
-in the Proof of Concept are websockets. TODO: EXPLAIN websockets
+in the Proof of Concept are WebSockets. The WebSocket Protocol is standardized by the Internet Engineering Task Force (IETF) in Request for Comments (RFC) 6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way communication between a client running untrusted code in a controlled environment to a remote host that has opted-in to communications from that code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake and the data transfer, where the handshake is compatible with the HTTP-based server-side software and intermediaries. The data transfer part can start as soon as server and client both have sent their handshakes and the actual handshake was successful. Each side can then send data independent from each other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 
 
-\nomenclature{AJAX}{Asynchronous JavaScript and XML}
+\nomenclature{IETF}{Internet Engineering Task Force}
+\nomenclature{RFC}{Request for Comments}
 
 \FloatBarrier
 \subsection{Software implementation}
@@ -992,7 +992,7 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The following code demonstrates how to send data to the server using websockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line 7), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The following code demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line 7), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
 \begin{lstlisting}[language=javascript,caption={Sending data to the server}]
 function sendToServer(fieldId) {
@@ -1017,7 +1017,7 @@ $("select").on("change", function () {
 
 On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The following code demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
 
-\begin{lstlisting}[language=javascript,caption={Receiving data using websockets}]
+\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets}]
 socket.on("liveform", function (data) {
     // read (unknown) field from JSON
     for (key in data) {
