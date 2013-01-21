@@ -152,36 +152,18 @@ concurrent users in conjunctions with massive request counts, this obviously
 causes performance issues.\\
 
 
+
 \subsection{Potential web development issues}
 \label{potentialissues}
 
 \subsubsection{I/O bound applications}
 \label{issue_io}
-
+...
 \subsubsection{CPU bound applications}
 \label{issue_cpu}
-
-\subsubsection{Single-/Multithreading}
+...
+\subsubsection{Single-/Multithreading and event-driven development}
 \label{issue_threads}
-
-\subsection{Concept of synchronous processing}
-\label{concept_sync}
-
-\subsection{Concept of asynchronous processing}
-\label{concept_async}
-
-\subsection{Technical comparison of asynchronous and synchronous processing}
-\label{comparison_syncasync}
-
-% code goes here...
-
-
-%Synchronous calls -> idling threads -> 
-A common case in programming is access to I/O.
-In synchronous processing a running thread needs to wait for the completion of
-the I/O operation before it can continue.
-The thread is in an idle state while it is waiting, which allows another process 
-or thread to occupy the CPU in the meanwhile.\\
 
 % writing multithreaded code is not trivial
 In multithreaded applications several threads can run simultaneously within one 
@@ -190,30 +172,9 @@ cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
 execution order to effectively avoid program defects such as data races and 
 deadlocks.\footcite[Cf.][10]{Breshears_2009}
-This can be time consuming and potentially results in error-prone code.
+This can be time consuming and potentially results in error-prone code.\\
 
-A typical synchronous call is provided in Listing \ref{lst:synchronous_call}. The
-content of a file is read and displayed afterwards. The program is blocked until the
-read operation has finished.
-
-% reading a file and displaying it, pseudo code
-\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
-label=lst:synchronous_call]{lst/synchronous_call.txt}
-
-
-An asynchronous programming style uses a different concept. The flow of an
-application is determined by events, which is why this style is also called
-event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
-to the \textit{readAsText} function is done asynchronously. There is no
-return value - instead an event handler is provided as a second argument.
-This function is also referred to as a callback function. It is called
-as soon as the read operation has completed.
-
-% same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
-label=lst:asynchronous_call]{lst/asynchronous_call.txt}
-
-This concept is coupled with an event loop, which is a single thread that is
+Event-driven programming uses an event loop, which is a single thread that is
 running inside the main process.
 The loop constantly checks for new events. When an event is detected, the loop
 invokes the corresponding callback function. The callback is processed in the
@@ -226,13 +187,50 @@ event loop. \footcite[Cf.][]{Croucher_2010} Memory or processor intense callback
 can lead to growing queues of unserved events, which eventually results
 in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
+\subsection{Concept of synchronous processing}
+\label{concept_sync}
+
+In synchronous processing a running thread needs to wait for the completion of
+the I/O operation before it can continue.
+The thread is in an idle state while it is waiting, which allows another process 
+or thread to occupy the CPU in the meanwhile.
+
+\subsection{Concept of asynchronous processing}
+\label{concept_async}
+
+An asynchronous programming style uses a different concept. The flow of an
+application is determined by events, which is why this style is also called
+event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
+to the \textit{readAsText} function is done asynchronously. There is no
+return value - instead an event handler is provided as a second argument.
+This function is also referred to as a callback function. It is called
+as soon as the read operation has completed.
+
+\subsection{Technical comparison of asynchronous and synchronous processing}
+\label{comparison_syncasync}
+
+% code goes here...
+
+A typical synchronous call is provided in Listing \ref{lst:synchronous_call}. The
+content of a file is read and displayed afterwards. The program is blocked until the
+read operation has finished.
+
+% reading a file and displaying it, pseudo code
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
+label=lst:synchronous_call]{lst/synchronous_call.txt}
+
+As opposed to the synchronous call, \ref{lst:asynchronous_call} demonstrates how the same example can be realized an asynchronous fashion using event-driven methodology: After the file was read, the callback will be triggered in order to display its content.
+
+% same example as above but with callbacks / events
+\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
+label=lst:asynchronous_call]{lst/asynchronous_call.txt}
+
 
 % implication: 
 % all code should be as non-blocking and asynchronous as possible
 % using blocking APIs inside the asynchronous code can cause blocking of the event loop
 % which is evil. This is why node.js is based on javacript. Other languages already have
 % lots of modules with blocking APIs which could confuse dumb developers.
-
 
 
 \subsection{Existing Asynchronous Frameworks}
@@ -499,7 +497,34 @@ A few possible use cases are described in the list below.
   \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
   over a websocket connection.
   
-  
+   \item[Streaming] Applications that involve a lot of streaming of data, such as file uploading or video broadcasting, represent another appropriate use case for asynchronous technologies. Especially Node.js uses an abstraction called streams. Such a stream represents a flow of data and can appear as a readable stream or writable stream.\footcite[Cf.][75]{teixeira_2012} Why Node.js is beneficial in terms of streaming data becomes clear when considering the slow client problem and the way Node.js and its streams address it.\\
+  \textbf{Realization:} The slow client problem refers to the scenario where a process reads data, processes it and sends it to another consumer.\footcite[Cf.][80]{teixeira_2012}  If the producer (readable stream) sends data faster than the consumer (writable stream) can process it, the data has to be buffered. For instance, consider uploading a local file: The readable stream is relatively fast as the file is stored locally. Assuming the network connection to the client is slow, the writable stream will consequently be slow as well. As a result, the data has to be buffered. Because data will be buffered in memory for each write command, this will result in memory problems after a certain amount of requests.\footcite[Cf.][81]{teixeira_2012} This problem can be avoided by pausing the producer until the consumer catches up. At this point, Node.js comes into play. Readable streams in Node.js can be paused and resumed, which addresses exactly the described problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates how this is realized.\footcite[Cf.][81]{teixeira_2012}
+
+%\begin{lstlisting}[language=javascript,caption={Controlling streams\footcite[Cf.][81]{teixeira_2012}},label=lst:streaming]
+\begin{lstlisting}[language=javascript,caption={Controlling streams},label=lst:streaming]
+%require('http').createServer(function(req, res) {
+%	var rs = fs.createReadStream('/path/to/big/file');
+%	
+%	rs.on('data', function(data) {
+%		if (!res.write(data)) {
+%			rs.pause();
+%		}
+%	});
+%
+%	res.on('drain', function() {
+%		rs.resume();
+%	});
+%
+%	rs.on('end', function() {
+%		res.end();
+%	});
+%}).listen(8080);
+var test;
+\end{lstlisting}
+
+The data flow control process can be automated by using the stream.pipe() method. 
+  \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
+
   
   \item[Web servers] TODO: e.g. file server that is based on vert.x and returns files directly from disc instead of
   	moving it through userspace (not possible with SSL enabled)
@@ -510,7 +535,7 @@ A few possible use cases are described in the list below.
   \item[Proxies] TODO: intermediary that forwards requests and responses
   \item[Email and messaging systems] TODO: mainly idling connections, but realtime communication important
 %  \item[Authorization processors] TODO:
-  \item[Streaming] TODO: E.g file uploads in real time or video broadcasting.
+
 \end{description}
 
 Some success stories are available on \url{http://nodejs.org/}.
