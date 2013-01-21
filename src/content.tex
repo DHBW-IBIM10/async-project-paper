@@ -830,7 +830,7 @@ The path to the compiled classes has to be provided with the \texttt{cp} switch 
 shown in listing \ref{lst:vertx_start}.
 
 
-\lstinputlisting[language=Java,caption={Command for starting the Vert.x application},
+\lstinputlisting[language=Java,caption={Vert.x form handler},
 label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
 
 
@@ -1262,6 +1262,9 @@ well.\footcite[Cf.][]{vertx_2012}
 
 \subsection{Scalability and performance}
 \label{scalability}
+
+
+
 Both Vert.x and Node.js offer great performance and scalability under certain circumstances that were identified in section \ref{areas_of_application}.
 In order to allow a comparison for a very simple use case, a micro-benchmark was run to collect information on request handling of Node.js, Vert.x and
 the two popular web servers Apache2 and Nginx.
@@ -1269,25 +1272,34 @@ the two popular web servers Apache2 and Nginx.
 that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
 of 2.5GHz (to make sure that the host system has enough free capacity). A static
 file with 200kb has been created using \texttt{dd}, which then had to be
-delivered by the web servers.\\
+delivered by the web servers.
+
 Requests were then sent from another virtual machine on the same host system 
 to the running server using the benchmarking tool Apache Bench\footnote{TODO:link}.
 The benchmarking tool was configured to send 10,000 requests with a concurrency
 level of 50 (50 requests in parallel).\\
-Vert.x and Node.js were run single-threaded. Apache2 and Nginx were run in their
+Vert.x and Node.js were run single-threaded. Apache2\footnote{See \url{http://httpd.apache.org/}} and Nginx\footnote{See \url{http://nginx.org/en/}} were run in their
 default configuration. All servers were run without caching.
 \paragraph{Outcome} The results of this benchmark confirmed the strengths of asynchronous servers described in section \ref{areas_of_application}.
 Plotted results are shown in figures \ref{fig:benchmark_all} and \ref{fig:benchmark_async}.\\
-Apache2 had the worst respone times (y-axis), that were increasing rapidly with the number of requests sent (x-axis).
+Apache2 had the worst respone times, that were increasing rapidly with the number of requests sent.
 Nginx was able to deliver an almost constant response time for up to 5000 requests before response times started to increase.
 Interesting is the fact, that Nginx response times where slightly below those of Node.js and Vert.x for up to 3000 requests.
 Both Node.js and Vert.x were able to deliver the file in almost constant time for up to 9500 requests. Node.js performed slightly better than
-Vert.x. A partial plot is shown in figure \ref{fig:benchmark_async} for better comparison between Node.js and Vert.x.
+Vert.x. A partial plot is shown in figure \ref{fig:benchmark_async} for better comparability between Node.js and Vert.x.
+
+Despite not being a representation for a real usage scenario, this benchmark
+gives a good representation of the scalability attributes of asynchronous 
+servers. The bad performance of Apache2 is due to the process forking for each
+new request. Nginx is a lightweight HTTP server that by default only uses as
+many threads as there are processors provided by the host, which is why it
+performs so well.
+
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{img/200kb_benchmark.png}
-\caption[Plot of the web server benchmark results]{Plot of the web server benchmark results between Apache2, Nginx, Node.js, Vert.x (x-axis: requests, y-axis: time in ms)}
+\caption[Plot of the web server benchmark results (all servers)]{Plot of the web server benchmark results between Apache2, Nginx, Node.js, Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_all}
 \end{figure}
 \footcitetext{req_res}
@@ -1295,20 +1307,16 @@ Vert.x. A partial plot is shown in figure \ref{fig:benchmark_async} for better c
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{img/200kb_benchmark_node_vertx.png}
-\caption[Plot of the web server benchmark results]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
+\caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_async}
 \end{figure}
 \footcitetext{req_res}
 
 
-\paragraph{Conclusion} 
-Despite not being a representation for a real usage scenario, this benchmark
-gives a good representation of the scalability attributes of asynchronous 
-servers.
-
 \paragraph{Scaling on a single machine}
 Support for single machine scaling using multiple threads exists natively in
-Vert.x and can be accomplished easily on a per-instance basis. Each instance can
+Vert.x and can be accomplished easily on a per-instance basis like shown in listing \ref{lst:starter_verticle}.
+Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
 computation intense tasks can be handled by a threadpool of 4 threads.\\
