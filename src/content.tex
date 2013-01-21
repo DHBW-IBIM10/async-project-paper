@@ -568,15 +568,12 @@ The data flow control process can be automated by using the stream.pipe() method
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}\\ However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
 \textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Connect_2013} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
 \textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
-  	moving it through userspace (not possible with SSL enabled)
-%  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
-% 		combined with JavaScript make it a great choice for
-% 		wrapping other data sources such as databases or web 
-% 		services and exposing them via a JSON interface%see http://nodeguide.com/convincing_the_boss.htm
-  \item[Proxies] TODO: intermediary that forwards requests and responses
+  \item[Proxies] A key reason for this use case is that there is oftentimes not much computation required to run a proxy and typically involves a high number of requests. A common task might be to filter a set of URLs, which can be easily done with an array in Java and JavaScript.\\
+\textbf{Known implementation:} There is a Vert.x implementation called vertx-proxy\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called node-http-proxy\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
+\textbf{Realization:} The requests are catched and the proxy implementations request the actual website themselves before it is passed back to the requesting client. Although it seems simple and there are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}, the application area should be considered and checked for demands like WebSockets or similar to make sure the proxy meets all requirements.
   \item[Push-notification and messaging systems] TODO: mainly idling connections, but realtime communication important
 
 \end{description}
