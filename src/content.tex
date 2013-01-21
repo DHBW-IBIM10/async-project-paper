@@ -368,17 +368,38 @@ be introduced in the next sub-section.
 % work. Which means continuing slicing during you try to safe the turkey.
 
 
-Node.js doesn't try to make you perform undoable things. It rather lets events drive the
+Node.js is a framework that combines Google's V8 JavaScript Engine, 
+libUV plattform abstraction layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library, which itself is written in JavaScript. 
+Node.js is envisioned as a programming environment that enables JavaScript to run outside the browser in the backend of a web application.
+It doesn't try to make you perform undoable things. It rather lets events drive the
 action, so that it is single-threaded and only one thing happens at once. This
-is why an event loop is a fundamental part of Node.js. It includes the concept
-of non-blocking I/O activities. A result is that actions that cause the program
-to wait like database requests and file I/O  do not halt execution until they
-return data. In contrast they process independently and raise an event when the
-data is accessible. It is therefore necessary to use callbacks for dealing with
-different kinds of I/O.\\
+is why an event loop is a fundamental part of Node.js.\\
+Compared to other technologies that try to apply the fundamentals of asynchronous programming,
+Node.js' libraries are programmed completly asynchronous. It's architecture consists of modules to simplify the
+creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of a set
+of sebject related functions. Defined functions and variables within a module are mostly private, meant they are 
+only accessible from the inside of the module. Using a module requires to call the funktion require() and allocate it to a variable.
+Every function in Node.js is asynchronous, which means that a callback function is run, after a specific I/O job is done. 
+For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.
+
+Node.js's asynchronous programming style is implemented through events that determine the low of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
+The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler. In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one thread inside
+one process, which causes no interruption in the event handler and will enable it to run to completion.
+￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+This allows the programmer to relax the synchronization requirements and not have to worry about concurrent threads of execution changing the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
+
+Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html#modules_core_modules}} \\
+The latest version of the Node.js environment can be installed from a github repository.\footnote{See \url{  http://nodejs.org/dist/latest/}} \\
+Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
+But at the time of writing there were a massive of 21,308 easy to install packaed modules available to extend Node.js.\footcite[Cf.][]{https://npmjs.org}
+Since Node.js version 0.6.3 the famous package manager npm is deployed and installed automatically within the environment.
+Npm is run through the command line and manages dependencies for applications.\\
+As explained later again Node.js received standing ovations from the web developer community, that lead to spectacular participation in the project. In addition Node.js is supported by a San Francisco based company named Joyent, which offers cloud services such as Infrastructure as a Service and Platform as a Service to large companies, focussing on open source projects such as Ruby on Rails and Node.js.\footcite[Cf.][]{http://jaxenter.com/node-js-moves-to-joyent-32530.html}
+Node.js's documentation and manual is extensive and covers all functionality of the non-extended edition.
+Node.js is licensed under the MIT License\footnote{See \url{ http://opensource.org/licenses/MIT }}, meaning that it permits reuse within proprietary software provided all copies of the licensed software include a copy of the MIT License terms.\\
 An exemplary code for a basic HTTP server in Node.js is shown in Listing
 \ref{lst:simple_server} to deepen the understanding of the event loop and
-callback in Node.js.
+callback in Node.js.\\
 
 % reading a file and displaying it
 \lstinputlisting[language=JavaScript,caption={The simplest way to program a server in Node.js},
@@ -401,12 +422,12 @@ Two programming rules in Node.js can be inferred from the basic server and its
 event loop blocking problem, which is described in section \ref{setting_the_context}.
 First, once the setup is in place all actions should be programmed event-driven.
 Second, if a workload requires Node.js to process something for a long time,
-it should be outsourced to web workers.\footcite[Cf.][]{Croucher_2012}
+it should be outsourced to web workers.\footcite[Cf.][p.40]{Croucher_2012}
 
 Node.js large performance benefits are caused through the use of Google's new JavaScript engine V8, that ships naturally
 with the web browser Chrome. Due to the fact that V8 compiles JavaScript into
 real machine code before executing it, Node.js has an advantage over 
-traditional techniques such as executing bytecode or interpreting it. \footnote{See \url{https://developers.google.com/v8/intro}}
+traditional techniques such as executing bytecode or interpreting it.\footnote{See \url{https://developers.google.com/v8/intro}}
 
 
 \subsubsection{Vert.x}
