@@ -1330,12 +1330,14 @@ distributes incoming requests among all running node processes. This has some
 implications:
 Due to the isolation in separate processes Node.js instances cannot share any
 data or communicate directly with each other.
-Instead data is usually stored in a database or key-value store like PRODUCT\footnote{TODO}.
+Instead data is usually stored in a database like CouchDb\footnote{See
+\url{http://couchdb.apache.org/}} or key-value store like Redis\footnote{See
+\url{http://redis.io/}}.
 This database could then potentially become a bottleneck when multiple Node.js
 processes require access.\\
 Vert.x on the other hand was designed with this shortcoming in mind and provides
 threadsafe datastructures that developers can use to share data between multiple
-instances.\footcite[][]{TODO}
+instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}
 
 \paragraph{Scaling on distributed machines}
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
@@ -1352,7 +1354,8 @@ to $25500$ when omitted.
 Each instance that is started in clustermode will have access to a distributed
 event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
-website.
+website.\\
+\textbf{TODO:} Node.js probably has a cluster module?
 
 
 \section{Outlook}
