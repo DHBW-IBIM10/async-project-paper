@@ -497,9 +497,28 @@ A few possible use cases are described in the list below.
   \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
   over a websocket connection.
   
-   \item[Streaming] Applications that involve a lot of streaming of data, such as file uploading or video broadcasting, represent another appropriate use case for asynchronous technologies. Especially Node.js uses an abstraction called streams. Such a stream represents a flow of data and can appear as a readable stream or writable stream.\footcite[Cf.][75]{teixeira_2012} Why Node.js is beneficial in terms of streaming data becomes clear when considering the slow client problem and the way Node.js and its streams address it.\\
-  \textbf{Realization:} The slow client problem refers to the scenario where a process reads data, processes it and sends it to another consumer.\footcite[Cf.][80]{teixeira_2012}  If the producer (readable stream) sends data faster than the consumer (writable stream) can process it, the data has to be buffered. For instance, consider uploading a local file: The readable stream is relatively fast as the file is stored locally. Assuming the network connection to the client is slow, the writable stream will consequently be slow as well. As a result, the data has to be buffered. Because data will be buffered in memory for each write command, this will result in memory problems after a certain amount of requests.\footcite[Cf.][81]{teixeira_2012} This problem can be avoided by pausing the producer until the consumer catches up. At this point, Node.js comes into play. Readable streams in Node.js can be paused and resumed, which addresses exactly the described problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates how this is realized.\footcite[Cf.][81]{teixeira_2012}
-
+   \item[Streaming] Applications that involve a lot of streaming of data, such
+   as file uploading or video broadcasting, represent another appropriate use
+   case for asynchronous technologies. Especially Node.js uses an abstraction
+   called streams. Such a stream represents a flow of data and can appear as a
+   readable stream or writable stream.\footcite[Cf.][75]{teixeira_2012} Why
+   Node.js is beneficial in terms of streaming data becomes clear when
+   considering the slow client problem and the way Node.js and its streams
+   address it.\\
+  \textbf{Realization:} The slow client problem refers to the scenario where a
+  process reads data, processes it and sends it to another consumer.\footcite[Cf.][80]{teixeira_2012}
+  If the producer (readable stream) sends data faster than the consumer (writable stream)
+  can process it, the data has to be buffered. For instance, consider uploading
+  a local file: The readable stream is relatively fast as the file is stored locally.
+  Assuming the network connection to the client is slow, the writable stream will consequently
+  be slow as well. As a result, the data has to be buffered. Because data will be buffered in
+  memory for each write command, this will result in memory problems after a certain amount of
+  requests.\footcite[Cf.][81]{teixeira_2012} This problem can be avoided by pausing the producer 
+  until the consumer catches up. At this point, Node.js comes into play. Readable streams 
+  in Node.js can be paused and resumed, which addresses exactly the described 
+  problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates 
+  how this is realized.\footcite[Cf.][81]{teixeira_2012}
+  \item[]
 %\begin{lstlisting}[language=javascript,caption={Controlling streams\footcite[Cf.][81]{teixeira_2012}},label=lst:streaming]
 \begin{lstlisting}[language=javascript,caption={Controlling streams},label=lst:streaming]
 %require('http').createServer(function(req, res) {
@@ -547,14 +566,26 @@ requirements of a project. Besides those use cases listed in the previous
 section there are also a few usage scenarios where one should not use
 asynchronous frameworks like Node.js or Vert.x.\\
 
-Since one key feature of asynchronous technologies is non-blocking I/O, use cases that hardly encompass interaction with external resources do not set a precedent and might even be penalized. This penelization would be caused by the fact that the strength of non-blocking I/O could not be leveraged on the one hand and on the other hand one thread would be busy through computations and cause long response times.\footcite[Cf.][14]{Roden_2012}\\
+Since one key feature of asynchronous technologies is non-blocking I/O, use
+cases that hardly encompass interaction with external resources do not set a
+precedent and might even be penalized. This penelization would be caused by the
+fact that the strength of non-blocking I/O could not be leveraged on the one
+hand and on the other hand one thread would be busy through computations and
+cause long response times.\footcite[Cf.][14]{Roden_2012}\\
 
-Expanding upon the non-blocking I/O strenghts, it becomes obvious that asynchronous frameworks are not I/O bound. Consequently, they are, however, not designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
+Expanding upon the non-blocking I/O strenghts, it becomes obvious that
+asynchronous frameworks are not I/O bound. Consequently, they are, however, not
+designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
 
-Node.js and Vert.x do not offer any possibility to speed up a single request. These requests will aways
-run at the same speed. What it does is to maximise the number of possible requests while keeping the speed
-steady. This is why it scales so well. The only additional delay between request and response is the time
-that a request waits in the event loop until it gets processed.  In many cases however it is desirable to minimize the computation time itself for a single request. Once this is achieved it becomes a goal to keep that speed for a larger amount of requests.\\
+Node.js and Vert.x do not offer any possibility to speed up a single request.
+These requests will aways run at the same speed. What these frameworks do is to
+maximise the number of possible requests while keeping the processing speed
+steady. This is why it scales so well (see section \ref{scalability}). The only
+additional delay between request and response is the time that a request waits
+in the event loop until it gets processed.  In many cases however it is
+desirable to minimize the computation time itself for a single request. Once
+this is achieved it becomes a goal to keep that speed for a larger amount of
+requests.\\
 
 Another thing to note is that one should not choose these frameworks when
 there are other concepts or frameworks that might better fulfill the 
@@ -588,8 +619,11 @@ and some more. TODO: Why not use message queues that make use of a thread pool?
   \item[Proxy with extensive business logic] TODO - for example extensive ad filtering
   \item[XML-based environments] TODO - especially not suitable for Node.js
 \end{description}
-    
-TODO: Don't migrate for coolness (conclusion for this section!)
+
+This leads to the simple conclusion that migrating from legacy applications to asynchronous
+server applications can neither be justified by the benefits that asynchronous technologies
+can offer, nor by the hype around these frameworks alone. The true indicator should be whether
+or not it is the best suited technology for the application area in the given enerprise context.
     
 
 
