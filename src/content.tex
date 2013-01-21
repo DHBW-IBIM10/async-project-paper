@@ -1338,9 +1338,21 @@ threadsafe datastructures that developers can use to share data between multiple
 instances.\footcite[][]{TODO}
 
 \paragraph{Scaling on distributed machines}
-Deployment on distributed systems differs in Node.js and Vert.x.
-Vert.x. uses its own communication bus to share information between verticles.
-Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering functionality internally to scale on multiple machines. 
+Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
+functionality internally to scale on multiple machines.\\
+
+\begin{lstlisting}[language=bash,caption={Starting a vert.x application in cluster mode},label={lst:vertx_cluster}]
+vertx run server.js -cluster -cluster-port 22000
+\end{lstlisting}
+
+Listing \ref{lst:vertx_cluster} shows how a Vert.x cluster can be set up on a
+network with the default configuration. The cluster-port argument specifies on
+which port distributed instances will communicate with each other and defaults
+to $25500$ when omitted.
+Each instance that is started in clustermode will have access to a distributed
+event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
+internals can be found in the Hazelcast documentation on the project's
+website.
 
 
 \section{Outlook}
