@@ -12,9 +12,16 @@
 
 \date{\today}
 
+% DOCUMENT
+
 \begin{document}
+\pagestyle{scrheadings}
+
 % roman numerals
 \renewcommand{\thepage}{\Roman{page}}
+% page numbers centered on top:
+\chead{\pagemark}
+\cfoot{}
 
 %----------------------------------------------------------------------------
 % Title Page
@@ -197,6 +204,13 @@ or thread to occupy the CPU in the meanwhile.
 
 \subsection{Concept of asynchronous processing}
 \label{concept_async}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{img/asynch_call.png}
+\caption{A caption}
+\label{figure:alabel}
+\end{figure}
 
 An asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
