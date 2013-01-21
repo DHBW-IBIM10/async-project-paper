@@ -502,12 +502,16 @@ commecial redistribution in closed source projects should not be an issue.
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests in real time.
+A fairly obvious fit is given for I/O bound applications, as the single-threaded asynchronous processing
+does not wait for I/O streams to finish, but instead uses callbacks to come back to the processing part
+as soon as the I/O has finished.
 The single-threaded nature of event loops allows to make efficient use of the
-thread as long as callbacks don't take up too much time. This makes asynchronous
+thread as long as callback functions don't take up too much time. This makes asynchronous
 server applications a good fit for most types of networked applications that
 either tend to keep many inactive connections or need to handle many concurrent 
 short-lived connections.\\
-A few possible use cases are described in the list below.
+
+A few possible use cases are described in the list below and case studies are provided in Appendices TODO.
 
 \begin{description}
   \item[Web traffic monitoring] By getting notified of every single request that
@@ -589,15 +593,12 @@ The data flow control process can be automated by using the stream.pipe() method
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}\\ However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
 \textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Connect_2013} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
 \textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
-  	moving it through userspace (not possible with SSL enabled)
-%  \item[Lightweight json APIs] TODO: Non-blocking I/O model 
-% 		combined with JavaScript make it a great choice for
-% 		wrapping other data sources such as databases or web 
-% 		services and exposing them via a JSON interface%see http://nodeguide.com/convincing_the_boss.htm
-  \item[Proxies] TODO: intermediary that forwards requests and responses
+  \item[Proxies] A key reason for this use case is that there is oftentimes not much computation required to run a proxy and typically involves a high number of requests. A common task might be to filter a set of URLs, which can be easily done with an array in Java and JavaScript.\\
+\textbf{Known implementation:} There is a Vert.x implementation called vertx-proxy\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called node-http-proxy\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
+\textbf{Realization:} The requests are catched and the proxy implementations request the actual website themselves before it is passed back to the requesting client. Although it seems simple and there are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}, the application area should be considered and checked for demands like WebSockets or similar to make sure the proxy meets all requirements.
   \item[Push-notification and messaging systems] TODO: mainly idling connections, but realtime communication important
 
 \end{description}
@@ -610,7 +611,10 @@ Some success stories are available on \url{http://nodejs.org/}.
 As with all technologies one has to carefully evaluate whether or not it suits the
 requirements of a project. Besides those use cases listed in the previous
 section there are also a few usage scenarios where one should not use
-asynchronous frameworks like Node.js or Vert.x.\\
+asynchronous frameworks like Node.js or Vert.x. In general, the choice
+always depends on the very specific needs for every single use case.
+Critics argue that asynchronous frameworks are not necessarily the best choice
+only because they represent a new stream.\footcite[Cf.][]{semerau_2011},\footcite[Cf.][]{arranz_2011},\footcite[Cf.][]{behren_2003}\\
 
 Since one key feature of asynchronous technologies is non-blocking I/O, use
 cases that hardly encompass interaction with external resources do not set a
@@ -621,29 +625,7 @@ cause long response times.\footcite[Cf.][14]{Roden_2012}\\
 
 Expanding upon the non-blocking I/O strenghts, it becomes obvious that
 asynchronous frameworks are not I/O bound. Consequently, they are, however, not
-designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
-
-Node.js and Vert.x do not offer any possibility to speed up a single request.
-These requests will aways run at the same speed. What these frameworks do is to
-maximise the number of possible requests while keeping the processing speed
-steady. This is why it scales so well (see section \ref{scalability}). The only
-additional delay between request and response is the time that a request waits
-in the event loop until it gets processed.  In many cases however it is
-desirable to minimize the computation time itself for a single request. Once
-this is achieved it becomes a goal to keep that speed for a larger amount of
-requests.\\
-
-Another thing to note is that one should not choose these frameworks when
-there are other concepts or frameworks that might better fulfill the 
-projects requirements.
-A selection of such cases is shown in the list below. 
-
-Criticism on these concepts:\\
-\url{http://xquerywebappdev.wordpress.com/2011/11/18/node-js-is-good-for-solving-problems-i-dont-have/}\\
-\url{http://www.theserverside.com/discussions/thread.tss?thread_id=61693}\\
-\url{http://static.usenix.org/events/hotos03/tech/full_papers/vonbehren/vonbehren_html/index.html}\\
-and some more. TODO: Why not use message queues that make use of a thread pool?
-
+designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}\\
 
 \begin{description}
   \item[Datawarehousing with analytics] Doing analytical and complex computations
@@ -662,7 +644,6 @@ and some more. TODO: Why not use message queues that make use of a thread pool?
 	millions of requests does not automatically increase the number of users.
   \item[Large session data volumes] TODO
   \item[Workflow-driven applications] TODO
-  \item[Proxy with extensive business logic] TODO - for example extensive ad filtering
   \item[XML-based environments] TODO - especially not suitable for Node.js
 \end{description}
 
@@ -1358,22 +1339,14 @@ Vert.x and can be accomplished easily on a per-instance basis like shown in list
 Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
-computation intense tasks can be handled by a threadpool of 4 threads.\\
+computation intense tasks can be handled by a threadpool of 4 threads. 
+Vert.x provides  threadsafe datastructures that developers can be used to share data between multiple
+instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
+
 Node.js is designed to run single-threaded and can only scale to all available
-cores with additional packages. The recommended procedure is to deploy a node
-application multiple times and to use an additional load balancer that
-distributes incoming requests among all running node processes. This has some
-implications:
-Due to the isolation in separate processes Node.js instances cannot share any
-data or communicate directly with each other.
-Instead data is usually stored in a database like CouchDb\footnote{See
-\url{http://couchdb.apache.org/}} or key-value store like Redis\footnote{See
-\url{http://redis.io/}}.
-This database could then potentially become a bottleneck when multiple Node.js
-processes require access.\\
-Vert.x on the other hand was designed with this shortcoming in mind and provides
-threadsafe datastructures that developers can use to share data between multiple
-instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}
+cores using the Cluster module\footcite[Cf.][]{node_2012b}, which is, however, still in an experimental state.
+This module allows to take advantage of a multi-core system by launching a cluster of Node.js processes to handle the load. Basically it enables the developer to run several worker processes (depending on the number of cores) and create an HTTP server for each of them, whereby all of them share one port. 
+
 
 \paragraph{Scaling on distributed machines}
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
@@ -1391,27 +1364,49 @@ Each instance that is started in clustermode will have access to a distributed
 event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
 website.\\
-\textbf{TODO:} Node.js probably has a cluster module?
+
+Up to now, for Node.js there is no known way of distributing workloads among different servers, however that wish was addressed.\footcite[Cf.][]{node_clusterserver}
+
+
+\paragraph{General ways of distributing workload among distributed machines}
+One possible procedure is to deploy an application multiple times and to use an additional load balancer that
+distributes incoming requests among all running deployments. This has some
+implications: Due to the isolation in separate processes, application instances cannot share any
+data or communicate directly with each other.
+Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
+\url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
+\url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
+processes require access, depending on its ability to address parallel processing.
+
+\paragraph{Speeding up single requests}
+Node.js and Vert.x do not offer any possibility to speed up a single request.
+These requests will aways run at the same speed. What these frameworks do is to
+maximise the number of possible requests while keeping the processing speed
+steady. This is why it scales so well (see section \ref{scalability}). The only
+additional delay between request and response is the time that a request waits
+in the event loop until it gets processed.  In many cases however it is
+desirable to minimize the computation time itself for a single request. Once
+this is achieved it becomes a goal to keep that speed for a larger amount of
+requests.\\
 
 
 \section{Outlook}
 
-\subsection{Middleware as use case for Node.js}
-\label{middleware}
-"The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
-interaction among distributed software modules."\footcite[]{Geihs_2001} The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.
 
-The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js (see below).\\
+TODO: Roadmaps
+TODO: PoC further development
 
-One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using application/json as content type.\footcite[Cf.][]{rfc4627}
-
-\paragraph{Meteor and Opa}
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
-
-Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
-
-\paragraph{Etherpad}
-Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node.js as middleware. By migrating to Node.js reductions of lines of code and memory usage\footcite[Cf.][]{Weissschuh_2013} allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
+%
+%
+%
+%
+%
+%OUTLOOK
+%
+%
+%
+%
 
 
 \section{Conclusion}
@@ -1442,6 +1437,19 @@ Etherpad is an online collaborative text editor. Etherpad nicely illustrates the
 %subsections of appendix
 \begin{subappendices}
 \renewcommand{\setthesubsection}{\arabic{subsection}:}%
+
+
+\appsection{Middleware as use case for Node.js}
+\label{middleware}
+"The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
+interaction among distributed software modules."\footcite[][]{Geihs_2001} This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+
+The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js.\\
+
+One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
+
+Furthermore, in section TODO the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware.
+
 
 \appsection{Kue – A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
@@ -1484,9 +1492,12 @@ Node.js fetches the news feeds and distributes them to every current visitor in 
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
+\appsection{Meteor and Opa}
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
+
+Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
 
-\appsection{METEOR OR OPA EXAMPLE}
 % include your appendix with the LaTeX include command
 \label{appendix_meteor}
 CODE CODE CODE

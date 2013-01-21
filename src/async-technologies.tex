@@ -8,6 +8,7 @@
 \usepackage{csquotes}
 \usepackage[USenglish]{babel}
 \usepackage[T1]{fontenc}
+\usepackage[titles]{tocloft}
 
 % Hyperrefs / links
 \usepackage{hyperref}
@@ -60,8 +61,14 @@
 \definecolor{lstcomment}{RGB}{70,70,70}
 \definecolor{lststring}{RGB}{34,84,34}
 
-% Listings
+
+
+
 \usepackage{listings}
+
+
+% Listings
+
 
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
@@ -101,6 +108,8 @@
 	stringstyle=\color{lststring}\ttfamily,		% typewriter type for strings	
 }
 
+
+
 %--------------------------------------------------------------------
 % Definitions for the \listofappendices command
 %--------------------------------------------------------------------
@@ -135,10 +144,6 @@
 \makeatother
 
 
-% Default fonts
-\renewcommand{\rmdefault}{phv}
-\renewcommand{\sfdefault}{phv}
-
 %--------------------------------------------------------------------
 % Standard Names / Translations
 %--------------------------------------------------------------------
@@ -170,15 +175,53 @@
 % Table (captions)
 \renewcommand{\tablename}{Table}
 % Listings (caption)
-\renewcommand\lstlistingname{Listing}
+\renewcommand\lstlistingname{Lst.}
 %  List of Listings
 \renewcommand\lstlistlistingname{List of Listings}
 % Autoref name for listings
 \def\lstlistingautorefname{Lst.}
 
+
+%--------------------------------------------------------------------
+% Ensuring that labels in Lists of Stuff are
+% identical to those in the captions
+%--------------------------------------------------------------------
+\newlength{\mylen}
+
+%Figures
+\renewcommand{\cftfigpresnum}{\figurename\enspace}
+\renewcommand{\cftfigaftersnum}{:}
+\settowidth{\mylen}{\cftfigpresnum\cftfigaftersnum}
+\addtolength{\cftfignumwidth}{\mylen}
+%Tables
+\renewcommand{\cfttabpresnum}{\tablename\enspace}
+\renewcommand{\cfttabaftersnum}{:}
+\settowidth{\mylen}{\cfttabpresnum\cfttabaftersnum}
+\addtolength{\cfttabnumwidth}{\mylen}
+%Listings (Hack)
+\makeatletter
+\begingroup
+\let\newcounter\@gobble\let\setcounter\@gobbletwo
+\globaldefs\@ne \let\c@loldepth\@ne
+\newlistof{listings}{lol}{\lstlistlistingname}
+\endgroup
+\let\l@lstlisting\l@listings
+\let\lstlistoflistings\listoflistings
+\makeatother
+
+\renewcommand{\cftlistingspresnum}{\lstlistingname\enspace}
+\renewcommand{\cftlistingsaftersnum}{:}
+\settowidth{\mylen}{\cftlistingspresnum\cftlistingsaftersnum}
+\addtolength{\cftlistingsnumwidth}{\mylen}
+
+
 %---------------------------------------------------------
 % Settings & Layout
 %---------------------------------------------------------
+
+% Default fonts
+\renewcommand{\rmdefault}{phv}
+\renewcommand{\sfdefault}{phv}
 
 % Border definitions
 \usepackage[paper=a4paper,
@@ -259,6 +302,8 @@
 % warning: includes ALL types but online.
 % Check your bibfile to avoid wrong entries here
 \printbibliography[nottype=book,heading=www]
+
+\input{affidavit}
 
 \end{document}
 
