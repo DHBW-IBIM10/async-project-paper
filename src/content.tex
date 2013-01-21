@@ -266,15 +266,15 @@ Interest in Vert.x is comparably low, considering that it's idea is very similar
 The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
 
 Theory (1) would be that by the time Vert.x became complete enough to develop
-productively (at least as productive as was possible with Node at the same
-point), Node already established itself as the dominant technology especially if
+productively (at least as productive as was possible with Node.js at the same
+point), Node.js already established itself as the dominant technology especially if
 mindshare is concerned, which is supported by the data from Google.
 Theory (2) is based around technical considerations. Because of the dogmatic
 nature of asynchronicity in the Node.js framework, every package available on
-NPM\nomenclature{NPM}{Node Package Manager} is built with asynchronous calling
+NPM\nomenclature{NPM}{Node.js Package Manager} is built with asynchronous calling
 and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the
 other hand is in a curious position here, Vert.x itself is architecturally
-similar to Node but its ecosystem of established Java libraries is not developed
+similar to Node.js but its ecosystem of established Java libraries is not developed
 with these principles in mind. This poses the danger of executing
 synchronous/blocking code, negating all of Vert.x' advantages. Obviously this
 can limit interest from the outset.
@@ -298,7 +298,7 @@ EventMachine 	& Ruby    			& ``EventMachine is a library for Ruby, C++, and Java
 									  programs. It provides event-driven I/O using the Reactor 
 									  pattern."\footcite[]{eventmachine_2012}\\
 
-Node.js			& JavaScript		& Node is based on Chrome's JavaScript runtime \textit{V8}.
+Node.js			& JavaScript		& Node.js is based on Chrome's JavaScript runtime \textit{V8}.
 									  The platform is fully event-driven and offers core
 									  functionalities for network programming. Its functionality
 									  can be extended with a large number of modules using an
@@ -440,7 +440,7 @@ versions.\footcite[Cf.][]{Vertx_repository_2012}
 
 %TODO: http://vertx.io/manual.html#message-passing
 % add info on message passing. vert.x makes use of shared maps to avoid issues
-% in distributed systems. how does node handle that?
+% in distributed systems. how does Node.js handle that?
 
 An extensive online documentation is available for all supported languages.
 Additionally, code examples for most features are available for all supported languages in
@@ -963,7 +963,7 @@ socket.on("liveform", function (data) {
 To use the application, the node.js servers can be started by using the command-line. After navigating
 into the project’s folder using cd, the only command needed is:
 \begin{lstlisting}[caption={Executing Node.js code}]
-node [filename].js
+Node.js [filename].js
 \end{lstlisting}
 
 \newpage
@@ -978,8 +978,59 @@ manner). Thus the time needed to become familiar with a framework and its
 language directly impact the development cost either because of the time needed
 related to the learning curve or because of resources invested in maintenance
 and bug-fixing.
-The results of this sub-section are summarized in Table \ref{tbl_maintain}.\\
-%TODO: a reference to figure \ref{img_googletrend_nodevertx} might suit in here
+
+\begin{savenotes}
+\begin{table}[ht]
+%\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
+\begin{tabular*}{\textwidth}{p{0.27\textwidth} p{0.32\textwidth} p{0.35\textwidth}}
+\toprule
+				& \textbf{Node.js} & \textbf{Vert.x} \\
+\midrule 
+%\endhead
+\textbf{API stability}
+& Frequent changes\footcite[Cf.][]{node_api_changes_2012}
+& Rarely changes\footcite[Cf.][]{vertx_2012}
+\\	
+\textbf{Support of dated\newline versions}
+& No official policy known
+& No official policy known
+\\
+\textbf{Testing}
+& Has good test coverage. Various 3rd party test frameworks applicable\footcite[Cf.][]{node_testing_2013}
+& Has good test coverage and comes with an own testsuite.\footcite[Cf.][]{vertx_repository_2013} Established test libraries like JUnit can be used.
+\\						  
+\textbf{Skill transferability}	
+& Coding style is similar to established JavaScript guidelines\footcite[Cf.][]{node_style_2012}							
+& Depends on the used language. Java coding style in Vert.x e.g. differs from J2EE practices
+\nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
+is similar to established JavaScript frameworks.
+\\
+\textbf{Official\newline documentation}
+& API documentation, manual\footcite[Cf.][]{node_2012}
+& API documentation, manual\footcite[Cf.][]{vertx_2012}, basic tutorial, code examples\footcite[Cf.][]{Fox_2013}
+\\
+\textbf{Additional\newline documentation}
+& Large number of books and blog articles
+& Few blog articles, users group
+\\
+\textbf{License}			
+& MIT license 			
+& MIT license
+ \\
+\bottomrule 
+\end{tabular*}
+  \caption{Maintainability comparison of Node.js and Vert.x}
+  \label{tbl_maintain}
+\end{table}
+\end{savenotes}
+
+Table \ref{tbl_maintain} gives a quick overview over the differences between
+Node.js and Vert.x in this context. For both, Vert.x and Node.js, there is no
+official policy how security issues or defects in dated versions are handled, so
+that upgrading to the latest stable versions is recommended for both frameworks.
+API changes need to be checked with every upgrade.
+Further framework-specific details are provided in the following sub-sections.\\
+
 
 \subsubsection{Node.js maintainability}
 
@@ -992,13 +1043,13 @@ Unfortunately TTM is not everything because equal attention needs
 to be given to Total Cost of Ownership (TCO\nomenclature{TCO}{Total Cost of
 Ownership}), i.e.\ the total expenditure required including costs incurred
 post-deployment\footcite[Cf.][203-207]{holtsnider_2010}. 
-Here Node presents a challenge in its reliance on callback
+Here Node.js presents a challenge in its reliance on callback
 leading to hard-to-follow and hard-to-fix code driving up TCO significantly
 because patches become more and more difficult to write with increasing $\Delta
 t_{Launch<->Present}$, especially if the code is not to be maintained by the %TODO: explain delta launch-present or remove it.
 original developers.
 
-Furthermore, Node is still at an unstable stage of code maturity (at time of
+Furthermore, Node.js is still at an unstable stage of code maturity (at time of
 writing, the current version is $0.9.7$\footcite[Cf.][]{node_unstable_2013})
 causing infrequent breaking changes to its APIs which usually is a no-go in the enterprise.
 The API documentation distinguishes between five stability states (deprecated,
@@ -1006,14 +1057,14 @@ experimental, unstable, stable, API frozen, locked), whereas the latter ones are
 rarely found in the documented features.\footcite[Cf.][] {node_2012}.
 This is reinforced by a community mindset of 'Upgrade Node, Update Code' based
 on a preference for new features. The unintended benefit of this is a lot of
-available material for Node programmers in blogs and on
+available material for Node.js programmers in blogs and on
 StackOverflow\footnote{See \url{www.stackoverflow.com}}.
 This leads to the conclusion that the current pace of progress does not
 facilitate enterprise adoption, however it is not a showstopper.
 
 \subsubsection{Vert.x maintainability}
 Vert.x offers a similar picture to Node, however some of Node's shortcoming are
-more pronounced on the Vert.x side of things. Whereas Node can recruit from
+more pronounced on the Vert.x side of things. Whereas Node.js can recruit from
 established web developers, is Vert.x suffering from a curious conundrum. It is
 based on the JVM, which has enormous amounts of talent (esp. in the enterprise)
 but because of its diametrical differences to the conventional libraries it does
@@ -1044,31 +1095,6 @@ developers. So far there is no final decision made, however it seems likely that
 submits the project as-is to a foundation, so that development can be continued
 within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_future_2013}.
 
-
-\begin{savenotes}
-\begin{longtable}[c]{p{0.27\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
-\toprule
-				& \textbf{Node.js} & \textbf{Vert.x} \\
-\midrule 
-\endhead
-\textbf{Skill Availability}		& Good			& None%TODO: WTF, you jokin', right?
-\\							  
-\textbf{Skills Transferable?}	& Yes (from est. JS frameworks)	& No (very different from conventional J2EE\nomenclature{J2EE}{Java 2 Enterprise  Edition}
-\\
-\textbf{Available Material}		& A lot (books, blogs, documentation) & Project documentation and users group
-\\
-\textbf{License Cost}			& None 			& None
- \\
- \textbf{TTM} 					& Low (transferable skills + material) & High (learning curve)
- \\
- \textbf{TCO}					& Medium (low TTM but may be high maintenance) & Medium (takes longer to develop, but JVM maintenance is well known)
- \\
-\bottomrule 
-  \caption{Maintainability comparison of Node and Vert.x}
-  \label{tbl_maintain}
-\end{longtable}
-\end{savenotes}
-
 \subsection{Integration}
 \label{integration}
 Vert.x and Node.js are supposed to be used as fully event driven standalone
@@ -1085,7 +1111,7 @@ applications.\\
 \subsubsection{Node.js Integration}
 \label{node_integration}
 Node.js is not designed to handle CPU-intensive tasks efficiently. However,
-there is a way a Node process can perform such tasks without impairing the
+there is a way a Node.js process can perform such tasks without impairing the
 application performance. Node.js uses so-called child processes for this
 (provided by the \textit{child process}
 module). The module is basically a wrapper around the unix tool \textit{popen} and
@@ -1093,14 +1119,14 @@ provides access to a child process' communication streams (stdin, stdout, stderr
 \footcite[Cf.][]{node_child_process}
 
 There are two cases child processes are used for:\\
-First, CPU-intensive tasks can be performed outside Node by assigning them to a
+First, CPU-intensive tasks can be performed outside Node.js by assigning them to a
 different process (which is then called a child process) in order not to block
 the event loop. Output data from the child process is then sent back to the
 parent process.\footcite[Cf.][63]{teixeira_2012} In this case, the child process is used to
 outsource a task that requires high computation work and would otherwise block
 the event loop. This approach however requires routines that should run
 within the child process to be written in JavaScript as well, so that it is not
-usable to properly connect an existing application with the Node application.\\
+usable to properly connect an existing application with the Node.js application.\\
 A second way of using the child process module is to actually run external
 commands, scripts, files and other utilities that cannot directly be executed inside Node.\footcite[Cf.][63]{teixeira_2012}
 
@@ -1197,7 +1223,7 @@ Meteor and Opa are two frameworks built on top of Node.js and MongoDB created ar
 Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
 \paragraph{Etherpad}
-Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node as middleware. By migrating to Node reductions of lines of code and memory usage\footcite[Cf.][]{Weissschuh_2013} allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
+Etherpad is an online collaborative text editor. Etherpad nicely illustrates the power of Node.js as middleware. By migrating to Node.js reductions of lines of code and memory usage\footcite[Cf.][]{Weissschuh_2013} allow for easier embedding in web applications and also greater extensibility by offering a JS API\nomenclature{API}{Application Programming Interface}.
 
 
 \section{Conclusion}
@@ -1264,7 +1290,7 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
 
 The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
 AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
-Node fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node uses the broadcast function from the socket.io module.
+Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
 \appsection{Case Study – Etherpad}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
