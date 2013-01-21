@@ -1021,22 +1021,32 @@ within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_fu
 
 
 \begin{savenotes}
-\begin{longtable}[c]{p{0.27\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
+\begin{longtable}[c]{p{0.25\textwidth} p{0.27\textwidth} p{0.35\textwidth}}
 \toprule
 				& \textbf{Node.js} & \textbf{Vert.x} \\
 \midrule 
 \endhead
-\textbf{Skill Availability}		& Good			& None%TODO: WTF, you jokin', right?
+\textbf{API stability}
+& Frequent changes
+& rarely changes
 \\							  
-\textbf{Skills Transferable?}	& Yes (from est. JS frameworks)	& No (very different from conventional J2EE\nomenclature{J2EE}{Java 2 Enterprise  Edition}
+\textbf{Skill transferability}	
+& Coding style is similar to established JavaScript frameworks									
+& Depends on the used language. Java coding style in Vert.x e.g. differs from
+\nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
+is similar to established JavaScript frameworks.
 \\
-\textbf{Available Material}		& A lot (books, blogs, documentation) & Project documentation and users group
+\textbf{Official\newline documentation}
+& API documentation, manual
+& API documentation, manual, basic tutorial, code examples
 \\
-\textbf{License Cost}			& None 			& None
- \\
- \textbf{TTM} 					& Low (transferable skills + material) & High (learning curve)
- \\
- \textbf{TCO}					& Medium (low TTM but may be high maintenance) & Medium (takes longer to develop, but JVM maintenance is well known)
+\textbf{Additional\newline documentation}
+& Large number of books and blog articles
+& Few blog articles, users group
+\\
+\textbf{License}			
+& MIT license 			
+& MIT license
  \\
 \bottomrule 
   \caption{Maintainability comparison of Node and Vert.x}
