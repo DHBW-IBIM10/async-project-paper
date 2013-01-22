@@ -1392,9 +1392,8 @@ Vert.x and can be accomplished easily on a per-instance basis like shown in list
 Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
-computation intense tasks can be handled by a threadpool of 4 threads. 
-Vert.x provides  threadsafe datastructures that developers can be used to share data between multiple
-instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
+computation intense tasks can be handled by a thread pool of 4 threads. 
+Vert.x provides  thread-safe data-structures that developers can use to share data between instances. However these data-structures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
 
 Node.js is designed to run single-threaded and can only scale to all available
 cores by using the Cluster module\footcite[Cf.][]{node_2012b}, which is still in an experimental state.
