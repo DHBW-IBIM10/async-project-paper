@@ -391,10 +391,10 @@ For example, if a file should be read on the file system, a specified callback f
 
 The asynchronous programming style is implemented through events that determine the flow of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
 The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler (callback). In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one process inside
-one thread, which causes no interruption in the event handler and will enable it to run until the end.￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+one thread, which causes no interruption in the event handler and will enable it to run until the end.
 This allows the programmer to relax the synchronization requirements and not have to worry about concurrent threads of execution changing the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
 
-Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html#modules_core_modules}} \\
+Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}} \\
 The latest version of the Node.js environment can be installed from a github repository.\footnote{See \url{  http://nodejs.org/dist/latest/}} \\
 
 Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
