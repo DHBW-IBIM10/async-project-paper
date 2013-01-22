@@ -657,38 +657,57 @@ with these frameworks. These implementations are thoroughly described in the fol
 \label{software_description}
 \FloatBarrier
 The exemplary implementation consists of a web service that can be used to calculate
-the expected fee for an insurance. However this application should only serve as a 
-demonstration of the used asynchronous frameworks and is hence very simplified.
+the expected fee for an insurance. The idea behind this application is that
+two clients can collaborate during the process of the form entry before submitting
+all values for the fee calculation to the server.
+However this application should only serve as a demonstration of the used asynchronous 
+frameworks and is hence very simplified.\\
+Functionalities that are included are usual POST requests as well as real time communication
+via a WebSocket.
 
 \begin{figure}[h]
 	\centering
 	\setlength\fboxsep{2pt}
 	\fbox{
-	\includegraphics[width=0.9\textwidth]{img/poc_workflow.pdf}
+	\includegraphics[width=0.9\textwidth]{img/poc_workflow2.pdf}
 	}
 	\caption{Usage workflow of the exemplary application}
 	\label{fig:application_workflow}
 \end{figure}
 
 
-The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
-first step the user opens the website in a browser and is shown a form that
-consists of two parts - the first part being a section for personal details and
-the second part for parameters that will be used to determine the fee for the
-insurance.\\
-The user then fills in all necessary form fields and instantly gets feedback on
-the vailidy of the entered values. Once all fields are filled correctly the form
-can be submitted to the application via HTTP or HTTPS. The data received by the server
-then gets validated again to avoid processing of manipulated requests.\\
-
-While typing the data into the form fields, those inputs are instantly sent to the server using WebSockets.
-The server will distribute these inputs to all clients that have opened the same form,
-which is identified via a key. Furthermore, the user gets instant feedback on what the
-insurance rate would be like. This feature is, however, realized via an AJAX call, which is triggered
-when the three fields of the second part (being "career", "amount insured" and "ownership stake") are valid. Using two technologies is conceptually valuable to show serveral ways of communication.
+The basic usage workflow is shown in Fig. \ref{fig:application_workflow}.
+Upon page load both users can assign a form key. All users with the same key
+will be collaborating with each other and receive all input changes from the
+other users - this is comparable to a simple chat.
+the form consists of two parts - the first part being a section for personal
+details and the second part for parameters that will be used to determine the
+fee for the insurance.\\
+The users then fill in all necessary form fields (step 1 in Fig.
+\ref{fig:application_workflow}) and instantly get feedback on the vailidy of the
+entered values (step 2 in Fig. \ref{fig:application_workflow}).
+The evaluation is done locally on the clients' machines.
+While typing the data into the form fields, those inputs are instantly sent to
+the server using WebSockets.
+The server will distribute these inputs to all clients that have opened the same
+form, which is identified via the key that was set initially (step 3 in Fig.
+\ref{fig:application_workflow}).\\
+Once all fields that are required for the fee calculation are filled correctly
+the client automatically submits the values via AJAX to the server over a secure
+HTTPS connection (step 4 in Fig. \ref{fig:application_workflow}). On the server
+these values are then validated again to avoid processing of manipulated requests
+(step 5 in Fig. \ref{fig:application_workflow}). The result of the fee calculation
+is then returned to the client, which closes the HTTP connection (step 6 in Fig. \ref{fig:application_workflow}).\\
+This AJAX call is triggered when the three fields of the second part (being
+\textit{career}, \textit{amount insured} and \textit{ownership stake}) are
+valid.\\
+Using two different technologies (WebSockets and AJAX) for this workflow is
+certainly not the best approach from a design point of view but is conceptually
+valuable to show serveral ways of communication.
 
 \nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
 \nomenclature{HTTP}{Hyper Text Transfer Protocol}
+\nomenclature{AJAX}{Asynchronous JavaScript and XML}
 
 
 
