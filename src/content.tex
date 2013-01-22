@@ -304,6 +304,18 @@ with these principles in mind. This poses the danger of executing
 synchronous/blocking code, negating all of Vert.x' advantages. Obviously this
 can limit interest from the outset.
 
+Another important metric to assess the potential impact of a framework is the
+technical background and the availability of skilled developers. Redmonk
+investigated in three consecutive years the popularity of programming languages
+by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and
+StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
+2012, JavaScript was ranked first before Java, PHP, Python and
+Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
+performance over the past three years. This is an affirmative aspect with regard
+to the potential target audience of developers of Node.js and Vert.x, which will
+be introduced in the next sub-section.
+
+
 \begin{savenotes} %alloows proper citation marks inside tables
 \begin{table}[ht]
 %\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
@@ -345,16 +357,18 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \end{table}
 \end{savenotes}
 
-Another important metric to assess the potential impact of a framework is the
-technical background and the availability of skilled developers. Redmonk
-investigated in three consecutive years the popularity of programming languages
-by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and
-StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
-2012, JavaScript was ranked first before Java, PHP, Python and
-Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
-performance over the past three years. This is an affirmative aspect with regard
-to the potential target audience of developers of Node.js and Vert.x, which will
-be introduced in the next sub-section.
+Table\ref{tab:existing_frameworks} only considers four major frameworks. Other libraries/frameworks include, but are not limited to:
+
+\begin{description}
+  \item Perl's AnyEvent\footnote{\url{http://software.schmorp.de/pkg/AnyEvent.html}}
+  \item Ruby's Rev\footnote{\url{http://rev.rubyforge.org/rdoc/}} and Cramp\footnote{\url{http://cramp.in/}} which is built on EventMachine\footnote{\url{http://rubyeventmachine.com/}}
+  \item Python's tornado\footnote{\url{http://www.tornadoweb.org/}}, asyncore module\footnote{\url{http://effbot.org/librarybook/asyncore.htm}} and sitting on that Medusa\footnote{\url{http://packages.debian.org/sid/python-medusa}}
+  \item Python's gevent\footnote{\url{http://www.gevent.org/}} library
+  \item .NET's Rx\footnote{\url{http://msdn.microsoft.com/en-us/data/gg577609}} library
+  \item JVM's NIO\footnote{\url{http://docs.oracle.com/javase/1.5.0/docs/guide/nio/}}
+  \item Linux' epoll\footnote{\url{http://linux.die.net/man/4/epoll}}, C's libev\footnote{\url{http://software.schmorp.de/pkg/libev.html}} and libeio\footnote{\url{http://software.schmorp.de/pkg/libeio.html}}
+  \item Erlang\footnote{\url{http://www.erlang.org/}}
+\end{description}
 
 \FloatBarrier
 
