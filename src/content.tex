@@ -112,21 +112,11 @@ evaluated based on two sample implementations in Node.js  and Vert.x.
 
 Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets).
 
-\newpage
-\section{Setting the context}
-\label{setting_the_context}
-\subsection{Web development basics}
+\subsection{Problem description}
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
-and processing are finished, as highlighted in Fig. \ref{img_req_res}\footcite{req_res}.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.75]{img/rest_call.png}
-\caption[REST request-response sequence diagram]{REST request-response sequence diagram\label{img_req_res}}
-\end{figure}
-%\footcitetext{req_res}
+and processing are finished.
 
 While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
@@ -148,13 +138,13 @@ deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footci
 %\footcitetext{img_ajax}
 
 Although this addressed the issue on the client-side, server-side request were
-still handled very much in a synchronous fashion. For example the popular Apache
-web server forks a new process for each incoming request\footnote{TODO: find
-source}. As popular applications have to cope with unprecedented amounts of
+still handled very much in a synchronous fashion. As popular applications have to cope with unprecedented amounts of
 concurrent users in conjunctions with massive request counts, this obviously
-causes performance issues.\\
+causes performance issues. Reasons for these issues are that blocking I/O streams also cause the related thread to idle and consequently block this thread, meaning it cannot be used for other requests. The next chapter expands upon I/O bound and CPU bound applications as well as single-/multithreaded technologies, and will explain further, why asynchronous technologies can help mitigate problems that especially applications with a lot of I/O streams face.\\
 
-
+\newpage
+\section{Setting the context}
+\label{setting_the_context}
 
 \subsection{Potential web development issues}
 \label{potentialissues}
@@ -222,13 +212,12 @@ or thread to occupy the CPU in the meanwhile.
 
 An asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
-to the \textit{readAsText} function is done asynchronously. This means
-that the executing thread is not blocked (see Fig. \ref{fig:asynch_call}). There is no
+event-driven programming.\footcite[Cf.][16]{teixeira_2012} Asynchronous processing means
+that the executing thread is not blocked. There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
-as soon as the read operation has completed.
-
+as soon as the read operation has completed and is processed in the same thread, which means that there is at most one callback running at a time and the developer does not face concurrency issues.
+The developer’s task is to write lightweight event handlers that can be processed quickly as every callback is an interruption of the event processing in the event loop.\footcite[Cf.][]{Croucher_2012} Memory or processor intense callbacks can lead to growing queues of unserved events, which eventually results in a slow application or service.\footcite[Cf.][48]{teixeira_2012}
 
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
@@ -244,7 +233,7 @@ read operation has finished.
 \lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
-As opposed to the synchronous call, \autoref{lst:asynchronous_call} demonstrates
+As opposed to the asynchronous call, \autoref{lst:asynchronous_call} demonstrates
 how the same example can be realized an asynchronous fashion using event-driven
 methodology: After the file was read, the callback will be triggered in order to
 display its content.
@@ -263,7 +252,8 @@ label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-This sub-section will give a brief market overview, which is follwed by the
+The principle of asynchronous processing exists on the client for a long time and has also evolved
+on the server-side. This sub-section will give a brief market overview, which is follwed by the
 introduction of two upcoming frameworks for server-side asynchronous
 development: Node.js and Vert.x
 
