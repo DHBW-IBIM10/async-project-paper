@@ -1276,9 +1276,10 @@ allows registering callbacks for certain events (see lines 4,8 and 12).
 \lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code},label=lst:node_child]%
 {lst/node_child_process.js}
 
-
 Invoking processes on a different machine across the network still
-requires a remote API or a distributed message bus system.
+requires a remote API or a distributed message bus system.\\
+
+Moreover, Kue is an example of a message queue developed in Node.js, which could serve as connector to the enterprise service bus. Appendix \ref{appendix_kue} expands upon this module.
 
 
 \subsubsection{Vert.x Integration}
