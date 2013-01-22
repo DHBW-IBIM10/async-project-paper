@@ -220,28 +220,20 @@ or thread to occupy the CPU in the meanwhile.
 An asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
 event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
-to the \textit{readAsText} function is done asynchronously. There is no
+to the \textit{readAsText} function is done asynchronously. This means
+that the executing thread is not blocked (see Fig. \ref{fig:asynch_call}). There is no
 return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
 
 
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=\textwidth]{img/processing_model.png}
-\caption{Processing Node.js}
-\label{fig:processing_model}
-\end{figure}
-\footcitetext[]{aaronstannard_2011}
-
-\FloatBarrier
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
 \label{comparison_syncasync}
 
 % code goes here...
 
-A typical synchronous call is provided in Listing \ref{lst:synchronous_call}. The
+A typical synchronous call is provided in \autoref{lst:synchronous_call}. The
 content of a file is read and displayed afterwards. The program is blocked until the
 read operation has finished.
 
@@ -249,10 +241,13 @@ read operation has finished.
 \lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
-As opposed to the synchronous call, \ref{lst:asynchronous_call} demonstrates how the same example can be realized an asynchronous fashion using event-driven methodology: After the file was read, the callback will be triggered in order to display its content.
+As opposed to the synchronous call, \autoref{lst:asynchronous_call} demonstrates
+how the same example can be realized an asynchronous fashion using event-driven
+methodology: After the file was read, the callback will be triggered in order to
+display its content.
 
 % same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 
@@ -265,13 +260,20 @@ label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-This sub-section will give a brief market overview, which is follwed by the introduction of two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x
+This sub-section will give a brief market overview, which is follwed by the
+introduction of two upcoming frameworks for server-side asynchronous
+development: Node.js and Vert.x
 
 
 \subsubsection{Market Overview}
 \label{frameworks_overview}
 \FloatBarrier
-Table \ref{tab:existing_frameworks} shows that there is actually competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
+Table \ref{tab:existing_frameworks} shows that there is actually competition
+from established communities (namely the Ruby and Python ones). An important
+aspect in determining the potential success of a new technology is measuring the
+interest of software developers in the newcomer. Google-developed Google Trends
+visualizes the 'search interest', i.e.\ the amount of queries of a particular
+subject and related ones\footcite[Cf.][]{g_trends}.
 
 % \begin{figure}[hbtp]
 % \centering
@@ -377,13 +379,19 @@ Every function in Node.js is asynchronous, which means that the current thread c
 Node.js is single-threaded, which is why only one thing can happen at the same time. Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
 \\
 
-Node.js's large performance benefits are caused through the use of Google's new JavaScript engine V8, which naturally ships with the web browser Chrome and is used for Node.js too. Due to the fact that V8 compiles JavaScript into
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=\textwidth]{img/processing_model.png}
+\caption[Processing Node.js]{Processing Node.js\footnotemark}
+\label{fig:processing_model}
+\end{figure}
+\footcitetext{aaronstannard_2011}
+
+Node.js's large performance benefits are caused by the use of Google's new JavaScript engine V8, which naturally ships with the web browser Chrome and is used for Node.js too. Due to the fact that V8 compiles JavaScript into
 real machine code before executing it, Node.js has an advantage over 
 traditional techniques such as executing bytecode or interpreting it.\footnote{See \url{https://developers.google.com/v8/intro}}
 \\
 Out of the box, Node.js provides into the binary compiled core modules, to help access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}}
-\\
-
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}}
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
 The node package manager, however, provides 21,104 packaged modules as of January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to leverage a variety of pre-defined complex functionalities.
@@ -394,14 +402,12 @@ Node.js is licensed under the MIT License\footnote{See \url{http://opensource.or
 
 
 
-
-
 \subsubsection{Vert.x}
 \label{vert.x}
 
-Vert.x is a polyglot that runs on the Java Virtual Machine (JVM). It is hence
-possible to scale over available cores without manually forking multiple
-servers.\\
+Vert.x is a programming framework that runs on the Java Virtual Machine (JVM).
+It is hence possible to scale over
+available cores without manually forking multiple processes.\\
 The application API is exposed in multiple programming lanugages (see table
 \ref{tab:existing_frameworks}).
 % Implication: use case, code reuse from different legacy systems written in
@@ -411,7 +417,6 @@ In Vert.x the smallest available deployment unit is a verticle, which runs
 inside an instance. Each instance runs single-threaded.
 Multiple verticles can be run inside one instance as depicted in Fig.
 \ref{fig:vertx_constructs}.
-%http://vertx.io/core_manual_java.html scaling tcp servers
 
 \begin{figure}[h]
 	\centering
@@ -425,7 +430,10 @@ Multiple verticles can be run inside one instance as depicted in Fig.
 
 When multiple instances are run on one machine, Vert.x automatically distributes incoming
 requests among all running instances in a round-robin fashion, so that each
-vert.x verticle instance remains single-threaded.
+Vert.x verticle instance remains single-threaded. Technically seen, there is
+more than one event loop, but Vert.x employs a mechanism that ensures that all events
+that are related (e.g. because they triggered each other) are run in the same context, i.e. the same thread.
+This allows real concurrency while providing the benefits of singlethreaded programming style.
 
 Vert.x also includes a distributed event bus, which enables verticles to
 communicate with each other, either within the same instance or across different
@@ -433,31 +441,35 @@ instances. The event bus allows direct communication with in-browser JavaScript 
 % Implication: ideal for real time applications. easy communication between client and server using JS
 Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
 so-called background pool as these tasks would otherwise block the event loop as
-described in section \ref{comparison}.
+described in section \ref{issue_threads}.
 
 The core functionality of Vert.x covers basic networking tasks and protocols,
-web servers, clients, access to the file system, shared maps and the event bus.
+web servers, network clients, access to the file system, shared maps and the event bus.
 The core libraries of Vert.x can be embedded in any JVM program for reuse in
 larger projects.\\
 As opposed to Node.js, the core functionality and API can be considered quite
-static as changes need to be done in all supported
-languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
+stable as changes need to be done in all supported languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
 The core can be extended with additional features that are provided by optional
-modules that can be obtained over a public git-based module
+modules which can be obtained over a public git-based module
 repository.\footcite[Cf.][]{vertx_mod_2012}.
 The repository currently contains 16 distinct modules in different
-versions.\footcite[Cf.][]{Vertx_repository_2012}
+versions.\footcite[Cf.][]{Vertx_repository_2012} Compared to Node.js this
+number is very low and reflects the relatively low interest in the project
+in comparison to Node.js (see Fig. \ref{img_googletrend_all}).
+However one should bear in mind that many libraries available for the languages supported
+by Vert.x can be used within this framework as well.
 
 %TODO: http://vertx.io/manual.html#message-passing
 % add info on message passing. vert.x makes use of shared maps to avoid issues
 % in distributed systems. how does Node.js handle that?
-
 An extensive online documentation is available for all supported languages.
 Additionally, code examples for most features are available for all supported languages in
 a public repository\footcite[Cf.][]{Fox_2013}.\\
 Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
 commecial redistribution in closed source projects should not be an issue.
+At present the project is owned by VMware, but it is likely that it will be transferred to
+an Open Source foundation (see section \ref{vertx_maintainability}).
 
 
 \newpage
@@ -1062,7 +1074,7 @@ is similar to established JavaScript frameworks.
 \\
 \textbf{License}			
 & MIT license 			
-& MIT license
+& Apache Software License 2.0
  \\
 \bottomrule 
 \end{tabular*}
@@ -1110,6 +1122,7 @@ This leads to the conclusion that the current pace of progress does not
 facilitate enterprise adoption, however it is not a showstopper.
 
 \subsubsection{Vert.x maintainability}
+\label{vertx_maintainability}
 Vert.x offers a similar picture to Node, however some of Node's shortcoming are
 more pronounced on the Vert.x side of things. Whereas Node.js can recruit from
 established web developers, is Vert.x suffering from a curious conundrum. It is
@@ -1279,7 +1292,7 @@ gives a good representation of the scalability attributes of asynchronous
 servers. The bad performance of Apache2 is due to the process forking for each
 new request. Nginx is a lightweight HTTP server that by default only uses as
 many threads as there are processors provided by the host, which is why it
-performs so well.
+performs so well. More detailed benchmarking results are shown in Appendix \ref{app:benchmark_results}.
 
 
 \begin{figure}[htbp]
@@ -1455,6 +1468,7 @@ AIRCODE has implemented an application providing real-time news and visitor’s 
 Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
 \appsection{Case Study – Etherpad}
+\label{appendix_meteor}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
@@ -1464,9 +1478,10 @@ Meteor and Opa are two frameworks built on top of Node.js and MongoDB created ar
 Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
 
-% include your appendix with the LaTeX include command
-\label{appendix_meteor}
-CODE CODE CODE
+\appsection{Benchmarking results}
+\label{app:benchmark_results}
+\lstinputlisting[numbers=none,caption={Benchmarking results as shown by the Apache benchmarking tool for web servers},
+label=lst:benchmark_results]{lst/200kb_benchmarks_output.txt}
 
 %--------------------------------
 % close the appendices environment
