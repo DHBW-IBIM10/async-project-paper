@@ -382,21 +382,6 @@ action, so that it is single-threaded and only one thing happens at once. This
 is why an event loop is a fundamental part of Node.js.\\
 
 Compared to other technologies that try to apply the fundamentals of asynchronous programming,
-Node.js' libraries are programmed completly asynchronous. It's architecture consists of modules to simplify the
-creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of a set
-of sebject related functions. Defined functions and variables within a module are mostly private, meant they are 
-only accessible from the inside of the module. Using a module requires to call the funktion require() and allocate it to a variable.
-Every function in Node.js is asynchronous, which means that a callback function is run, after a specific I/O job is done. 
-For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.
-
-The asynchronous programming style is implemented through events that determine the flow of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
-The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler (callback). In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one process inside
-one thread, which causes no interruption in the event handler and will enable it to run until the end.
-This allows the programmer to relax the synchronization requirements and not have to worry about concurrent threads of execution changing the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
-
-Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}} \\
-The latest version of the Node.js environment can be installed from a github repository.\footnote{See \url{  http://nodejs.org/dist/latest/}} \\
-
 Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
 creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains as set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.
 Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.\\
@@ -405,7 +390,6 @@ Node.js's asynchronous programming style is implemented through events that dete
 
 Out of the box, Node.js provides into the binary compiled core modules, to help access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}} \\
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}} \\
-
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
 But at the time of writing there were a massive of 21,308 easy to install packaed modules available to extend Node.js.\footcite[Cf.][TODO]{\url{https://npmjs.org}}
 Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment.
@@ -417,6 +401,7 @@ Node.js is licensed under the MIT License\footnote{See \url{http://opensource.or
 Node.js's large performance benefits are caused through the use of Google's new JavaScript engine V8, which naturally ships with the web browser Chrome and is used for Node.js too. Due to the fact that V8 compiles JavaScript into
 real machine code before executing it, Node.js has an advantage over 
 traditional techniques such as executing bytecode or interpreting it.\footnote{See \url{https://developers.google.com/v8/intro}}
+
 
 
 \subsubsection{Vert.x}
