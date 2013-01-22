@@ -252,7 +252,7 @@ label=lst:synchronous_call]{lst/synchronous_call.txt}
 As opposed to the synchronous call, \ref{lst:asynchronous_call} demonstrates how the same example can be realized an asynchronous fashion using event-driven methodology: After the file was read, the callback will be triggered in order to display its content.
 
 % same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 
@@ -1287,7 +1287,7 @@ gives a good representation of the scalability attributes of asynchronous
 servers. The bad performance of Apache2 is due to the process forking for each
 new request. Nginx is a lightweight HTTP server that by default only uses as
 many threads as there are processors provided by the host, which is why it
-performs so well.
+performs so well. More detailed benchmarking results are shown in Appendix \ref{app:benchmark_results}.
 
 
 \begin{figure}[htbp]
@@ -1463,6 +1463,7 @@ AIRCODE has implemented an application providing real-time news and visitor’s 
 Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
 \appsection{Case Study – Etherpad}
+\label{appendix_meteor}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
@@ -1472,9 +1473,10 @@ Meteor and Opa are two frameworks built on top of Node.js and MongoDB created ar
 Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
 
 
-% include your appendix with the LaTeX include command
-\label{appendix_meteor}
-CODE CODE CODE
+\appsection{Benchmarking results}
+\label{app:benchmark_results}
+\lstinputlisting[numbers=none,caption={Benchmarking results as shown by the Apache benchmarking tool for web servers},
+label=lst:benchmark_results]{lst/200kb_benchmarks_output.txt}
 
 %--------------------------------
 % close the appendices environment
