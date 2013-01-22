@@ -374,7 +374,7 @@ is why an event loop is a fundamental part of Node.js.\\
 
 Compared to other technologies that try to apply the fundamentals of asynchronous programming,
 Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
-creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains as set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the funktion require() and its allocation to a variable.
+creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains as set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.
 Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.\\
 
 Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}\\
