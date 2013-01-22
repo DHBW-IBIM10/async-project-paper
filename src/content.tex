@@ -382,7 +382,6 @@ action, so that it is single-threaded and only one thing happens at once. This
 is why an event loop is a fundamental part of Node.js.\\
 
 Compared to other technologies that try to apply the fundamentals of asynchronous programming,
-<<<<<<< HEAD
 Node.js' libraries are programmed completly asynchronous. It's architecture consists of modules to simplify the
 creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of a set
 of sebject related functions. Defined functions and variables within a module are mostly private, meant they are 
@@ -397,7 +396,7 @@ This allows the programmer to relax the synchronization requirements and not hav
 
 Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html#modules_core_modules}} \\
 The latest version of the Node.js environment can be installed from a github repository.\footnote{See \url{  http://nodejs.org/dist/latest/}} \\
-=======
+
 Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
 creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains as set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.
 Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.\\
@@ -406,7 +405,7 @@ Node.js's asynchronous programming style is implemented through events that dete
 
 Out of the box, Node.js provides into the binary compiled core modules, to help access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}} \\
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}} \\
->>>>>>> d98c4ae0d85902380e3681085519fa336a798364
+
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
 But at the time of writing there were a massive of 21,308 easy to install packaed modules available to extend Node.js.\footcite[Cf.][TODO]{\url{https://npmjs.org}}
 Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment.
