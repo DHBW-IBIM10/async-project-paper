@@ -119,14 +119,14 @@ Having set up an exemplary implementation, there are additional concepts explain
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request the result can be displayed only after transmission
-and processing are finished, as highlighted in Fig. \ref{img_req_res}.
+and processing are finished, as highlighted in Fig. \ref{img_req_res}\footcite{req_res}.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.75]{img/rest_call.png}
 \caption[REST request-response sequence diagram]{REST request-response sequence diagram\label{img_req_res}}
 \end{figure}
-\footcitetext{req_res}
+%\footcitetext{req_res}
 
 While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
@@ -138,14 +138,14 @@ serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
 synchronous transmission using the XmlHttpRequest object which allows to request
 resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
-deferring handling of the response to a callback (see Fig. \ref{img_ajax}) thus enabling much more responsive software.
+deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{img/ajax-diagram}
 \caption[AJAX Ddiagram]{AJAX diagram\label{img_ajax}}
 \end{figure}
-\footcitetext{img_ajax}
+%\footcitetext{img_ajax}
 
 Although this addressed the issue on the client-side, server-side request were
 still handled very much in a synchronous fashion. For example the popular Apache
@@ -437,11 +437,22 @@ This allows real concurrency while providing the benefits of singlethreaded prog
 
 Vert.x also includes a distributed event bus, which enables verticles to
 communicate with each other, either within the same instance or across different
-instances. The event bus allows direct communication with in-browser JavaScript as well.\\
-% Implication: ideal for real time applications. easy communication between client and server using JS
+instances. The event bus allows direct communication with in-browser JavaScript as well.
+Vert.x uses the SockJS library for this purpose which is a wrapper around normal websockets with
+fallback to alternative technologies, such as long-polling\footcite[][]{sockjs_2013}.
+This is shown schematically in Fig. \ref{fig:server_bridge}.
+
 Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
 so-called background pool as these tasks would otherwise block the event loop as
 described in section \ref{issue_threads}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{img/vertx_server_bridge.pdf}
+\caption[Vert.x server bridge]{Vert.x server bridge - schematic view}
+\label{fig:server_bridge}
+\end{figure}
+\footcitetext{req_res}
 
 The core functionality of Vert.x covers basic networking tasks and protocols,
 web servers, network clients, access to the file system, shared maps and the event bus.
@@ -459,9 +470,6 @@ in comparison to Node.js (see Fig. \ref{img_googletrend_all}).
 However one should bear in mind that many libraries available for the languages supported
 by Vert.x can be used within this framework as well.
 
-%TODO: http://vertx.io/manual.html#message-passing
-% add info on message passing. vert.x makes use of shared maps to avoid issues
-% in distributed systems. how does Node.js handle that?
 An extensive online documentation is available for all supported languages.
 Additionally, code examples for most features are available for all supported languages in
 a public repository\footcite[Cf.][]{Fox_2013}.\\
@@ -826,13 +834,13 @@ utility classes.
 One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
 requests are interpreted as file requests and are answered directly from within
 the verticle. POST requests are interpreted as form submissions. Whenever a POST
-requests arrives the verticle transforms the request body to a Json object and
+requests arrives, the verticle transforms the request body to a Json object and
 submits it via Vert.x' event bus.\\
 The second verticle is a worker verticle which does the CPU intense calculation
-tasks.This verticle listens on the event bus for incoming messages. Whenever
+tasks. This verticle listens on the event bus for incoming messages. Whenever
 such a message arrives it transforms the received Json object into a form
-instance for validation and fee calculation.The results are then sent back via
-the event bus of this operation has completed, so that the event loop can return
+instance for validation and fee calculation. The results are then sent back via
+the event bus when this operation has completed, so that the event loop can return
 the result to the client in its next iteration.\\
 The third verticle serves as a starter script which programmatically starts
 the previously mentioned verticles and terminates afterwards as it does not
@@ -842,7 +850,7 @@ define any callbacks itself (see listing \ref{lst:starter_verticle}).
 label=lst:starter_verticle]{lst/starter_verticle.java}
 
 The actual deployment of the other verticles happen in lines 13 and 14.
-An important detail is the 2nd parameter in the \texttt{deployWorkerVerticle} method.
+An important detail is the second parameter in the \texttt{deployWorkerVerticle} method.
 Vert.x allows deploying multiple instances of a verticle programmatically
 which eases scaling an application to the number of available processors of a machine.
 In this case the main loop is single-threaded and for each remaining processor
@@ -853,14 +861,14 @@ A global configuration file is read in line 12. This configuration file is
 formatted as Json string and can include settings for modules or verticles. The
 path to the configuration file has to be provided to the \texttt{vertx} command
 upon server start to allow access to it from within the verticles. For this implementation the command that
-has to be invoked is shown in listing \ref{lst:vertx_start}.
+has to be invoked as shown in listing \ref{lst:vertx_start}.
 
 \lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
 label=lst:vertx_start]{lst/vertx_start_command.sh}
 
 Vert.x allows either running verticles by providing the compiled Java class or by providing the
 source file, which is then compiled automatically by Vert.x. However in this
-setup we experienced some issues with the Vert.x run command when we tried to
+setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
 use it with the source files. The issues observed where partially related to
 Vert.x bug 444\footnote{see \url{https://github.com/vert-x/vert.x/issues/444}}.
 Due to incomplete dependency resolution, not all classes were compiled so that
@@ -870,9 +878,12 @@ the source files when multiple verticles need to be started programmatically.
 The path to the compiled classes has to be provided with the \texttt{cp} switch as
 shown in listing \ref{lst:vertx_start}.
 
-
+\clearpage
 \lstinputlisting[language=Java,caption={Vert.x form handler},
 label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
+
+\lstinputlisting[language=Java,caption={Vert.x worker verticle that receives the message sent by the form handler},
+label=lst:vertx_calculator]{lst/Calculator.java}
 
 
 The implementation of the communication between the web server and the worker
@@ -881,10 +892,30 @@ simple adressing mechanism where the address consists of a normal string.
 Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
 in the web server verticle and gets called whenever a form submission arrives.
 The handler registers another handler that is called as soon as the entire
-request body has arrived (line 3). The data that arrives as a buffer is than
-turned into a JsonArray (line 7) and submitted to the event bus (line 9).
-As soon as a reply is returned over the event bus it is forwarded to the client (line 12).
+request body has arrived (line 7). The data that arrives as a buffer is than
+turned into a JsonObject (line 10) and submitted to the event bus (line 12).\\
+As soon as a reply is returned over the event bus it is forwarded to the client line 16).
+\autoref{lst:vertx_calculator} shows the worker verticle that receives
+the message, does the calculation and then returns the result via the message bus.
 
+The live communication via the WebSocket Protocol is handled in a similar way. As mentioned in section
+\ref{vert.x}, Vert.x allows access to its event bus from within the client's browser.
+This is accomplished by using a so-called \textit{bridge} that forwards client messages to
+the server event bus and vice versa. As this poses a potential security vulnerability
+it is recommended to set up the bridge with a filtering instance that only allows certain
+addresses or message contents for inbound or outbound communication. \autoref{lst:vertx_bridge} contains
+the configuration that has been used for the real time communication between clients
+and server in the Vert.x implementation.\\
+Inbound messages are allowed on the address ``form.data'' and outbound messages
+are allowed on all addresses that start with ``form.data.client.'' and end with a number.
+The variable number is used as the form key for grouping clients, as described in section
+\ref{software_description}. Note that this is still an insecure solution as attackers
+could register theirselves with a large number of form keys to receive all data that
+is being sent. Possible ways to address this issue are either encrypting submitted
+data or by allowing connections for authorized clients only.
+
+\lstinputlisting[language=Java,caption={Vert.x event bus bridge configuration},
+label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
 
 
 \subsubsection{Node.js}
