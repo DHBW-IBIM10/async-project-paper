@@ -227,6 +227,15 @@ return value - instead an event handler is provided as a second argument.
 This function is also referred to as a callback function. It is called
 as soon as the read operation has completed.
 
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=\textwidth]{img/processing_model.png}
+\caption{Processing Node.js\footnotemark}
+\label{fig:processing_model}
+\end{figure}
+\footcitetext[]{aaronstannard_2011}
+
 \FloatBarrier
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
@@ -382,10 +391,9 @@ only accessible from the inside of the module. Using a module requires to call t
 Every function in Node.js is asynchronous, which means that a callback function is run, after a specific I/O job is done. 
 For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.
 
-Node.js's asynchronous programming style is implemented through events that determine the low of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
-The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler. In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one thread inside
-one process, which causes no interruption in the event handler and will enable it to run to completion.
-￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+The asynchronous programming style is implemented through events that determine the flow of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
+The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler (callback). In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one process inside
+one thread, which causes no interruption in the event handler and will enable it to run until the end.￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
 This allows the programmer to relax the synchronization requirements and not have to worry about concurrent threads of execution changing the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
 
 Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html#modules_core_modules}} \\
