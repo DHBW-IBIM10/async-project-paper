@@ -758,8 +758,8 @@ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.p
 \subsubsection{AJAX - Asynchronous JavaScript and XML}
 AJAX applies the previously explained concept of asynchronous communication to the client-side, meaning that the user who sends a request from a website does not have to wait for the answer, but can continue using that website in the meantime without any obvious loading activity that deters him/her from consuming content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the server, it usually goes back to the XMLHttpRequest object in JavaScript that is called by most browsers to send data to the server (further developments may apply). Receiving information in response to a request is realized using callback functions (JavaScript), whose principle was introduced too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses jQuery as library for AJAX, which "simplifies [...] event handling, animating, and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}. This in particular ensures better compatibility across several platforms, as it covers their specific requirements. The following code snippet in Listing \ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because client-side asynchronous calls are beyond the scope of this paper.
 
-\begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label=lst:jqueryajaxcall]
-$.ajax({
+\begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label={lst:jqueryajaxcall}]
+\$.ajax({
     url: '/testurl',
     type: 'POST',
     contentType: "application/json; charset=utf-8",
@@ -999,11 +999,11 @@ function sendToServer(fieldId) {
 }
 
 // trigger request for each key written in input/select fields
-$('input[type="text"]').on('keyup', function () {
-    sendToServer($(this).attr("id"));
+\$('input[type="text"]').on('keyup', function () {
+    sendToServer(\$(this).attr("id"));
 });
-$("select").on("change", function () {
-    sendToServer($(this).attr("id"));
+\$("select").on("change", function () {
+    sendToServer(\$(this).attr("id"));
 });
 \end{lstlisting}
 
@@ -1026,7 +1026,7 @@ socket.on("liveform", function (data) {
             }
         }
         // trigger validation to have smiliar visual appearances (valid/invalid) for the fields
-        $('#' + key).h5Validate("isValid");
+        \$('#' + key).h5Validate("isValid");
     }
 });
 \end{lstlisting}
