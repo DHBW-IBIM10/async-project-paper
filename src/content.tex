@@ -763,7 +763,22 @@ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.p
 \end{lstlisting}
 
 \subsubsection{AJAX - Asynchronous JavaScript and XML}
-AJAX applies the previously explained concept of asynchronous communication to the client-side, meaning that the user who sends a request from a website does not have to wait for the answer, but can continue using that website in the meantime without any obvious loading activity that deters him/her from consuming content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the server, it usually goes back to the XMLHttpRequest object in JavaScript that is called by most browsers to send data to the server (further developments may apply). Receiving information in response to a request is realized using callback functions (JavaScript), whose principle was introduced too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses jQuery as library for AJAX, which "simplifies [...] event handling, animating, and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}. This in particular ensures better compatibility across several platforms, as it covers their specific requirements. The following code snippet in Listing \ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because client-side asynchronous calls are beyond the scope of this paper.
+AJAX applies the previously explained concept of asynchronous communication to
+the client-side, meaning that the user who sends a request from a website does
+not have to wait for the answer, but can continue using that website in the
+meantime without any obvious loading activity that deters him/her from consuming
+content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the
+server, it usually goes back to the XMLHttpRequest object in JavaScript that is
+called by most browsers to send data to the server (further developments may
+apply). Receiving information in response to a request is realized using
+callback functions (JavaScript), whose principle was introduced
+too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses
+jQuery as library for AJAX, which "simplifies [...] event handling, animating,
+and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}.
+This in particular ensures better compatibility across several platforms, as it
+covers their specific requirements. The following code snippet in Listing
+\ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because
+client-side asynchronous calls are beyond the scope of this paper.
 
 \begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label={lst:jqueryajaxcall}]
 \$.ajax({
@@ -780,7 +795,17 @@ AJAX applies the previously explained concept of asynchronous communication to t
 
 \subsubsection{WebSockets}
 Moreover, a key technology to allow for real-time communiation that is leveraged
-in the Proof of Concept are WebSockets. The WebSocket Protocol is standardized by the Internet Engineering Task Force (IETF) in Request for Comments (RFC) 6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way communication between a client running untrusted code in a controlled environment to a remote host that has opted-in to communications from that code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake and the data transfer, where the handshake is compatible with the HTTP-based server-side software and intermediaries. The data transfer part can start as soon as server and client both have sent their handshakes and the actual handshake was successful. Each side can then send data independent from each other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
+in the Proof of Concept are WebSockets. The WebSocket Protocol is standardized
+by the Internet Engineering Task Force (IETF) in Request for Comments (RFC)
+6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way
+communication between a client running untrusted code in a controlled
+environment to a remote host that has opted-in to communications from that
+code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake
+and the data transfer, where the handshake is compatible with the HTTP-based
+server-side software and intermediaries. The data transfer part can start as
+soon as server and client both have sent their handshakes and the actual
+handshake was successful. Each side can then send data independent from each
+other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 
 
 \nomenclature{IETF}{Internet Engineering Task Force}
@@ -1282,9 +1307,11 @@ well.\footcite[Cf.][]{vertx_2012}
 
 
 
-Both Vert.x and Node.js offer great performance and scalability under certain circumstances that were identified in section \ref{areas_of_application}.
-In order to allow a comparison for a very simple use case, a micro-benchmark was run to collect information on request handling of Node.js, Vert.x and
-the two popular web servers Apache2 and Nginx.
+Both Vert.x and Node.js offer great performance and scalability under certain
+circumstances that were identified in section \ref{areas_of_application}.
+In order to allow a comparison for a very simple use case, a micro-benchmark was
+run to collect information on request handling of Node.js, Vert.x and the two
+popular web servers Apache2 and Nginx.
 \paragraph{Experiment setup} Each server was run isolated on a virtual machine
 that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
 of 2.5GHz (to make sure that the host system has enough free capacity). A static
@@ -1342,7 +1369,7 @@ Vert.x provides  threadsafe datastructures that developers can be used to share 
 instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
 
 Node.js is designed to run single-threaded and can only scale to all available
-cores using the Cluster module\footcite[Cf.][]{node_2012b}, which is, however, still in an experimental state.
+cores by using the Cluster module\footcite[Cf.][]{node_2012b}, which is still in an experimental state.
 This module allows to take advantage of a multi-core system by launching a cluster of Node.js processes to handle the load. Basically it enables the developer to run several worker processes (depending on the number of cores) and create an HTTP server for each of them, whereby all of them share one port. 
 
 
@@ -1363,7 +1390,9 @@ event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
 website.\\
 
-Up to now, for Node.js there is no known way of distributing workloads among different servers, however that wish was addressed.\footcite[Cf.][]{node_clusterserver}
+Up to now, for Node.js there is no known way of distributing workloads among
+different servers, however that wish was
+addressed.\footcite[Cf.][]{node_clusterserver}
 
 
 \paragraph{General ways of distributing workload among distributed machines}
