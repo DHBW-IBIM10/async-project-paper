@@ -645,12 +645,12 @@ with these frameworks. These implementations are thoroughly described in the fol
 \FloatBarrier
 The exemplary implementation consists of a web service that can be used to calculate
 the expected fee for an insurance. The idea behind this application is that
-two clients can collaborate during the process of the form entry before submitting
+two clients can collaborate during the form entry process before submitting
 all values for the fee calculation to the server.
 However this application should only serve as a demonstration of the used asynchronous 
 frameworks and is hence very simplified.\\
 Functionalities that are included are usual POST requests as well as real time communication
-via a WebSocket.
+via a WebSocket (described in section \ref{software_design}).
 
 \begin{figure}[h]
 	\centering
@@ -752,7 +752,7 @@ follows a specific procedure\footcite[Cf.][]{Nemati_2011}:
  the client will be used to encrypt all communication with the server.
  (6) The client encrypts the session key with the public key of the server. Only
  the server can decipher the data using the private key.\\
-The generation of private and public keys can be done be using the following
+The generation of private and public keys can be done by using the following
 commands, leveraging OpenSSL, an Open Source toolkit to implementing secure
 protocols\footnote{See \url{ http://www.openssl.org/}}:\\
 
@@ -795,14 +795,14 @@ client-side asynchronous calls are beyond the scope of this paper.
 
 \subsubsection{WebSockets}
 Moreover, a key technology to allow for real-time communiation that is leveraged
-in the Proof of Concept are WebSockets. The WebSocket Protocol is standardized
+in the Proof of Concept is the WebSocket Protocol. The WebSocket Protocol is standardized
 by the Internet Engineering Task Force (IETF) in Request for Comments (RFC)
 6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way
 communication between a client running untrusted code in a controlled
 environment to a remote host that has opted-in to communications from that
 code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake
 and the data transfer, where the handshake is compatible with the HTTP-based
-server-side software and intermediaries. The data transfer part can start as
+server-side software and intermediaries. The data transfer can start as
 soon as server and client both have sent their handshakes and the actual
 handshake was successful. Each side can then send data independent from each
 other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
