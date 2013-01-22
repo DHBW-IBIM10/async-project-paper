@@ -158,13 +158,16 @@ causes performance issues.\\
 
 \subsection{Potential web development issues}
 \label{potentialissues}
+This section is used to outline briefly some issues that are relevant when dealing with synchronous and asynchronous approaches.
 
 \subsubsection{I/O bound applications}
 \label{issue_io}
-...
+I/O bound means that a system requests data a faster than the peripheral devices (e.g. hard disk) can transfer it, causing a process/thread to be put asleep.\footcite[Cf.][10]{Caldera_2003} - The program could be sped up immediately by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
+
 \subsubsection{CPU bound applications}
 \label{issue_cpu}
-...
+CPU bound or compute-bound refers to operations that cause high CPU workload, like compiling code, spell checking, grammar checking, transcoding audio or video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in several threads in order not to block one thread and have all users waiting for this thread. The program could be sped up immediately by better CPU performance.
+
 \subsubsection{Single-/Multithreading and event-driven development}
 \label{issue_threads}
 
