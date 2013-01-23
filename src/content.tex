@@ -791,7 +791,6 @@ valuable to show serveral ways of communication.
 \subsection{Software design}
 \label{software_design}
 
-\nomenclature{CSS}{Cascading Style Sheets}
 \nomenclature{HTML}{Hyper Text Markup Language}
 
 This simple usage scenario leads to a few requirements and
@@ -1609,10 +1608,10 @@ Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as pr
 \label{appendix_kue}
 
 A message queue is “an area where you can add messages representing a task”\footcite[][2]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][1]{McGlennon_2007}
-\begin{description}
+\begin{itemize}
   \item Unavailability of communications with servers or clients, and 
   \item Communications between disparate systems and components.
-\end{description}
+\end{itemize}
 Another use case for message queues is storing less-important information in a message queue while your DBMS is busy serving customers during the day.\footcite[Cf.][449]{Thomson_2002}
 The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating system\footcite[Cf.][2]{McGlennon_2007}, can then retrieve messages from the queue for processing (basically, the FIFO principle is applied).\footcite[Cf.][450]{Thomson_2002}
 A common scenario for message queues is when only a little amount of requests create high loads on the server, e.g. video platforms such as Youtube or Vimeo.\footcite[Cf.][247]{Roden_2012} In such cases, it is useful to externalize CPU-intensive tasks in order not to impair responsiveness of the application.\footcite[Cf.][247]{Roden_2012}
@@ -1629,12 +1628,12 @@ In 2012, LinkedIn, the career-oriented social network, has changed their back-en
 LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
 LinkedIn therefore wanted to implement an event-driven model and tested and evaluated three possible candidates: Rails/Event Machine, Python/Twisted, and Node.js.
 Node.js was identified as the best solution for following benefits\footcite[Cf.][]{Avram_2012}:
-\begin{description}
+\begin{itemize}
   \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
   \item Programmers could make use of their JavaScript skills. 
   \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
   \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
-\end{description}
+\end{itemize}
 
 \appsection{Case Study – AIRCODE}
 
