@@ -32,7 +32,7 @@
 
 \begin{abstract}
 \textbf{\abstractname}: This paper evaluates asynchronous server technologies
-using the more recent frameworks Node.js and Vert.x as references. Strenghts and
+using the more recent frameworks Node.js and Vert.x as references. Strengths and
 weaknesses of asynchronous programming models are elaborated to identify areas
 where these technologies should be chosen over the common programming
 frameworks.
@@ -99,9 +99,9 @@ existing application landscape.
 
 \subsection{Objectives}
 The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Special emphasis is put on an application in a business environment. 
+technologies. Special emphasis is put on applications in the business environment. 
 The authors' intention is to build a working prototype in order to present the advantages and
-disadvantages of this rising technologie.
+disadvantages of this rising technology.
 
 %Goal of this paper and structure
 This paper elaborates the concepts behind the young frameworks Node.js and Vert.x and analyses their 
@@ -133,7 +133,7 @@ deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footci
 \begin{figure}[hbtp]
 \centering
 \includegraphics[scale=0.5]{img/ajax-diagram}
-\caption[AJAX Ddiagram]{AJAX diagram\label{img_ajax}}
+\caption[AJAX diagram]{AJAX diagram\label{img_ajax}}
 \end{figure}
 %\footcitetext{img_ajax}
 
@@ -206,7 +206,7 @@ or thread to occupy the CPU in the meanwhile.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.4\textwidth]{img/asynch_call.png}
-\caption{Asynchronous, nonblocking function call}
+\caption{Asynchronous, non-blocking function call}
 \label{fig:asynch_call}
 \end{figure}
 
@@ -239,14 +239,14 @@ methodology: After the file was read, the callback will be triggered in order to
 display its content.
 
 % same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's contents},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's content},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 
 % implication: 
 % all code should be as non-blocking and asynchronous as possible
 % using blocking APIs inside the asynchronous code can cause blocking of the event loop
-% which is evil. This is why node.js is based on javacript. Other languages already have
+% which is evil. This is why Node.js is based on javacript. Other languages already have
 % lots of modules with blocking APIs which could confuse dumb developers.
 
 
@@ -271,7 +271,7 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 % \begin{figure}[hbtp]
 % \centering
 % \includegraphics[width=\textwidth]{img/googletrend_nodevertx}
-% \caption[Google search volume of node.js and Vert.x compared]{Google search volume of node.js and Vert.x compared\}
+% \caption[Google search volume of Node.js and Vert.x compared]{Google search volume of Node.js and Vert.x compared\}
 % \label{img_googletrend_nodevertx}
 % \end{figure}
 % \footcitetext[Cf.][]{g_trends}
@@ -279,7 +279,7 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{img/googletrend_all.png}
-\caption[Google search volume of node.js, twisted, eventmachine and Vert.x compared]{Google search volume of node.js, twisted, eventmachine and Vert.x compared}
+\caption[Google search volume of Node.js, twisted, eventmachine and Vert.x compared]{Google search volume of Node.js, twisted, eventmachine and Vert.x compared}
 \label{img_googletrend_all}
 \end{figure}
 \footcitetext[Cf.][]{g_trends}
@@ -373,7 +373,7 @@ Table\ref{tab:existing_frameworks} only considers four major frameworks. Other l
 \FloatBarrier
 
 \subsubsection{Node.js}
-\label{node.js}
+\label{Node.js}
 
 Node.js is a framework based on Google's V8 JavaScript Engine, libUV as platform layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library written in JavaScript.
 Node.js brings JavaScript to the server-side and therefore makes it possible to write a web application on both the server-side and the client-side in one language – JavaScript.\\
@@ -410,7 +410,7 @@ Node.js is licensed under the MIT License\footnote{See \url{http://opensource.or
 
 
 \subsubsection{Vert.x}
-\label{vert.x}
+\label{Vert.x}
 
 Vert.x is a programming framework that runs on the Java Virtual Machine (JVM).
 It is hence possible to scale over
@@ -723,7 +723,7 @@ valuable to show serveral ways of communication.
 \label{software_design}
 
 \nomenclature{CSS}{Cascading Style Sheets}
-\nomenclature{HTML}{HyperText Markup Language}
+\nomenclature{HTML}{Hyper Text Markup Language}
 
 This simple usage scenario leads to a few requirements and
 design decisions.
@@ -865,7 +865,7 @@ Vert.x allows deploying multiple instances of a verticle programmatically
 which eases scaling an application to the number of available processors of a machine.
 In this case the main loop is single-threaded and for each remaining processor
 there is one worker verticle. Vert.x automatically distributes requests among
-these worker verticles (as described in section \ref{vert.x}).
+these worker verticles (as described in section \ref{Vert.x}).
 
 A global configuration file is read in line 12. This configuration file is
 formatted as Json string and can include settings for modules or verticles. The
@@ -880,7 +880,7 @@ Vert.x allows either running verticles by providing the compiled Java class or b
 source file, which is then compiled automatically by Vert.x. However in this
 setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
 use it with the source files. The issues observed where partially related to
-Vert.x bug 444\footnote{see \url{https://github.com/vert-x/vert.x/issues/444}}.
+Vert.x bug 444\footnote{see \url{https://github.com/vert-x/Vert.x/issues/444}}.
 Due to incomplete dependency resolution, not all classes were compiled so that
 Vert.x could not find all required classes in the path at runtime.
 These startup issues can easily be avoided by using compiled classes instead of
@@ -909,7 +909,7 @@ As soon as a reply is returned over the event bus it is forwarded to the client 
 the message, does the calculation and then returns the result via the message bus.
 
 The live communication via the WebSocket Protocol is handled in a similar way. As mentioned in section
-\ref{vert.x}, Vert.x allows access to its event bus from within the client's browser.
+\ref{Vert.x}, Vert.x allows access to its event bus from within the client's browser.
 This is accomplished by using a so-called \textit{bridge} that forwards client messages to
 the server event bus and vice versa. As this poses a potential security vulnerability
 it is recommended to set up the bridge with a filtering instance that only allows certain
@@ -930,7 +930,7 @@ label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
 
 \subsubsection{Node.js}
 \label{implementation_node}
-The node.js implementation starts with four modules that are required to run the application:
+The Node.js implementation starts with four modules that are required to run the application:
 
 \begin{lstlisting}[language=javascript,caption={Including modules},label=lst:includenodemodules]
 var express = require('express');
@@ -948,7 +948,7 @@ Express can be installed using the following command-line command:\\
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
+In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
 
 \begin{lstlisting}[language=javascript,caption={Reading encryption keys}]
 var httpsOptions = {
@@ -957,9 +957,11 @@ var httpsOptions = {
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the following code is used, which first initialized express() and then creates the server using the express variable before the ports on which the servers are listening are defined:
+To run the HTTP/HTTPS servers, the following code is used, which first
+initialized express() and then creates the server using the express variable
+before the ports on which the servers are listening are defined:
 
-\begin{lstlisting}[language=javascript,caption={Starting servers}]
+\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js}]
 var app = express();
 var server = http.createServer(app);
 var secureServer = https.createServer(httpsOptions, app);
@@ -967,25 +969,32 @@ server.listen(8888);
 secureServer.listen(4431);
 \end{lstlisting}
 
-The HTTP server can be accessed using http://localhost:8888/ as opposed to the HTTPS server that is available at https://localhost:4431/. Afterwards, the socket.io module for web sockets comes into play. First of all, it needs to be installed using the following command-line command:
+The HTTP server can be accessed using \texttt{http://localhost:8888/} as opposed to the
+HTTPS server that is available at \texttt{https://localhost:4431/}. Afterwards, the
+\textit{socket.io} module for WebSockets comes into play. First of all, it needs to be
+installed using the following command:
 
-\begin{lstlisting}[language=javascript,caption={Starting servers}]
+\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager}]
 npm install socket.io
 \end{lstlisting}
 
-Afterwards, it is included and initialized by passing the secureServer variable (for the HTTPS server):
+Afterwards, it is included and initialized by passing the secureServer variable
+(for the HTTPS server):
 
-\begin{lstlisting}[language=javascript,caption={Starting servers}]
+\begin{lstlisting}[language=javascript,caption={Initialisation of the socket.io module in Node.js}]
 var io = require('socket.io').listen(secureServer);
 \end{lstlisting}
 
-The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/” is made the root directory for a http[s]://localhost:[port]/
+The first Express functionality used is that static files can be served with
+Node.js. Using the following statement, the directory “/” is made the root
+directory for a \texttt{http[s]://localhost:[port]/}
 
 \begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
 
-Another Express feature is the “bodyParser”, which is used as middleware to parse request bodies, for this Proof of Concept especially JSON.
+Another Express feature is the “bodyParser”, which is used as middleware to
+parse request bodies, for this Proof of Concept especially JSON.
 
 \begin{lstlisting}[language=javascript,caption={Using the bodyParser}]
 app.configure(function(){
@@ -993,7 +1002,7 @@ app.configure(function(){
 });
 \end{lstlisting}
 
-Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in node.js on http://localhost:8888/insurances:
+Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in Node.js on http://localhost:8888/insurances:
 
 \begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data}]
 app.post('/insurances', function (req, res) {
@@ -1013,9 +1022,9 @@ example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
 field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called web sockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable node.js in combination with socket.io to handle web socket connections:
+So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using web sockets to distribute form inputs in real-time}]
+\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time}]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1035,7 +1044,7 @@ io.sockets.on('connection', function (socket) {
 
 The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how web sockets are used. First of all, the socket.io.js needs to be imported:
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported:
 
 \begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript}]
 <script src="/socket.io/socket.io.js"></script>
@@ -1104,7 +1113,7 @@ socket.on("liveform", function (data) {
 });
 \end{lstlisting}
 
-To use the application, the node.js servers can be started by using the command-line. After navigating
+To use the application, the Node.js servers can be started by using the command-line. After navigating
 into the project’s folder using cd, the only command needed is:
 \begin{lstlisting}[caption={Executing Node.js code}]
 Node.js [filename].js
@@ -1247,7 +1256,7 @@ applications that can be extended with event-driven modules.
 However when introducing a Node.js or Vert.x application into the currentc
 application landscape it might be desired to reuse or communicate with existing
 systems that are not fully event driven. Furthermore, integration of these
-technologies might not be limited to mere IPC\nomenclature{IPC}{InterProcess
+technologies might not be limited to mere IPC\nomenclature{IPC}{Inter Process
 Communication} but instead as a new middleware-layer beneath current and new
 applications.\\
 %Consider connecting that software with a message bus.
@@ -1418,7 +1427,7 @@ This module allows to take advantage of a multi-core system by launching a clust
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 functionality internally to scale on multiple machines.\\
 
-\begin{lstlisting}[language=bash,caption={Starting a vert.x application in cluster mode},label={lst:vertx_cluster}]
+\begin{lstlisting}[language=bash,caption={Starting a Vert.x application in cluster mode},label={lst:vertx_cluster}]
 vertx run server.js -cluster -cluster-port 22000
 \end{lstlisting}
 
@@ -1568,7 +1577,7 @@ Peter Martischka, an Etherpad developer, migrated the entire application from Rh
 \FloatBarrier
 Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
 
-Meteor leverages node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
+Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
 
 At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
 Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
