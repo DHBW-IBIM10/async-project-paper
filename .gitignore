@@ -44,3 +44,5 @@
 *.app
 async-technologies.pdf
 *.lol
+src/lst/leaderboard/.meteor/
+src/lst/leaderboard/.meteor/packages
