@@ -115,19 +115,19 @@ Having set up an exemplary implementation, there are additional concepts explain
 \subsection{Problem description}
 
 In traditional web application development data is transmitted synchronously,
-i.e. upon a GET/POST request the result can be displayed only after transmission
+i.e. upon a GET/POST request, so that the result can be displayed only after transmission
 and processing are finished.
 
 While maintaining simplicity and
 predictability this can cause serious latency when uploading large pieces of
 data, most commonly complex forms for registration. Naturally rich content such
-as images and videos causes even more delays.
+as images and videos cause even more delays.
 
-As demands around collaborative access and media richness evolved, this became a
+As demand around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
 synchronous transmission using the XmlHttpRequest object which allows to request
-resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
+resources programmatically (using JavaScript) while
 deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
 \begin{figure}[hbtp]
@@ -138,9 +138,16 @@ deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footci
 %\footcitetext{img_ajax}
 
 Although this addressed the issue on the client-side, server-side request were
-still handled very much in a synchronous fashion. As popular applications have to cope with unprecedented amounts of
-concurrent users in conjunctions with massive request counts, this obviously
-causes performance issues. Reasons for these issues are that blocking I/O streams also cause the related thread to idle and consequently block this thread, meaning it cannot be used for other requests. The next chapter expands upon I/O bound and CPU bound applications as well as single-/multithreaded technologies, and will explain further, why asynchronous technologies can help mitigate problems that especially applications with a lot of I/O streams face.\\
+still handled very much in a synchronous fashion. The Apache web server e.g.
+forks a new process for each incoming request\footcite[Cf.][]{apache_2013}.
+As popular applications have to cope with unprecedented amounts of concurrent
+users in conjunction with massive request counts, this obviously causes
+performance issues. Reasons for these issues are that blocking I/O streams also
+cause the related thread to idle and consequently block this thread, meaning it
+cannot be used for other requests. The next chapter expands upon I/O bound and
+CPU bound applications as well as single-/multithreaded technologies, and will
+explain further, why asynchronous technologies can help mitigate problems that
+especially applications with a lot of I/O streams face.\\
 
 \newpage
 \section{Setting the context}
@@ -152,11 +159,18 @@ This section is used to outline briefly some issues that are relevant when deali
 
 \subsubsection{I/O bound applications}
 \label{issue_io}
-I/O bound means that a system requests data a faster than the peripheral devices (e.g. hard disk) can transfer it, causing a process/thread to be put asleep.\footcite[Cf.][10]{Caldera_2003} - The program could be sped up immediately by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
+I/O bound means that a system requests data faster than the peripheral devices
+(e.g. hard disk) can transfer it, causing a process/thread to be put
+asleep.\footcite[Cf.][10]{Caldera_2003} The program could be sped up immediately
+by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
 
 \subsubsection{CPU bound applications}
 \label{issue_cpu}
-CPU bound or compute-bound refers to operations that cause high CPU workload, like compiling code, spell checking, grammar checking, transcoding audio or video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in several threads in order not to block one thread and have all users waiting for this thread. The program could be sped up immediately by better CPU performance.
+CPU bound or compute-bound refers to operations that cause high CPU workload,
+like compiling code, spell checking, grammar checking, transcoding audio or
+video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in
+several threads in order not to block one thread and have all users waiting for
+this thread. The program could be sped up immediately by better CPU performance.
 
 \subsubsection{Single-/Multithreading and event-driven development}
 \label{issue_threads}
@@ -164,7 +178,7 @@ CPU bound or compute-bound refers to operations that cause high CPU workload, li
 % writing multithreaded code is not trivial
 In multithreaded applications several threads can run simultaneously within one 
 process. Several threads can access shared memory concurrently, which can
-cause inconcistent states. This can be avoided by synchronizing threads - e.g.
+cause inconsistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
 execution order to effectively avoid program defects such as data races and 
 deadlocks.\footcite[Cf.][10]{Breshears_2009}
@@ -215,9 +229,15 @@ application is determined by events, which is why this style is also called
 event-driven programming.\footcite[Cf.][16]{teixeira_2012} Asynchronous processing means
 that the executing thread is not blocked. There is no
 return value - instead an event handler is provided as a second argument.
-This function is also referred to as a callback function. It is called
-as soon as the read operation has completed and is processed in the same thread, which means that there is at most one callback running at a time and the developer does not face concurrency issues.
-The developer’s task is to write lightweight event handlers that can be processed quickly as every callback is an interruption of the event processing in the event loop.\footcite[Cf.][]{Croucher_2012} Memory or processor intense callbacks can lead to growing queues of unserved events, which eventually results in a slow application or service.\footcite[Cf.][48]{teixeira_2012}
+This function is also referred to as a callback function. It is called as soon
+as the read operation has completed and is processed in the same thread, which
+means that there is at most one callback running at a time and the developer
+does not face concurrency issues.
+The developer’s task is to write lightweight event handlers that can be
+processed quickly as every callback is an interruption of the event processing
+in the event loop.\footcite[Cf.][]{Croucher_2012} Memory or processor intense
+callbacks can lead to growing queues of unserved events, which eventually
+results in a slow application or service.\footcite[Cf.][48]{teixeira_2012}
 
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
@@ -234,8 +254,8 @@ read operation has finished.
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
 As opposed to the asynchronous call, \autoref{lst:asynchronous_call} demonstrates
-how the same example can be realized an asynchronous fashion using event-driven
-methodology: After the file was read, the callback will be triggered in order to
+how the same example can be realized in an asynchronous fashion using the event-driven
+methodology: After the file was read, the callback is triggered in order to
 display its content.
 
 % same example as above but with callbacks / events
@@ -253,9 +273,9 @@ label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
 The principle of asynchronous processing exists on the client for a long time and has also evolved
-on the server-side. This sub-section will give a brief market overview, which is follwed by the
+on the server-side. This section will give a brief market overview, which is followed by the
 introduction of two upcoming frameworks for server-side asynchronous
-development: Node.js and Vert.x
+development: Node.js and Vert.x.
 
 
 \subsubsection{Market Overview}
@@ -284,11 +304,12 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 \end{figure}
 \footcitetext[Cf.][]{g_trends}
 
-Looking at the charts in Fig. \ref{img_googletrend_all}, it can be
+Looking at the graphs in Fig. \ref{img_googletrend_all}, it can be
 concluded that interest in Node.js is very high at the moment in absolute terms as well
 as in relative terms when comparing it to peers at the same point in its lifecycle.
 Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
-The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
+The gap in interest could be related to many reasons, two of which will be discussed 
+briefly thus concluding this section.
 
 Theory (1) would be that by the time Vert.x became complete enough to develop
 productively (at least as productive as was possible with Node.js at the same
@@ -298,7 +319,7 @@ Theory (2) is based around technical considerations. Because of the dogmatic
 nature of asynchronicity in the Node.js framework, every package available on
 NPM\nomenclature{NPM}{Node.js Package Manager} is built with asynchronous calling
 and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the
-other hand is in a curious position here, Vert.x itself is architecturally
+other hand is in a curious position here. Vert.x itself is architecturally
 similar to Node.js but its ecosystem of established Java libraries is not developed
 with these principles in mind. This poses the danger of executing
 synchronous/blocking code, negating all of Vert.x' advantages. Obviously this
@@ -317,7 +338,7 @@ be introduced in the next sub-section.
 
 
 \begin{savenotes} %alloows proper citation marks inside tables
-\begin{table}[ht]
+\begin{table}[htbp]
 %\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
 \begin{tabular*}{\textwidth}{p{0.14\textwidth} p{0.15\textwidth} p{0.65\textwidth}}
 \toprule
@@ -325,7 +346,7 @@ be introduced in the next sub-section.
 \midrule 
 %\endhead
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
+									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
 									  Twisted is a mature framework with a large number of supported networking
 									  protocols. Its development is backed by an active
 									  community.\footcite[Cf.][12]{fettig_2005}
@@ -359,7 +380,7 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 
 Table\ref{tab:existing_frameworks} only considers four major frameworks. Other libraries/frameworks include, but are not limited to:
 
-\begin{description}
+\begin{itemize}
   \item Perl's AnyEvent\footnote{\url{http://software.schmorp.de/pkg/AnyEvent.html}}
   \item Ruby's Rev\footnote{\url{http://rev.rubyforge.org/rdoc/}} and Cramp\footnote{\url{http://cramp.in/}} which is built on EventMachine\footnote{\url{http://rubyeventmachine.com/}}
   \item Python's tornado\footnote{\url{http://www.tornadoweb.org/}}, asyncore module\footnote{\url{http://effbot.org/librarybook/asyncore.htm}} and sitting on that Medusa\footnote{\url{http://packages.debian.org/sid/python-medusa}}
@@ -368,23 +389,40 @@ Table\ref{tab:existing_frameworks} only considers four major frameworks. Other l
   \item JVM's NIO\footnote{\url{http://docs.oracle.com/javase/1.5.0/docs/guide/nio/}}
   \item Linux' epoll\footnote{\url{http://linux.die.net/man/4/epoll}}, C's libev\footnote{\url{http://software.schmorp.de/pkg/libev.html}} and libeio\footnote{\url{http://software.schmorp.de/pkg/libeio.html}}
   \item Erlang\footnote{\url{http://www.erlang.org/}}
-\end{description}
+\end{itemize}
 
 \FloatBarrier
 
 \subsubsection{Node.js}
 \label{Node.js}
 
-Node.js is a framework based on Google's V8 JavaScript Engine, libUV as platform layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library written in JavaScript.
-Node.js brings JavaScript to the server-side and therefore makes it possible to write a web application on both the server-side and the client-side in one language – JavaScript.\\
+Node.js is a framework based on Google's V8 JavaScript Engine, libUV as platform
+layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library
+written in JavaScript.
+Node.js brings JavaScript to the server-side and therefore makes it possible to
+write a web application on both the server-side and the client-side in one
+language – JavaScript.
 
-Compared to other technologies that try to apply the fundamentals of asynchronous programming,
-Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
-creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.
-Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) Exemplarily, reading a file works that way that when the read operation has finished, a callback function is executed to continue working with the file's content.\\
+Compared to other technologies that try to apply the fundamentals of
+asynchronous programming, Node.js' libraries are programmed completely
+asynchronous. Its architecture consists of modules to simplify the creation of
+complex applications. Modules are encapsulated pieces of code like libraries in
+C or units in Pascal. Every module contains of set of functionalities that share
+one common purpose. The visibility of functions and variables is limited to the
+module they belong to. Using a module requires to call the function \texttt{require()}
+and its allocation to a variable.
+Every function in Node.js is asynchronous, which means that the current thread
+continues running and does not wait for completion (see Fig.
+\ref{fig:asynch_call}). Exemplarily, reading a file works in a way that when the
+read operation has finished, a callback function is executed to continue working
+with the file's content.
 
-Node.js is single-threaded, which is why only one thing can happen at the same time. Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
-\\
+Node.js is single-threaded, which is why only one thing can happen at the same
+time. Node.js's asynchronous programming style is implemented through events
+that determine the flow of execution. The events are processed within an event
+loop (see section \ref{issue_threads}). Consequently, the code execution is
+thread-safe and there is no issue regarding concurrency that affects the shared
+memory state.\footcite[Cf.][p.16]{teixeira_2012}
 
 \begin{figure}[hbtp]
 \centering
@@ -398,7 +436,9 @@ Node.js's large performance benefits are caused by the use of Google's new JavaS
 real machine code before executing it, Node.js has an advantage over 
 traditional techniques such as executing bytecode or interpreting it.\footnote{See \url{https://developers.google.com/v8/intro}}
 \\
-Out of the box, Node.js provides into the binary compiled core modules, to help access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}}
+Node.js by default provides core modules that are packed in its binary, to help
+access files on the file system, create HTTP and TCP/UDP servers, and to perform
+other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}}
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}}
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
 The node package manager, however, provides 21,104 packaged modules as of January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to leverage a variety of pre-defined complex functionalities.
