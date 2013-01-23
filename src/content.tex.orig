@@ -1,7 +1,7 @@
 \title{\papertitle}
 
 \author{Can Paul Bineytioglu,
-		Joe Andr\'{e} Boden,
+		Joe André Boden,
 		Rocco Schulz,\\
 		Max V\"{o}kler,
 		Robert Wawrzyniak}
@@ -32,7 +32,7 @@
 
 \begin{abstract}
 \textbf{\abstractname}: This paper evaluates asynchronous server technologies
-using the more recent frameworks Node.js and Vert.x as references. Strengths and
+using the more recent frameworks Node.js and Vert.x as references. Strenghts and
 weaknesses of asynchronous programming models are elaborated to identify areas
 where these technologies should be chosen over the common programming
 frameworks.
@@ -98,104 +98,80 @@ existing application landscape.
 \section{Introduction}
 
 \subsection{Objectives}
-Permanent change is a basic concept and global phenomenon in the IT industry. 
-Most recent trends include cloud computing, big data, social media and mobile computing.
-The tremendous impact of the latter one is  revealed by a Cisco study, which states that in 2011 the mobile data traffic
-doubled the fourth year in a row.\footcite[Cf.]{cisco_2012} Those enormous traffic and the
-nature of social media applications raised problems in the common synchronous server technologies.
-Since 1996 the Microsoft Internet Explorer supports asynchronous content loading. A popular
-asynchronous technology is AJAX (asynchronous JavaScript and XML). It got even more attention when
-Google ntroduced a wide deployment of standards-compliant, cross browser Ajax with Gmail (2004) 
-and Google Maps (2005).\footcite[Cf.]{Swartz_2005} Since then asynchronous technologies
-encountered a steep carrier and are on the way to change the way of our programming.
 The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Special emphasis is put on applications in the business environment. 
+technologies. Special emphasis is put on an application in a business environment. 
 The authors' intention is to build a working prototype in order to present the advantages and
-disadvantages of this rising technology.
+disadvantages of this rising technologie.
 
 %Goal of this paper and structure
-The two folded approach - explaining the change in web development and an application in an 
-business environment - infers two main programming languages, that are ubiquitous in each
-community: Java for the enterprise world and JavaScript for the web developers.
-This paper elaborates the concepts behind the young frameworks Node.js, that briefly explained enables running JavaScript on a server, and 
-Vert.x, a Java implementation of asynchronous technologies, and analyses their 
+This paper elaborates the concepts behind the young frameworks Node.js and Vert.x and analyses their 
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
 \subsection{Methodology and structure}
-The whole thesis consists of seven chapters. The first two parts explain the author's motivation and introduces the 
-basic concepts of asynchronous technologies, whose use cases are explained in chapter three.
-Two prototypes of an insurance purchase webpage are implmented in Node.js and Vert.x in chapter 4.
-Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). Before the outlook and the conclusion summarize the paper, non-functional attributes e.g. maintainability and integration are 
-investigated.
 
-\subsection{Problem description}
-
-In traditional web application development data is transmitted synchronously,
-i.e. upon a GET/POST request, so that the result can be displayed only after transmission
-and processing are finished.
-
-While maintaining simplicity and
-predictability this can cause serious latency when uploading large pieces of
-data, most commonly complex forms for registration. Naturally rich content such
-as images and videos cause even more delays.
-
-As demand around collaborative access and media richness evolved, this became a
-serious bottleneck, essentially preventing these types of applications. On the
-client-side (browser-side) developers were able to work around the issue of
-synchronous transmission using the XmlHttpRequest object which allows to request
-resources programmatically (using JavaScript) while
-deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/ajax-diagram}
-\caption[AJAX diagram]{AJAX diagram\label{img_ajax}}
-\end{figure}
-%\footcitetext{img_ajax}
-
-Although this addressed the issue on the client-side, server-side request were
-still handled very much in a synchronous fashion. The Apache web server e.g.
-forks a new process for each incoming request\footcite[Cf.][]{apache_2013}.
-As popular applications have to cope with unprecedented amounts of concurrent
-users in conjunction with massive request counts, this obviously causes
-performance issues. Reasons for these issues are that blocking I/O streams also
-cause the related thread to idle and consequently block this thread, meaning it
-cannot be used for other requests. The next chapter expands upon I/O bound and
-CPU bound applications as well as single-/multithreaded technologies, and will
-explain further, why asynchronous technologies can help mitigate problems that
-especially applications with a lot of I/O streams face.\\
+Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets).
 
 \newpage
 \section{Setting the context}
 \label{setting_the_context}
+\subsection{Web development basics}
+
+In traditional web application development data is transmitted synchronously,
+i.e. upon a GET/POST request the result can be displayed only after transmission
+and processing are finished, as highlighted in Fig. \ref{img_req_res}.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.75]{img/rest_call.png}
+\caption[REST request-response sequence diagram]{REST request-response sequence diagram\footnotemark\label{img_req_res}}
+\end{figure}
+\footcitetext{req_res}
+
+While maintaining simplicity and
+predictability this can cause serious latency when uploading large pieces of
+data, most commonly complex forms for registration. Naturally rich content such
+as images and videos causes even more delays.
+
+As demands around collaborative access and media richness evolved, this became a
+serious bottleneck, essentially preventing these types of applications. On the
+client-side (browser-side) developers were able to work around the issue of
+synchronous transmission using the XmlHttpRequest object which allows to request
+resources programmatically (using JS\nomenclature{JS}{JavaScript}) while
+deferring handling of the response to a callback (see Fig. \ref{img_ajax}) thus enabling much more responsive software.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/ajax-diagram}
+\caption[AJAX Ddiagram]{AJAX diagram\footnotemark\label{img_ajax}}
+\end{figure}
+\footcitetext{img_ajax}
+
+Although this addressed the issue on the client-side, server-side request were
+still handled very much in a synchronous fashion. For example the popular Apache
+web server forks a new process for each incoming request\footnote{TODO: find
+source}. As popular applications have to cope with unprecedented amounts of
+concurrent users in conjunctions with massive request counts, this obviously
+causes performance issues.\\
+
+
 
 \subsection{Potential web development issues}
 \label{potentialissues}
-This section is used to outline briefly some issues that are relevant when dealing with synchronous and asynchronous approaches.
 
 \subsubsection{I/O bound applications}
 \label{issue_io}
-I/O bound means that a system requests data faster than the peripheral devices
-(e.g. hard disk) can transfer it, causing a process/thread to be put
-asleep.\footcite[Cf.][10]{Caldera_2003} The program could be sped up immediately
-by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
-
+...
 \subsubsection{CPU bound applications}
 \label{issue_cpu}
-CPU bound or compute-bound refers to operations that cause high CPU workload,
-like compiling code, spell checking, grammar checking, transcoding audio or
-video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in
-several threads in order not to block one thread and have all users waiting for
-this thread. The program could be sped up immediately by better CPU performance.
-
+...
 \subsubsection{Single-/Multithreading and event-driven development}
 \label{issue_threads}
 
 % writing multithreaded code is not trivial
 In multithreaded applications several threads can run simultaneously within one 
 process. Several threads can access shared memory concurrently, which can
-cause inconsistent states. This can be avoided by synchronizing threads - e.g.
+cause inconcistent states. This can be avoided by synchronizing threads - e.g.
 with locks. This means that programmers need to take into account every possible
 execution order to effectively avoid program defects such as data races and 
 deadlocks.\footcite[Cf.][10]{Breshears_2009}
@@ -222,7 +198,7 @@ in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 \centering
 \includegraphics[width=0.4\textwidth]{img/synch_call.png}
 \caption{Synchronous, blocking function call}
-\label{fig:synch_call}
+\label{fig:asynch_call}
 \end{figure}
 
 In synchronous processing a running thread needs to wait for the completion of
@@ -237,32 +213,35 @@ or thread to occupy the CPU in the meanwhile.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=0.4\textwidth]{img/asynch_call.png}
-\caption{Asynchronous, non-blocking function call}
+\caption{Asynchronous, nonblocking function call}
 \label{fig:asynch_call}
 \end{figure}
 
 An asynchronous programming style uses a different concept. The flow of an
 application is determined by events, which is why this style is also called
-event-driven programming.\footcite[Cf.][16]{teixeira_2012} Asynchronous processing means
-that the executing thread is not blocked. There is no
+event-driven programming.\footcite[Cf.][16]{teixeira_2012} In Listing \ref{lst:asynchronous_call} the call
+to the \textit{readAsText} function is done asynchronously. There is no
 return value - instead an event handler is provided as a second argument.
-This function is also referred to as a callback function. It is called as soon
-as the read operation has completed and is processed in the same thread, which
-means that there is at most one callback running at a time and the developer
-does not face concurrency issues.
-The developer’s task is to write lightweight event handlers that can be
-processed quickly as every callback is an interruption of the event processing
-in the event loop.\footcite[Cf.][]{Croucher_2012} Memory or processor intense
-callbacks can lead to growing queues of unserved events, which eventually
-results in a slow application or service.\footcite[Cf.][48]{teixeira_2012}
+This function is also referred to as a callback function. It is called
+as soon as the read operation has completed.
 
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[width=\textwidth]{img/processing_model.png}
+\caption{Processing Node.js\footnotemark}
+\label{fig:processing_model}
+\end{figure}
+\footcitetext[]{aaronstannard_2011}
+
+\FloatBarrier
 
 \subsection{Technical comparison of asynchronous and synchronous processing}
 \label{comparison_syncasync}
 
 % code goes here...
 
-A typical synchronous call is provided in \autoref{lst:synchronous_call}. The
+A typical synchronous call is provided in Listing \ref{lst:synchronous_call}. The
 content of a file is read and displayed afterwards. The program is blocked until the
 read operation has finished.
 
@@ -270,45 +249,34 @@ read operation has finished.
 \lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
-As opposed to the asynchronous call, \autoref{lst:asynchronous_call} demonstrates
-how the same example can be realized in an asynchronous fashion using the event-driven
-methodology: After the file was read, the callback is triggered in order to
-display its content.
+As opposed to the synchronous call, \ref{lst:asynchronous_call} demonstrates how the same example can be realized an asynchronous fashion using event-driven methodology: After the file was read, the callback will be triggered in order to display its content.
 
 % same example as above but with callbacks / events
-\lstinputlisting[language=JavaScript,caption={Pseudocode: Asynchronously reading and displaying a file's content},
+\lstinputlisting[language=JavaScript,caption={Pseudocode: – Asynchronously reading and displaying a file's contents},
 label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 
 % implication: 
 % all code should be as non-blocking and asynchronous as possible
 % using blocking APIs inside the asynchronous code can cause blocking of the event loop
-% which is evil. This is why Node.js is based on javacript. Other languages already have
+% which is evil. This is why node.js is based on javacript. Other languages already have
 % lots of modules with blocking APIs which could confuse dumb developers.
 
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-The principle of asynchronous processing exists on the client for a long time and has also evolved
-on the server-side. This section will give a brief market overview, which is followed by the
-introduction of two upcoming frameworks for server-side asynchronous
-development: Node.js and Vert.x.
+This sub-section will give a brief market overview, which is follwed by the introduction of two upcoming frameworks for server-side asynchronous development: Node.js and Vert.x
 
 
 \subsubsection{Market Overview}
 \label{frameworks_overview}
 \FloatBarrier
-Table \ref{tab:existing_frameworks} shows that there is actually competition
-from established communities (namely the Ruby and Python ones). An important
-aspect in determining the potential success of a new technology is measuring the
-interest of software developers in the newcomer. Google-developed Google Trends
-visualizes the 'search interest', i.e.\ the amount of queries of a particular
-subject and related ones\footcite[Cf.][]{g_trends}.
+Table \ref{tab:existing_frameworks} shows that there is actually competition from established communities (namely the Ruby and Python ones). An important aspect in determining the potential success of a new technology is measuring the interest of software developers in the newcomer. Google-developed Google Trends visualizes the 'search interest', i.e.\ the amount of queries of a particular subject and related ones\footcite[Cf.][]{g_trends}.
 
 % \begin{figure}[hbtp]
 % \centering
 % \includegraphics[width=\textwidth]{img/googletrend_nodevertx}
-% \caption[Google search volume of Node.js and Vert.x compared]{Google search volume of Node.js and Vert.x compared\}
+% \caption[Google search volume of node.js and Vert.x compared]{Google search volume of node.js and Vert.x compared\footnotemark}
 % \label{img_googletrend_nodevertx}
 % \end{figure}
 % \footcitetext[Cf.][]{g_trends}
@@ -316,17 +284,16 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 \begin{figure}[hbtp]
 \centering
 \includegraphics[width=\textwidth]{img/googletrend_all.png}
-\caption[Google search volume of Node.js, twisted, eventmachine and Vert.x compared]{Google search volume of Node.js, twisted, eventmachine and Vert.x compared}
+\caption[Google search volume of node.js, twisted, eventmachine and Vert.x compared]{Google search volume of node.js, twisted, eventmachine and Vert.x compared\footnotemark}
 \label{img_googletrend_all}
 \end{figure}
 \footcitetext[Cf.][]{g_trends}
 
-Looking at the graphs in Fig. \ref{img_googletrend_all}, it can be
+Looking at the charts in Fig. \ref{img_googletrend_all}, it can be
 concluded that interest in Node.js is very high at the moment in absolute terms as well
 as in relative terms when comparing it to peers at the same point in its lifecycle.
 Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
-The gap in interest could be related to many reasons, two of which will be discussed 
-briefly thus concluding this section.
+The gap in interest could be related to many reasons, two of which will be discussed briefly thus concluding this sub-section.
 
 Theory (1) would be that by the time Vert.x became complete enough to develop
 productively (at least as productive as was possible with Node.js at the same
@@ -336,26 +303,14 @@ Theory (2) is based around technical considerations. Because of the dogmatic
 nature of asynchronicity in the Node.js framework, every package available on
 NPM\nomenclature{NPM}{Node.js Package Manager} is built with asynchronous calling
 and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the
-other hand is in a curious position here. Vert.x itself is architecturally
+other hand is in a curious position here, Vert.x itself is architecturally
 similar to Node.js but its ecosystem of established Java libraries is not developed
 with these principles in mind. This poses the danger of executing
 synchronous/blocking code, negating all of Vert.x' advantages. Obviously this
 can limit interest from the outset.
 
-Another important metric to assess the potential impact of a framework is the
-technical background and the availability of skilled developers. Redmonk
-investigated in three consecutive years the popularity of programming languages
-by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and
-StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
-2012, JavaScript was ranked first before Java, PHP, Python and
-Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
-performance over the past three years. This is an affirmative aspect with regard
-to the potential target audience of developers of Node.js and Vert.x, which will
-be introduced in the next sub-section.
-
-
 \begin{savenotes} %alloows proper citation marks inside tables
-\begin{table}[htbp]
+\begin{table}[ht]
 %\begin{longtable}[c]{p{0.2\textwidth} p{0.15\textwidth} p{0.57\textwidth}}
 \begin{tabular*}{\textwidth}{p{0.14\textwidth} p{0.15\textwidth} p{0.65\textwidth}}
 \toprule
@@ -363,7 +318,7 @@ be introduced in the next sub-section.
 \midrule 
 %\endhead
 Twisted			& Python			& ``Twisted is an event-driven networking engine written in 
-									  Python and licensed under the open source MIT license"\footcite[Cf.][]{Twisted_2012}.
+									  Python and licensed under the open source MIT license"\footcite[Cf.]{Twisted_2012}.
 									  Twisted is a mature framework with a large number of supported networking
 									  protocols. Its development is backed by an active
 									  community.\footcite[Cf.][12]{fettig_2005}
@@ -395,96 +350,82 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 \end{table}
 \end{savenotes}
 
-Table\ref{tab:existing_frameworks} only considers four major frameworks. Other libraries/frameworks include, but are not limited to:
-
-\begin{itemize}
-  \item Perl's AnyEvent\footnote{\url{http://software.schmorp.de/pkg/AnyEvent.html}}
-  \item Ruby's Rev\footnote{\url{http://rev.rubyforge.org/rdoc/}} and Cramp\footnote{\url{http://cramp.in/}} which is built on EventMachine\footnote{\url{http://rubyeventmachine.com/}}
-  \item Python's tornado\footnote{\url{http://www.tornadoweb.org/}}, asyncore module\footnote{\url{http://effbot.org/librarybook/asyncore.htm}} and sitting on that Medusa\footnote{\url{http://packages.debian.org/sid/python-medusa}}
-  \item Python's gevent\footnote{\url{http://www.gevent.org/}} library
-  \item .NET's Rx\footnote{\url{http://msdn.microsoft.com/en-us/data/gg577609}} library
-  \item JVM's NIO\footnote{\url{http://docs.oracle.com/javase/1.5.0/docs/guide/nio/}}
-  \item Linux' epoll\footnote{\url{http://linux.die.net/man/4/epoll}}, C's libev\footnote{\url{http://software.schmorp.de/pkg/libev.html}} and libeio\footnote{\url{http://software.schmorp.de/pkg/libeio.html}}
-  \item Erlang\footnote{\url{http://www.erlang.org/}}
-\end{itemize}
+Another important metric to assess the potential impact of a framework is the
+technical background and the availability of skilled developers. Redmonk
+investigated in three consecutive years the popularity of programming languages
+by analyzing the usage on GitHub\footnote{See \url{http://github.com}} and
+StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
+2012, JavaScript was ranked first before Java, PHP, Python and
+Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
+performance over the past three years. This is an affirmative aspect with regard
+to the potential target audience of developers of Node.js and Vert.x, which will
+be introduced in the next sub-section.
 
 \FloatBarrier
 
 \subsubsection{Node.js}
-\label{Node.js}
+\label{node.js}
 
-Node.js is a framework based on Google's V8 JavaScript Engine, libUV as platform
-layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library
-written in JavaScript.
-Node.js brings JavaScript to the server-side and therefore makes it possible to
-write a web application on both the server-side and the client-side in one
-language – JavaScript.
+% The paradigm of the event driven programming style is easily explained using a
+% real world example. What would you do if you are slicing onions while the turkey
+% is nearly on fire in the stove? Right, finishing the slice, turning down the
+% heat and opening the oven before getting back to slice some onion rings would be
+% a reasonable behavior. The truth is, that browser based programming isn't that
+% real life oriented. A lot of techniques try to make real-time and parallelism
+% work. Which means continuing slicing during you try to safe the turkey.
 
-Compared to other technologies that try to apply the fundamentals of
-asynchronous programming, Node.js' libraries are programmed completely
-asynchronous. Its architecture consists of modules to simplify the creation of
-complex applications. Modules are encapsulated pieces of code like libraries in
-C or units in Pascal. Every module contains of set of functionalities that share
-one common purpose. The visibility of functions and variables is limited to the
-module they belong to. Using a module requires to call the function \texttt{require()}
-and its allocation to a variable.
-Every function in Node.js is asynchronous, which means that the current thread
-continues running and does not wait for completion (see Fig.
-\ref{fig:asynch_call}). Exemplarily, reading a file works in a way that when the
-read operation has finished, a callback function is executed to continue working
-with the file's content.
 
-Node.js is single-threaded, which is why only one thing can happen at the same
-time. Node.js's asynchronous programming style is implemented through events
-that determine the flow of execution. The events are processed within an event
-loop (see section \ref{issue_threads}). Consequently, the code execution is
-thread-safe and there is no issue regarding concurrency that affects the shared
-memory state.\footcite[Cf.][p.16]{teixeira_2012}
+Node.js is a framework that combines Google's V8 JavaScript Engine, 
+libUV plattform abstraction layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library, which itself is written in JavaScript. 
+Node.js is envisioned as a programming environment that enables JavaScript to run outside the browser in the backend of a web application. It lets events drive the
+action, so that it is single-threaded and only one thing happens at once. This
+is why an event loop is a fundamental part of Node.js.\\
 
-\begin{figure}[hbtp]
-\centering
-\includegraphics[width=\textwidth]{img/processing_model.png}
-\caption[Processing Node.js]{Processing Node.js\footnotemark}
-\label{fig:processing_model}
-\end{figure}
-\footcitetext{aaronstannard_2011}
+Compared to other technologies that try to apply the fundamentals of asynchronous programming,
+<<<<<<< HEAD
+Node.js' libraries are programmed completly asynchronous. It's architecture consists of modules to simplify the
+creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of a set
+of sebject related functions. Defined functions and variables within a module are mostly private, meant they are 
+only accessible from the inside of the module. Using a module requires to call the funktion require() and allocate it to a variable.
+Every function in Node.js is asynchronous, which means that a callback function is run, after a specific I/O job is done. 
+For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.
 
-Node.js's large performance benefits are caused by the use of Google's new JavaScript engine V8, which naturally ships with the web browser Chrome and is used for Node.js too. Due to the fact that V8 compiles JavaScript into
+The asynchronous programming style is implemented through events that determine the flow of execution. They are handeled by event handlers and event callbacks. Those 'functions' replace the usual result return allocation.
+The asynchronous programming style in Node.js is accompanied by an event loop. This is a construct that mainly performs two functions in a continuous loop.  First, it detects events and second, it triggers event handler (callback). In any run of the loop, it has to detect which events just happened. Then, when an event happens, the event loop must determine the event callback and invoke it. The whole event loop runs in one process inside
+one thread, which causes no interruption in the event handler and will enable it to run until the end.￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+This allows the programmer to relax the synchronization requirements and not have to worry about concurrent threads of execution changing the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
+
+Out of the box, Node.js provides into the binary compiled core modules, to help you access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html#modules_core_modules}} \\
+The latest version of the Node.js environment can be installed from a github repository.\footnote{See \url{  http://nodejs.org/dist/latest/}} \\
+=======
+Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
+creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains as set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the funktion require() and its allocation to a variable.
+Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) For example, if a file should be read on the file system, a specified callback function is executed when the read operation is completed.\\
+
+Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}\\
+
+Out of the box, Node.js provides into the binary compiled core modules, to help access files on the file system, create HTTP and TCP/UDP servers, and perform other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}} \\
+The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}} \\
+>>>>>>> d98c4ae0d85902380e3681085519fa336a798364
+Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
+But at the time of writing there were a massive of 21,308 easy to install packaed modules available to extend Node.js.\footcite[Cf.][TODO]{\url{https://npmjs.org}}
+Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment.
+Npm is run through the command line and manages dependencies for applications.\\
+As explained later on Node.js received standing ovations from the web developer community, which lead to spectacular participation in the project. In addition Node.js is supported by a San Francisco based company named Joyent, which offers cloud services such as Infrastructure as a Service and Platform as a Service to large companies, focussing on open source projects such as Ruby on Rails and Node.js.\footcite[Cf.][]{http://jaxenter.com/node-js-moves-to-joyent-32530.html}
+Node.js's documentation and manual is extensive and covers all functionality of the non-extended edition.
+Node.js is licensed under the MIT License\footnote{See \url{http://opensource.org/licenses/MIT }}, meaning that it permits reuse within proprietary software provided all copies of the licensed software include a copy of the MIT License terms.\\
+
+Node.js's large performance benefits are caused through the use of Google's new JavaScript engine V8, which naturally ships with the web browser Chrome and is used for Node.js too. Due to the fact that V8 compiles JavaScript into
 real machine code before executing it, Node.js has an advantage over 
 traditional techniques such as executing bytecode or interpreting it.\footnote{See \url{https://developers.google.com/v8/intro}}
-\\
-Node.js by default provides core modules that are packed in its binary, to help
-access files on the file system, create HTTP and TCP/UDP servers, and to perform
-other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}}
-The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}}
-Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
-The node package manager, however, provides 21,104 packaged modules as of
-January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to
-leverage a variety of pre-defined complex functionalities.
-Since Node.js version 0.6.3 the package manager npm is deployed and installed
-automatically within the environment.\footcite[Cf.]{blog_nodejs_2011} Npm is run on the command
-line and manages dependencies for applications.\\
-Node.js received standing ovations from the web developer community, which lead
-to spectacular participation in the project. Primarily, Node.js is supported by
-a San Francisco based company named Joyent, which offers cloud services such as
-Infrastructure as a Service and Platform as a Service to large companies,
-focussing on open-source projects such as Ruby on Rails and
-Node.js.\footcite[Cf.][]{jaxenter_2010}\\
-Node.js's documentation and manual are extensive and cover all functionalities
-of the non-extended edition.
-Node.js is licensed under the MIT License\footnote{See
-\url{http://opensource.org/licenses/MIT }}, meaning that it permits reuse within
-proprietary software provided all copies of the licensed software include a copy
-of the MIT License terms.\\
-
 
 
 \subsubsection{Vert.x}
-\label{Vert.x}
+\label{vert.x}
 
-Vert.x is a programming framework that runs on the Java Virtual Machine (JVM).
-It is hence possible to scale over
-available cores without manually forking multiple processes.\\
+Vert.x is a polyglot that runs on the Java Virtual Machine (JVM). It is hence
+possible to scale over available cores without manually forking multiple
+servers.\\
 The application API is exposed in multiple programming lanugages (see table
 \ref{tab:existing_frameworks}).
 % Implication: use case, code reuse from different legacy systems written in
@@ -494,6 +435,7 @@ In Vert.x the smallest available deployment unit is a verticle, which runs
 inside an instance. Each instance runs single-threaded.
 Multiple verticles can be run inside one instance as depicted in Fig.
 \ref{fig:vertx_constructs}.
+%http://vertx.io/core_manual_java.html scaling tcp servers
 
 \begin{figure}[h]
 	\centering
@@ -507,44 +449,32 @@ Multiple verticles can be run inside one instance as depicted in Fig.
 
 When multiple instances are run on one machine, Vert.x automatically distributes incoming
 requests among all running instances in a round-robin fashion, so that each
-Vert.x verticle instance remains single-threaded. Technically seen, there is
-more than one event loop, but Vert.x employs a mechanism that ensures that all events
-that are related (e.g. because they triggered each other) are run in the same context, i.e. the same thread.
-This allows real concurrency while providing the benefits of single-threaded programming style.
+vert.x verticle instance remains single-threaded.
 
 Vert.x also includes a distributed event bus, which enables verticles to
 communicate with each other, either within the same instance or across different
-instances. The event bus allows direct communication with in-browser JavaScript as well.
-Vert.x uses the SockJS library for this purpose which is a wrapper around normal websockets with a
-fallback to alternative technologies, such as long-polling\footcite[Cf.][]{sockjs_2013}.
-This is shown schematically in Fig. \ref{fig:server_bridge}.
-
+instances. The event bus allows direct communication with in-browser JavaScript as well.\\
+% Implication: ideal for real time applications. easy communication between client and server using JS
 Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
 so-called background pool as these tasks would otherwise block the event loop as
-described in section \ref{issue_threads}.
+described in section \ref{comparison}.
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.7\textwidth]{img/vertx_server_bridge.pdf}
-\caption[Vert.x server bridge]{Vert.x server bridge - schematic view}
-\label{fig:server_bridge}
-\end{figure}
-%
 The core functionality of Vert.x covers basic networking tasks and protocols,
-web servers, network clients, access to the file system, shared maps and the event bus.
+web servers, clients, access to the file system, shared maps and the event bus.
 The core libraries of Vert.x can be embedded in any JVM program for reuse in
 larger projects.\\
 As opposed to Node.js, the core functionality and API can be considered quite
-stable as changes need to be done in all supported languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
+static as changes need to be done in all supported
+languages.\footcite[Cf.][]{vertx_2012}\\ % The core can be extended with
 The core can be extended with additional features that are provided by optional
-modules which can be obtained over a public git-based module
+modules that can be obtained over a public git-based module
 repository.\footcite[Cf.][]{vertx_mod_2012}.
 The repository currently contains 16 distinct modules in different
-versions.\footcite[Cf.][]{Vertx_repository_2012} Compared to Node.js this
-number is very low and reflects the relatively low interest in the project
-in comparison to Node.js (see Fig. \ref{img_googletrend_all}).
-However one should bear in mind that many libraries available for the languages supported
-by Vert.x can be used within this framework as well.
+versions.\footcite[Cf.][]{Vertx_repository_2012}
+
+%TODO: http://vertx.io/manual.html#message-passing
+% add info on message passing. vert.x makes use of shared maps to avoid issues
+% in distributed systems. how does Node.js handle that?
 
 An extensive online documentation is available for all supported languages.
 Additionally, code examples for most features are available for all supported languages in
@@ -552,8 +482,6 @@ a public repository\footcite[Cf.][]{Fox_2013}.\\
 Vert.x is open source and licensed under the Apache Software License
 2.0\footnote{See \url{http://www.apache.org/licenses/LICENSE-2.0.html}}, so that
 commecial redistribution in closed source projects should not be an issue.
-At present the project is owned by VMware, but it is likely that it will be transferred to
-an Open Source foundation (see section \ref{vertx_maintainability}).
 
 
 \newpage
@@ -599,7 +527,7 @@ A few possible use cases are described in the list below and case studies are pr
   thread for all connections as opposed to a classical web server, which would
   keep one thread for each connection. Thus the servers footprint is much
   smaller.\\
-  \textbf{Known implementation:} Hummingbird is a real time web traffic
+  \textbf{Known implementation:} Humingbird is a real time web traffic
   visualization tool that uses Node.js for all processing. When loading a
   website the browser sends a request for each file that is referenced in the
   HTML file. Hence each page that should be tracked by Hummingbird integrates a
@@ -630,7 +558,7 @@ A few possible use cases are described in the list below and case studies are pr
   how this is realized.\footcite[Cf.][81]{teixeira_2012}
   \item[]
 
-\begin{lstlisting}[language=javascript,caption={Controlling streams in Node.js},label=lst:streaming]
+\begin{lstlisting}[language=javascript,caption={Controlling streams},label=lst:streaming]
 require('http').createServer(function(req, res) {
 	var rs = fs.createReadStream('/path/to/big/file');
 	
@@ -651,20 +579,17 @@ require('http').createServer(function(req, res) {
 \end{lstlisting}
 
 
-The data flow control process can be automated by using the \texttt{stream.pipe()} method. 
+The data flow control process can be automated by using the stream.pipe() method. 
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concept suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
-\textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Odell_2012} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodwebserver_2013}, which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
-\textbf{Realization:} The realization can be seen exemplarily in listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
+\textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Connect_2013} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
+\textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
   \item[Proxies] A key reason for this use case is that there is oftentimes not much computation required to run a proxy and typically involves a high number of requests. A common task might be to filter a set of URLs, which can be easily done with an array in Java and JavaScript.\\
 \textbf{Known implementation:} There is a Vert.x implementation called vertx-proxy\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called node-http-proxy\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
 \textbf{Realization:} The requests are catched and the proxy implementations request the actual website themselves before it is passed back to the requesting client. Although it seems simple and there are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}, the application area should be considered and checked for demands like WebSockets or similar to make sure the proxy meets all requirements.
-  \item[Push-notification and messaging systems] Asynchronous technologies are suitable for web applications and networking tools that have to handle many concurrent connections as they are event-driven.\footcite[Cf.][17]{teixeira_2012} Such applications process a high number of requests fast, which in most cases means in real time. At the same time, the tasks are not CPU-intensive and do not block the event loop. \\
-\textbf{Realization:} Such web applications or services can include chat platforms, sport bets, e-mailing and instant messaging applications.\footcite[Cf.][]{GeisendoerferF_2011} As opposed to synchronous processing, the event-loop keeps working while notifications are delivered to clients and potential callbacks are processed as soon as messages were received. As everything occurs in a single thread, an overhead of switching threads and concurrency issues can be avoided.\\
-\textbf{Known implementation:} AIRCODE has implemented such a real time notification application entirely in Node.js, see Appendix 3. Moreover, financial applications being required to show immediate reaction to stock changes may implement real time notification systems by taking advantage of asynchronous processing.
-
+  \item[Push-notification and messaging systems] TODO: mainly idling connections, but realtime communication important
 
 \end{description}
 
@@ -731,57 +656,38 @@ with these frameworks. These implementations are thoroughly described in the fol
 \label{software_description}
 \FloatBarrier
 The exemplary implementation consists of a web service that can be used to calculate
-the expected fee for an insurance. The idea behind this application is that
-two clients can collaborate during the form entry process before submitting
-all values for the fee calculation to the server.
-However this application should only serve as a demonstration of the used asynchronous 
-frameworks and is hence very simplified.\\
-Functionalities that are included are usual POST requests as well as real time communication
-via a WebSocket (described in section \ref{software_design}).
+the expected fee for an insurance. However this application should only serve as a 
+demonstration of the used asynchronous frameworks and is hence very simplified.
 
 \begin{figure}[h]
 	\centering
 	\setlength\fboxsep{2pt}
 	\fbox{
-	\includegraphics[width=0.9\textwidth]{img/poc_workflow2.pdf}
+	\includegraphics[width=0.9\textwidth]{img/poc_workflow.pdf}
 	}
 	\caption{Usage workflow of the exemplary application}
 	\label{fig:application_workflow}
 \end{figure}
 
 
-The basic usage workflow is shown in Fig. \ref{fig:application_workflow}.
-Upon page load both users can assign a form key. All users with the same key
-will be collaborating with each other and receive all input changes from the
-other users - this is comparable to a simple chat.
-the form consists of two parts - the first part being a section for personal
-details and the second part for parameters that will be used to determine the
-fee for the insurance.\\
-The users then fill in all necessary form fields (step 1 in Fig.
-\ref{fig:application_workflow}) and instantly get feedback on the vailidy of the
-entered values (step 2 in Fig. \ref{fig:application_workflow}).
-The evaluation is done locally on the clients' machines.
-While typing the data into the form fields, those inputs are instantly sent to
-the server using WebSockets.
-The server will distribute these inputs to all clients that have opened the same
-form, which is identified via the key that was set initially (step 3 in Fig.
-\ref{fig:application_workflow}).\\
-Once all fields that are required for the fee calculation are filled correctly
-the client automatically submits the values via AJAX to the server over a secure
-HTTPS connection (step 4 in Fig. \ref{fig:application_workflow}). On the server
-these values are then validated again to avoid processing of manipulated requests
-(step 5 in Fig. \ref{fig:application_workflow}). The result of the fee calculation
-is then returned to the client, which closes the HTTP connection (step 6 in Fig. \ref{fig:application_workflow}).\\
-This AJAX call is triggered when the three fields of the second part (being
-\textit{career}, \textit{amount insured} and \textit{ownership stake}) are
-valid.\\
-Using two different technologies (WebSockets and AJAX) for this workflow is
-certainly not the best approach from a design point of view but is conceptually
-valuable to show serveral ways of communication.
+The basic usage workflow is shown in figure \ref{fig:application_workflow}. In a
+first step the user opens the website in a browser and is shown a form that
+consists of two parts - the first part being a section for personal details and
+the second part for parameters that will be used to determine the fee for the
+insurance.\\
+The user then fills in all necessary form fields and instantly gets feedback on
+the vailidy of the entered values. Once all fields are filled correctly the form
+can be submitted to the application via HTTP or HTTPS. The data received by the server
+then gets validated again to avoid processing of manipulated requests.\\
+
+While typing the data into the form fields, those inputs are instantly sent to the server using WebSockets.
+The server will distribute these inputs to all clients that have opened the same form,
+which is identified via a key. Furthermore, the user gets instant feedback on what the
+insurance rate would be like. This feature is, however, realized via an AJAX call, which is triggered
+when the three fields of the second part (being "career", "amount insured" and "ownership stake") are valid. Using two technologies is conceptually valuable to show serveral ways of communication.
 
 \nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
 \nomenclature{HTTP}{Hyper Text Transfer Protocol}
-\nomenclature{AJAX}{Asynchronous JavaScript and XML}
 
 
 
@@ -792,7 +698,7 @@ valuable to show serveral ways of communication.
 \label{software_design}
 
 \nomenclature{CSS}{Cascading Style Sheets}
-\nomenclature{HTML}{Hyper Text Markup Language}
+\nomenclature{HTML}{HyperText Markup Language}
 
 This simple usage scenario leads to a few requirements and
 design decisions.
@@ -839,7 +745,7 @@ follows a specific procedure\footcite[Cf.][]{Nemati_2011}:
  the client will be used to encrypt all communication with the server.
  (6) The client encrypts the session key with the public key of the server. Only
  the server can decipher the data using the private key.\\
-The generation of private and public keys can be done by using the following
+The generation of private and public keys can be done be using the following
 commands, leveraging OpenSSL, an Open Source toolkit to implementing secure
 protocols\footnote{See \url{ http://www.openssl.org/}}:\\
 
@@ -850,25 +756,10 @@ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.p
 \end{lstlisting}
 
 \subsubsection{AJAX - Asynchronous JavaScript and XML}
-AJAX applies the previously explained concept of asynchronous communication to
-the client-side, meaning that the user who sends a request from a website does
-not have to wait for the answer, but can continue using that website in the
-meantime without any obvious loading activity that deters him/her from consuming
-content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the
-server, it usually goes back to the XMLHttpRequest object in JavaScript that is
-called by most browsers to send data to the server (further developments may
-apply). Receiving information in response to a request is realized using
-callback functions (JavaScript), whose principle was introduced
-too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses
-jQuery as library for AJAX, which "simplifies [...] event handling, animating,
-and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}.
-This in particular ensures better compatibility across several platforms, as it
-covers their specific requirements. The following code snippet in Listing
-\ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because
-client-side asynchronous calls are beyond the scope of this paper.
+AJAX applies the previously explained concept of asynchronous communication to the client-side, meaning that the user who sends a request from a website does not have to wait for the answer, but can continue using that website in the meantime without any obvious loading activity that deters him/her from consuming content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the server, it usually goes back to the XMLHttpRequest object in JavaScript that is called by most browsers to send data to the server (further developments may apply). Receiving information in response to a request is realized using callback functions (JavaScript), whose principle was introduced too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses jQuery as library for AJAX, which "simplifies [...] event handling, animating, and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}. This in particular ensures better compatibility across several platforms, as it covers their specific requirements. The following code snippet in Listing \ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because client-side asynchronous calls are beyond the scope of this paper.
 
-\begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label={lst:jqueryajaxcall}]
-\$.ajax({
+\begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label=lst:jqueryajaxcall]
+$.ajax({
     url: '/testurl',
     type: 'POST',
     contentType: "application/json; charset=utf-8",
@@ -882,17 +773,7 @@ client-side asynchronous calls are beyond the scope of this paper.
 
 \subsubsection{WebSockets}
 Moreover, a key technology to allow for real-time communiation that is leveraged
-in the Proof of Concept is the WebSocket Protocol. The WebSocket Protocol is standardized
-by the Internet Engineering Task Force (IETF) in Request for Comments (RFC)
-6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way
-communication between a client running untrusted code in a controlled
-environment to a remote host that has opted-in to communications from that
-code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake
-and the data transfer, where the handshake is compatible with the HTTP-based
-server-side software and intermediaries. The data transfer can start as
-soon as server and client both have sent their handshakes and the actual
-handshake was successful. Each side can then send data independent from each
-other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
+in the Proof of Concept are WebSockets. The WebSocket Protocol is standardized by the Internet Engineering Task Force (IETF) in Request for Comments (RFC) 6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way communication between a client running untrusted code in a controlled environment to a remote host that has opted-in to communications from that code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake and the data transfer, where the handshake is compatible with the HTTP-based server-side software and intermediaries. The data transfer part can start as soon as server and client both have sent their handshakes and the actual handshake was successful. Each side can then send data independent from each other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 
 
 \nomenclature{IETF}{Internet Engineering Task Force}
@@ -913,13 +794,13 @@ utility classes.
 One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
 requests are interpreted as file requests and are answered directly from within
 the verticle. POST requests are interpreted as form submissions. Whenever a POST
-requests arrives, the verticle transforms the request body to a Json object and
+requests arrives the verticle transforms the request body to a Json object and
 submits it via Vert.x' event bus.\\
 The second verticle is a worker verticle which does the CPU intense calculation
-tasks. This verticle listens on the event bus for incoming messages. Whenever
+tasks.This verticle listens on the event bus for incoming messages. Whenever
 such a message arrives it transforms the received Json object into a form
-instance for validation and fee calculation. The results are then sent back via
-the event bus when this operation has completed, so that the event loop can return
+instance for validation and fee calculation.The results are then sent back via
+the event bus of this operation has completed, so that the event loop can return
 the result to the client in its next iteration.\\
 The third verticle serves as a starter script which programmatically starts
 the previously mentioned verticles and terminates afterwards as it does not
@@ -929,27 +810,27 @@ define any callbacks itself (see listing \ref{lst:starter_verticle}).
 label=lst:starter_verticle]{lst/starter_verticle.java}
 
 The actual deployment of the other verticles happen in lines 13 and 14.
-An important detail is the second parameter in the \texttt{deployWorkerVerticle} method.
+An important detail is the 2nd parameter in the \texttt{deployWorkerVerticle} method.
 Vert.x allows deploying multiple instances of a verticle programmatically
 which eases scaling an application to the number of available processors of a machine.
 In this case the main loop is single-threaded and for each remaining processor
 there is one worker verticle. Vert.x automatically distributes requests among
-these worker verticles (as described in section \ref{Vert.x}).
+these worker verticles (as described in section \ref{vert.x}).
 
 A global configuration file is read in line 12. This configuration file is
 formatted as Json string and can include settings for modules or verticles. The
 path to the configuration file has to be provided to the \texttt{vertx} command
 upon server start to allow access to it from within the verticles. For this implementation the command that
-has to be invoked as shown in listing \ref{lst:vertx_start}.
+has to be invoked is shown in listing \ref{lst:vertx_start}.
 
 \lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
 label=lst:vertx_start]{lst/vertx_start_command.sh}
 
 Vert.x allows either running verticles by providing the compiled Java class or by providing the
 source file, which is then compiled automatically by Vert.x. However in this
-setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
+setup we experienced some issues with the Vert.x run command when we tried to
 use it with the source files. The issues observed where partially related to
-Vert.x bug 444\footnote{see \url{https://github.com/vert-x/Vert.x/issues/444}}.
+Vert.x bug 444\footnote{see \url{https://github.com/vert-x/vert.x/issues/444}}.
 Due to incomplete dependency resolution, not all classes were compiled so that
 Vert.x could not find all required classes in the path at runtime.
 These startup issues can easily be avoided by using compiled classes instead of
@@ -957,12 +838,9 @@ the source files when multiple verticles need to be started programmatically.
 The path to the compiled classes has to be provided with the \texttt{cp} switch as
 shown in listing \ref{lst:vertx_start}.
 
-\clearpage
+
 \lstinputlisting[language=Java,caption={Vert.x form handler},
 label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
-
-\lstinputlisting[language=Java,caption={Vert.x worker verticle that receives the message sent by the form handler},
-label=lst:vertx_calculator]{lst/Calculator.java}
 
 
 The implementation of the communication between the web server and the worker
@@ -971,35 +849,15 @@ simple adressing mechanism where the address consists of a normal string.
 Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
 in the web server verticle and gets called whenever a form submission arrives.
 The handler registers another handler that is called as soon as the entire
-request body has arrived (line 7). The data that arrives as a buffer is than
-turned into a JsonObject (line 10) and submitted to the event bus (line 12).\\
-As soon as a reply is returned over the event bus it is forwarded to the client line 16).
-\autoref{lst:vertx_calculator} shows the worker verticle that receives
-the message, does the calculation and then returns the result via the message bus.
+request body has arrived (line 3). The data that arrives as a buffer is than
+turned into a JsonArray (line 7) and submitted to the event bus (line 9).
+As soon as a reply is returned over the event bus it is forwarded to the client (line 12).
 
-The live communication via the WebSocket Protocol is handled in a similar way. As mentioned in section
-\ref{Vert.x}, Vert.x allows access to its event bus from within the client's browser.
-This is accomplished by using a so-called \textit{bridge} that forwards client messages to
-the server event bus and vice versa. As this poses a potential security vulnerability
-it is recommended to set up the bridge with a filtering instance that only allows certain
-addresses or message contents for inbound or outbound communication. \autoref{lst:vertx_bridge} contains
-the configuration that has been used for the real time communication between clients
-and server in the Vert.x implementation.\\
-Inbound messages are allowed on the address ``form.data'' and outbound messages
-are allowed on all addresses that start with ``form.data.client.'' and end with a number.
-The variable number is used as the form key for grouping clients, as described in section
-\ref{software_description}. Note that this is still an insecure solution as attackers
-could register theirselves with a large number of form keys to receive all data that
-is being sent. Possible ways to address this issue are either encrypting submitted
-data or by allowing connections for authorized clients only.
-
-\lstinputlisting[language=Java,caption={Vert.x event bus bridge configuration},
-label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
 
 
 \subsubsection{Node.js}
 \label{implementation_node}
-The Node.js implementation starts with four modules that are required to run the application:
+The node.js implementation starts with four modules that are required to run the application:
 
 \begin{lstlisting}[language=javascript,caption={Including modules},label=lst:includenodemodules]
 var express = require('express');
@@ -1017,7 +875,7 @@ Express can be installed using the following command-line command:\\
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
+In order to enable HTTPS by leveraging the node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
 
 \begin{lstlisting}[language=javascript,caption={Reading encryption keys}]
 var httpsOptions = {
@@ -1026,11 +884,9 @@ var httpsOptions = {
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the following code is used, which first
-initialized express() and then creates the server using the express variable
-before the ports on which the servers are listening are defined:
+To run the HTTP/HTTPS servers, the following code is used, which first initialized express() and then creates the server using the express variable before the ports on which the servers are listening are defined:
 
-\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
 var app = express();
 var server = http.createServer(app);
 var secureServer = https.createServer(httpsOptions, app);
@@ -1038,32 +894,25 @@ server.listen(8888);
 secureServer.listen(4431);
 \end{lstlisting}
 
-The HTTP server can be accessed using \texttt{http://localhost:8888/} as opposed to the
-HTTPS server that is available at \texttt{https://localhost:4431/}. Afterwards, the
-\textit{socket.io} module for WebSockets comes into play. First of all, it needs to be
-installed using the following command:
+The HTTP server can be accessed using http://localhost:8888/ as opposed to the HTTPS server that is available at https://localhost:4431/. Afterwards, the socket.io module for web sockets comes into play. First of all, it needs to be installed using the following command-line command:
 
-\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager}]
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
 npm install socket.io
 \end{lstlisting}
 
-Afterwards, it is included and initialized by passing the secureServer variable
-(for the HTTPS server):
+Afterwards, it is included and initialized by passing the secureServer variable (for the HTTPS server):
 
-\begin{lstlisting}[language=javascript,caption={Initialisation of the socket.io module in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Starting servers}]
 var io = require('socket.io').listen(secureServer);
 \end{lstlisting}
 
-The first Express functionality used is that static files can be served with
-Node.js. Using the following statement, the directory “/” is made the root
-directory for a \texttt{http[s]://localhost:[port]/}
+The first Express functionality used is that static files can be served with node.js. Using the following statement, the directory “/” is made the root directory for a http[s]://localhost:[port]/
 
 \begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
 
-Another Express feature is the “bodyParser”, which is used as middleware to
-parse request bodies, for this Proof of Concept especially JSON.
+Another Express feature is the “bodyParser”, which is used as middleware to parse request bodies, for this Proof of Concept especially JSON.
 
 \begin{lstlisting}[language=javascript,caption={Using the bodyParser}]
 app.configure(function(){
@@ -1071,7 +920,7 @@ app.configure(function(){
 });
 \end{lstlisting}
 
-Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in Node.js on http://localhost:8888/insurances:
+Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in node.js on http://localhost:8888/insurances:
 
 \begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data}]
 app.post('/insurances', function (req, res) {
@@ -1091,9 +940,9 @@ example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
 field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
+So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called web sockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable node.js in combination with socket.io to handle web socket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time}]
+\begin{lstlisting}[language=javascript,caption={Using web sockets to distribute form inputs in real-time}]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1113,7 +962,7 @@ io.sockets.on('connection', function (socket) {
 
 The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported:
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how web sockets are used. First of all, the socket.io.js needs to be imported:
 
 \begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript}]
 <script src="/socket.io/socket.io.js"></script>
@@ -1150,11 +999,11 @@ function sendToServer(fieldId) {
 }
 
 // trigger request for each key written in input/select fields
-\$('input[type="text"]').on('keyup', function () {
-    sendToServer(\$(this).attr("id"));
+$('input[type="text"]').on('keyup', function () {
+    sendToServer($(this).attr("id"));
 });
-\$("select").on("change", function () {
-    sendToServer(\$(this).attr("id"));
+$("select").on("change", function () {
+    sendToServer($(this).attr("id"));
 });
 \end{lstlisting}
 
@@ -1177,12 +1026,12 @@ socket.on("liveform", function (data) {
             }
         }
         // trigger validation to have smiliar visual appearances (valid/invalid) for the fields
-        \$('#' + key).h5Validate("isValid");
+        $('#' + key).h5Validate("isValid");
     }
 });
 \end{lstlisting}
 
-To use the application, the Node.js servers can be started by using the command-line. After navigating
+To use the application, the node.js servers can be started by using the command-line. After navigating
 into the project’s folder using cd, the only command needed is:
 \begin{lstlisting}[caption={Executing Node.js code}]
 Node.js [filename].js
@@ -1237,7 +1086,7 @@ is similar to established JavaScript frameworks.
 \\
 \textbf{License}			
 & MIT license 			
-& Apache Software License 2.0
+& MIT license
  \\
 \bottomrule 
 \end{tabular*}
@@ -1285,7 +1134,6 @@ This leads to the conclusion that the current pace of progress does not
 facilitate enterprise adoption, however it is not a showstopper.
 
 \subsubsection{Vert.x maintainability}
-\label{vertx_maintainability}
 Vert.x offers a similar picture to Node, however some of Node's shortcoming are
 more pronounced on the Vert.x side of things. Whereas Node.js can recruit from
 established web developers, is Vert.x suffering from a curious conundrum. It is
@@ -1310,7 +1158,7 @@ there might be an associated licensing cost for application servers.
 At present there is a discussion in the google users group
 \footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of
 the Vert.x project which is owned by VMWare. The founder of the project and
-former employeee of VMWare had to transfer ownership of the Github project,
+former employee of VMWare had to transfer ownership of the Github project,
 domain, gooole group and blog to VMWare after he left the company in December
 2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
 uncertainty in the community and might increase the entry barriers for new
@@ -1322,10 +1170,10 @@ within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_fu
 \label{integration}
 Vert.x and Node.js are supposed to be used as fully event driven standalone
 applications that can be extended with event-driven modules.
-However when introducing a Node.js or Vert.x application into the currentc
+However when introducing a Node.js or Vert.x application into the current
 application landscape it might be desired to reuse or communicate with existing
 systems that are not fully event driven. Furthermore, integration of these
-technologies might not be limited to mere IPC\nomenclature{IPC}{Inter Process
+technologies might not be limited to mere IPC\nomenclature{IPC}{InterProcess
 Communication} but instead as a new middleware-layer beneath current and new
 applications.\\
 %Consider connecting that software with a message bus.
@@ -1361,10 +1209,9 @@ allows registering callbacks for certain events (see lines 4,8 and 12).
 \lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code},label=lst:node_child]%
 {lst/node_child_process.js}
 
-Invoking processes on a different machine across the network still
-requires a remote API or a distributed message bus system.\\
 
-Moreover, Kue is an example of a message queue developed in Node.js, which could serve as connector to the enterprise service bus. Appendix \ref{appendix_kue} expands upon this module.
+Invoking processes on a different machine across the network still
+requires a remote API or a distributed message bus system.
 
 
 \subsubsection{Vert.x Integration}
@@ -1427,11 +1274,9 @@ well.\footcite[Cf.][]{vertx_2012}
 
 
 
-Both Vert.x and Node.js offer great performance and scalability under certain
-circumstances that were identified in section \ref{areas_of_application}.
-In order to allow a comparison for a very simple use case, a micro-benchmark was
-run to collect information on request handling of Node.js, Vert.x and the two
-popular web servers Apache2 and Nginx.
+Both Vert.x and Node.js offer great performance and scalability under certain circumstances that were identified in section \ref{areas_of_application}.
+In order to allow a comparison for a very simple use case, a micro-benchmark was run to collect information on request handling of Node.js, Vert.x and
+the two popular web servers Apache2 and Nginx.
 \paragraph{Experiment setup} Each server was run isolated on a virtual machine
 that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
 of 2.5GHz (to make sure that the host system has enough free capacity). A static
@@ -1458,7 +1303,7 @@ gives a good representation of the scalability attributes of asynchronous
 servers. The bad performance of Apache2 is due to the process forking for each
 new request. Nginx is a lightweight HTTP server that by default only uses as
 many threads as there are processors provided by the host, which is why it
-performs so well. More detailed benchmarking results are shown in Appendix \ref{app:benchmark_results}.
+performs so well.
 
 
 \begin{figure}[htbp]
@@ -1467,6 +1312,7 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \caption[Plot of the web server benchmark results (all servers)]{Plot of the web server benchmark results between Apache2, Nginx, Node.js, Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_all}
 \end{figure}
+\footcitetext{req_res}
 
 \begin{figure}[htbp]
 \centering
@@ -1474,6 +1320,7 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_async}
 \end{figure}
+\footcitetext{req_res}
 
 
 \paragraph{Scaling on a single machine}
@@ -1482,11 +1329,12 @@ Vert.x and can be accomplished easily on a per-instance basis like shown in list
 Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
-computation intense tasks can be handled by a thread pool of 4 threads. 
-Vert.x provides  thread-safe data-structures that developers can use to share data between instances. However these data-structures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
+computation intense tasks can be handled by a threadpool of 4 threads. 
+Vert.x provides  threadsafe datastructures that developers can be used to share data between multiple
+instances. However these datastructures are limited to immutable data types\footcite[Cf.][]{vertx_2012}\\
 
 Node.js is designed to run single-threaded and can only scale to all available
-cores by using the Cluster module\footcite[Cf.][]{node_2012b}, which is still in an experimental state.
+cores using the Cluster module\footcite[Cf.][]{node_2012b}, which is, however, still in an experimental state.
 This module allows to take advantage of a multi-core system by launching a cluster of Node.js processes to handle the load. Basically it enables the developer to run several worker processes (depending on the number of cores) and create an HTTP server for each of them, whereby all of them share one port. 
 
 
@@ -1494,7 +1342,7 @@ This module allows to take advantage of a multi-core system by launching a clust
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 functionality internally to scale on multiple machines.\\
 
-\begin{lstlisting}[language=bash,caption={Starting a Vert.x application in cluster mode},label={lst:vertx_cluster}]
+\begin{lstlisting}[language=bash,caption={Starting a vert.x application in cluster mode},label={lst:vertx_cluster}]
 vertx run server.js -cluster -cluster-port 22000
 \end{lstlisting}
 
@@ -1507,9 +1355,7 @@ event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
 website.\\
 
-Up to now, for Node.js there is no known way of distributing workloads among
-different servers, however that wish was
-addressed.\footcite[Cf.][]{node_clusterserver}
+Up to now, for Node.js there is no known way of distributing workloads among different servers, however that wish was addressed.\footcite[Cf.][]{node_clusterserver}
 
 
 \paragraph{General ways of distributing workload among distributed machines}
@@ -1536,21 +1382,10 @@ requests.\\
 
 \section{Outlook}
 
-This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.\\
+This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.
 
-\paragraph{Node.js} Node.js, as became evident throughout the paper, is popular and enjoys healthy development. It is backed by a variety of modules that enable developers to implement complex functionality. The packaged modules available at \url{npmjs.org} indicate great interest, as the number of downloads (about 14.6 million last month\footcite[Cf.][]{node_packages}) suggests. In addition, the GitHub Commit History\footcite[Cf.][]{vertxcommithistory_2013} shows constant contributions. 
-
-\paragraph{Vert.x} Currently there is a lot of uncertainty in terms of the
-development of Vert.x goes further, as recent news articles
-indicate.\footcite[Cf.][]{Asay_2013} This is mainly related to the reaction of
-VMware when Vert.x foudner Tim Fox left the company. Moreover, there is
-currently no developer roadmap available that allows to infer the future
-development. Its commit history on
-GitHub\footcite[Cf.][]{vertxcommithistory_2013} is another sign of a decreasing
-popularity, which, however has always been on a lower level than on GitHub but
-might currently be related to the unclear future.
-
-\paragraph{Evolving the Proof of Concept} The Proof of Concept introduced within this paper is an initial implementation that was set up to show the potential usage of asynchronous server technologies while remaining on a moderate level of complexity. However, the use case that was shown -- real-time insurance form infilling and instant price calculation based on inserted values -- provides great potential for companies to evolve their business model. The technology enables salesmen to interact more easily with clients and transforms geographically spread conclusion of contracts to the next stage, because the anonymity of web-based contracts can be mitigated by real-time communication that is not only limited to filling a form, but instead can be extended to live web-conferences with video/audio stream next to the form through the use of asynchronous server technologies. 
+TODO: Roadmaps
+TODO: PoC further development
 
 %
 %
@@ -1603,7 +1438,8 @@ The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries bui
 
 One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
 
-Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware. Appendices \ref{appendix_kue}, \ref{app:etherpad} and \ref{appendix_meteor} will showcase what is possible when turning Node.js into a middleware-layer (fundamentally this is also true for Vert.x). 
+Furthermore, in section TODO the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware.
+
 
 \appsection{Kue – A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
@@ -1621,7 +1457,7 @@ Asynchronous server technologies such as Node.js can leverage message queues ver
 Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to Listing \ref{lst:installkue}.
 
 \begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
-$ npm install kue $
+$ npm install kue 
 \end{lstlisting}
 
 \appsection{Case Study – LinkedIn}
@@ -1643,57 +1479,18 @@ AIRCODE has implemented an application providing real-time news and visitor’s 
 Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
 \appsection{Case Study – Etherpad}
-\label{app:etherpad}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
-\appsection{Case Study – Clock, a UK web agency}
-\label{app:case_clock}
-
-The following information are taken from an online article\footnote{\url{http://venturebeat.com/2012/01/07/building-consumer-apps-with-node/}} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, CTO of Clock.
-Clock is a web agency in the United Kingdom that builds the websites for their clients in Node.js. They chose Node.js for several reasons:
-First, JavaScript as the underlying programming language of Node.js is very beneficial. Most developers at Clock have JavaScript expertise what makes it relatively easy to introduce Node.js and therefore saves time and costs. In addition to that, Clock uses MongoDB. Thus, code can be used on the browser-side, server-side and for the database as MongoDB uses JavaScript for querying data.\footnote{\url{http://www.mongodb.org/}}
-Paul says that “our browser-side JavaScript code improved in quality and structure”. Another aspect the developers at Clock appreciate is the highly active community which is useful when solving programming issues. Also, the developers have had “large productivity gains in HTML and CSS using Jade and Stylus\footnote{\url{http://clock.co.uk/tech-blogs/a-simple-website-in-nodejs-with-express-jade-and-stylus}}”.
-Furthermore, the amount of traffic could be increased with Node.js compared to PHP with Apache which was used before. Clock says that using Node.js and MongoDB they could scale up much better than with PHP and PostgreSQL. Moreover, Clock developers appreciate the many hosting options that come with Node.js (e.g. No.de, Joyent’s SmartMachine, Heroku and Nodejitsu). Joyent’s SmartMachine is supposed to be used for upcoming projects.\\
-In conclusion, Clock states that at the beginning the projects took some extra time as developers had to get used to Node.js and the underlying concepts. However, Node.js fitted their use case very well (which was to develop high-scaling web applications) and after a short time, it made their development “extremely effective”.
-
-
-
 \appsection{Meteor and Opa}
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteor_docs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteor_docs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
+
+Meteor leverages node.js that way that it makes use of its JavaScript-based concept and also enables the developer to take advantage the variety of packages available for node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteor_docs}
+
+
+% include your appendix with the LaTeX include command
 \label{appendix_meteor}
-\FloatBarrier
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
-
-Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
-
-At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
-Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
-
-Opa is conceptually similar although its technical underpinnings as well as the developer-used framework is different which is illustrated in fig. \ref{img:opa}.\footcite{opa}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/hello-opa-write}
-\caption{Opa example code \label{img:opa}}
-\end{figure}
-
-\lstinputlisting[float,
-language=html,
-morekeywords={template},
-caption={HTML of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_html]{lst/leaderboard/leaderboard.html}
-
-\lstinputlisting[float,
-language=Javascript,
-morekeywords={},
-caption={JS of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
-\FloatBarrier 
-
-\appsection{Benchmarking results}
-\label{app:benchmark_results}
-\lstinputlisting[numbers=none,caption={Benchmarking results as shown by the Apache benchmarking tool for web servers},
-label={lst:benchmark_results}]{lst/200kb_benchmarks_output.txt}
+CODE CODE CODE
 
 %--------------------------------
 % close the appendices environment
