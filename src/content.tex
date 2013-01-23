@@ -441,11 +441,24 @@ access files on the file system, create HTTP and TCP/UDP servers, and to perform
 other useful functions.\footnote{See \url{http://nodejs.org/api/modules.html\#modules_core_modules}}
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}}
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
-The node package manager, however, provides 21,104 packaged modules as of January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to leverage a variety of pre-defined complex functionalities.
-Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment. (TODO source) Npm is run on the command line and manages dependencies for applications.\\
-Node.js received standing ovations from the web developer community, which lead to spectacular participation in the project. Primarily, Node.js is supported by a San Francisco based company named Joyent, which offers cloud services such as Infrastructure as a Service and Platform as a Service to large companies, focussing on open-source projects such as Ruby on Rails and Node.js.\footcite[Cf.][]{http://jaxenter.com/node-js-moves-to-joyent-32530.html}\\
-Node.js's documentation and manual are extensive and cover all functionalities of the non-extended edition.
-Node.js is licensed under the MIT License\footnote{See \url{http://opensource.org/licenses/MIT }}, meaning that it permits reuse within proprietary software provided all copies of the licensed software include a copy of the MIT License terms.\\
+The node package manager, however, provides 21,104 packaged modules as of
+January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to
+leverage a variety of pre-defined complex functionalities.
+Since Node.js version 0.6.3 the package manager npm is deployed and installed
+automatically within the environment. (TODO source) Npm is run on the command
+line and manages dependencies for applications.\\
+Node.js received standing ovations from the web developer community, which lead
+to spectacular participation in the project. Primarily, Node.js is supported by
+a San Francisco based company named Joyent, which offers cloud services such as
+Infrastructure as a Service and Platform as a Service to large companies,
+focussing on open-source projects such as Ruby on Rails and
+Node.js.\footcite[Cf.][]{jaxenter_2010}\\
+Node.js's documentation and manual are extensive and cover all functionalities
+of the non-extended edition.
+Node.js is licensed under the MIT License\footnote{See
+\url{http://opensource.org/licenses/MIT }}, meaning that it permits reuse within
+proprietary software provided all copies of the licensed software include a copy
+of the MIT License terms.\\
 
 
 
@@ -480,13 +493,13 @@ requests among all running instances in a round-robin fashion, so that each
 Vert.x verticle instance remains single-threaded. Technically seen, there is
 more than one event loop, but Vert.x employs a mechanism that ensures that all events
 that are related (e.g. because they triggered each other) are run in the same context, i.e. the same thread.
-This allows real concurrency while providing the benefits of singlethreaded programming style.
+This allows real concurrency while providing the benefits of single-threaded programming style.
 
 Vert.x also includes a distributed event bus, which enables verticles to
 communicate with each other, either within the same instance or across different
 instances. The event bus allows direct communication with in-browser JavaScript as well.
-Vert.x uses the SockJS library for this purpose which is a wrapper around normal websockets with
-fallback to alternative technologies, such as long-polling\footcite[][]{sockjs_2013}.
+Vert.x uses the SockJS library for this purpose which is a wrapper around normal websockets with a
+fallback to alternative technologies, such as long-polling\footcite[Cf.][]{sockjs_2013}.
 This is shown schematically in Fig. \ref{fig:server_bridge}.
 
 Vert.x allows to run I/O heavy tasks in separate worker threads that reside in a
@@ -499,7 +512,6 @@ described in section \ref{issue_threads}.
 \caption[Vert.x server bridge]{Vert.x server bridge - schematic view}
 \label{fig:server_bridge}
 \end{figure}
-\footcitetext{req_res}
 %
 The core functionality of Vert.x covers basic networking tasks and protocols,
 web servers, network clients, access to the file system, shared maps and the event bus.
@@ -561,8 +573,7 @@ A few possible use cases are described in the list below and case studies are pr
   relevant information to an in-memory database. In the case of HTTP requests
   these information could simply be taken from the various HTTP header fields.
   \footcite[Cf.][]{http_rfc}\\
-  A second server instance could
-  be set up to handle the online dashboard.
+  A second server instance could be set up to handle the online dashboard.
   In order to allow instantly updating the dashboard all clients should be
   connected to this instance via a WebSocket. Depending on the amount of visitors
   this could result in a large number of open connections. However due to the
@@ -570,7 +581,7 @@ A few possible use cases are described in the list below and case studies are pr
   thread for all connections as opposed to a classical web server, which would
   keep one thread for each connection. Thus the servers footprint is much
   smaller.\\
-  \textbf{Known implementation:} Humingbird is a real time web traffic
+  \textbf{Known implementation:} Hummingbird is a real time web traffic
   visualization tool that uses Node.js for all processing. When loading a
   website the browser sends a request for each file that is referenced in the
   HTML file. Hence each page that should be tracked by Hummingbird integrates a
@@ -601,7 +612,7 @@ A few possible use cases are described in the list below and case studies are pr
   how this is realized.\footcite[Cf.][81]{teixeira_2012}
   \item[]
 
-\begin{lstlisting}[language=javascript,caption={Controlling streams},label=lst:streaming]
+\begin{lstlisting}[language=javascript,caption={Controlling streams in Node.js},label=lst:streaming]
 require('http').createServer(function(req, res) {
 	var rs = fs.createReadStream('/path/to/big/file');
 	
@@ -622,13 +633,13 @@ require('http').createServer(function(req, res) {
 \end{lstlisting}
 
 
-The data flow control process can be automated by using the stream.pipe() method. 
+The data flow control process can be automated by using the \texttt{stream.pipe()} method. 
   \textbf{Known implementation:} Transloadit\footnote{\url{http://transloadid.com}} is a company offering a solution for file-uploading and encoding. They have implemented their service in Node.js and take advantage of the functionality of Node.js’s streams. Also Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012} 
 
   
-  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concepts suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
-\textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Odell_2012} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called mod-web-server\footcite[Cf.][]{vertxmodwebserver_2013} (module name web-server), which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
-\textbf{Realization:} The realization can be seen exemplarily in Listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
+  \item[Lightweight network servers] Asynchronous technologies are a good fit for HTTP servers and are efficient when it comes to handling many concurrent connections in a single process. The server application logic should handle the cookie header parsing, maintainance of sessions, serving static files, parsing the request body etc.\footcite[Cf.][197 et seq,]{teixeira_2012}However, the Proof of Concept suggests that also other protocols, like WebSockets, can take a particular advantage from asynchronous technologies.\\
+\textbf{Known implementation:} In terms of Node.js, Connect\footcite[Cf.][]{Odell_2012} is a well-known middleware that provided webserver functionality and is also referred to as industry standard.\footcite[Cf.][145]{Roden_2012} With regard to Vert.x, there is a webserver project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodwebserver_2013}, which efficiently serves files and can also be configured as en event bus bridge to client-side JavaScript.\\
+\textbf{Realization:} The realization can be seen exemplarily in listings \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
   \item[Proxies] A key reason for this use case is that there is oftentimes not much computation required to run a proxy and typically involves a high number of requests. A common task might be to filter a set of URLs, which can be easily done with an array in Java and JavaScript.\\
 \textbf{Known implementation:} There is a Vert.x implementation called vertx-proxy\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called node-http-proxy\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
 \textbf{Realization:} The requests are catched and the proxy implementations request the actual website themselves before it is passed back to the requesting client. Although it seems simple and there are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}, the application area should be considered and checked for demands like WebSockets or similar to make sure the proxy meets all requirements.
@@ -1438,7 +1449,6 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \caption[Plot of the web server benchmark results (all servers)]{Plot of the web server benchmark results between Apache2, Nginx, Node.js, Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_all}
 \end{figure}
-\footcitetext{req_res}
 
 \begin{figure}[htbp]
 \centering
@@ -1446,7 +1456,6 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_async}
 \end{figure}
-\footcitetext{req_res}
 
 
 \paragraph{Scaling on a single machine}
@@ -1513,7 +1522,15 @@ This section is going to cover future prospects of the two technologies that wer
 
 \paragraph{Node.js} Node.js, as became evident throughout the paper, is popular and enjoys healthy development. It is backed by a variety of modules that enable developers to implement complex functionality. The packaged modules available at \url{npmjs.org} indicate great interest, as the number of downloads (about 14.6 million last month\footcite[Cf.][]{node_packages}) suggests. In addition, the GitHub Commit History\footcite[Cf.][]{vertxcommithistory_2013} shows constant contributions. 
 
-\paragraph{Vert.x} Currently there is a lot of uncertainty in terms of the development of Vert.x goes further, as recent news articles indicate.\footcite[Cf.][]{Asay_2013} This is mainly related to the reaction of VMware when Vert.x foudner Tim Fox left the company. Moreover, there is currently no developer roadmap available that allows to infer the future development. Its Commit History on GitHub\footcite[Cf.][]{vertxcommithistory_2013} is another sign of a decreasing popularity, which, however has always been on a lower level than on GitHub but might currently be related to the unclear future.
+\paragraph{Vert.x} Currently there is a lot of uncertainty in terms of the
+development of Vert.x goes further, as recent news articles
+indicate.\footcite[Cf.][]{Asay_2013} This is mainly related to the reaction of
+VMware when Vert.x foudner Tim Fox left the company. Moreover, there is
+currently no developer roadmap available that allows to infer the future
+development. Its commit history on
+GitHub\footcite[Cf.][]{vertxcommithistory_2013} is another sign of a decreasing
+popularity, which, however has always been on a lower level than on GitHub but
+might currently be related to the unclear future.
 
 \paragraph{Evolving the Proof of Concept} The Proof of Concept introduced within this paper is an initial implementation that was set up to show the potential usage of asynchronous server technologies while remaining on a moderate level of complexity. However, the use case that was shown -- real-time insurance form infilling and instant price calculation based on inserted values -- provides great potential for companies to evolve their business model. The technology enables salesmen to interact more easily with clients and transforms geographically spread conclusion of contracts to the next stage, because the anonymity of web-based contracts can be mitigated by real-time communication that is not only limited to filling a form, but instead can be extended to live web-conferences with video/audio stream next to the form through the use of asynchronous server technologies. 
 
