@@ -98,19 +98,36 @@ existing application landscape.
 \section{Introduction}
 
 \subsection{Objectives}
+Permanent change is a basic concept and global phenomenon in the IT industry. 
+Most recent trends include cloud computing, big data, social media and mobile computing.
+The tremendous impact of the latter one is  revealed by a Cisco study, which states that in 2011 the mobile data traffic
+doubled the fourth year in a row.\footcite[Cf.]{cisco_2012} Those enormous traffic and the
+nature of social media applications raised problems in the common synchronous server technologies.
+Since 1996 the Microsoft Internet Explorer supports asynchronous content loading. A popular
+asynchronous technology is AJAX (asynchronous JavaScript and XML). It got even more attention when
+Google ntroduced a wide deployment of standards-compliant, cross browser Ajax with Gmail (2004) 
+and Google Maps (2005).\footcite[Cf.]{Swartz_2005} Since then asynchronous technologies
+encountered a steep carrier and are on the way to change the way of our programming.
 The main goal of this paper is to identify specific use cases for asynchronous server
 technologies. Special emphasis is put on an application in a business environment. 
-The authors' intention is to build a working prototype in order to present the advantages and
-disadvantages of this rising technologie.
+The authors' intention is to build working prototypes in order to present the advantages and
+disadvantages of this rising technology. 
 
 %Goal of this paper and structure
-This paper elaborates the concepts behind the young frameworks Node.js and Vert.x and analyses their 
+The two folded approach - explaining the change in web development and an application in an 
+business environment - infers two main programming languages, that are ubiquitous in each
+community: Java for the enterprise world and JavaScript for the web developers.
+This paper elaborates the concepts behind the young frameworks Node.js, that briefly explained enables running JavaScript on a server, and 
+Vert.x, a Java implementation of asynchronous technologies, and analyses their 
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
 \subsection{Methodology and structure}
-
-Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets).
+The whole thesis consists of seven chapters. The first two parts explain the author's motivation and introduces the 
+basic concepts of asynchronous technologies, whose use cases are explained in chapter three.
+Two prototypes of an insurance purchase webpage are implmented in Node.js and Vert.x in chapter 4.
+Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). Before the outlook and the conclusion summarize the paper, non-functional attributes e.g. maintainability and integration are 
+investigated.
 
 \newpage
 \section{Setting the context}
@@ -373,10 +390,10 @@ Node.js brings JavaScript to the server-side and therefore makes it possible to 
 
 Compared to other technologies that try to apply the fundamentals of asynchronous programming,
 Node.js' libraries are programmed completly asynchronous. Its architecture consists of modules to simplify the
-creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.
+creation of complex applications. Modules are encapsulated pieces of code like libraries in C or units in Pascal. Every module contains of set of functionalities that share one common purpose. The visibility of functions and variables is limited to the module they belong to. Using a module requires to call the function require() and its allocation to a variable.\footcite[Cf.][50]{maccaw_2011} 
 Every function in Node.js is asynchronous, which means that the current thread continues running and does not wait for completion (see Fig. \ref{fig:asynch_call}) Exemplarily, reading a file works that way that when the read operation has finished, a callback function is executed to continue working with the file's content.\\
 
-Node.js is single-threaded, which is why only one thing can happen at the same time. Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][p.16]{teixeira_2012}
+Node.js is single-threaded, which is why only one thing can happen at the same time. Node.js's asynchronous programming style is implemented through events that determine the flow of execution. The events are processed within an event loop. (see section \ref{issue_threads}) Consequently, the code execution is thread-safe and there is no issue regarding concurrency that affects the shared memory state.\footcite[Cf.][16]{teixeira_2012}
 \\
 
 \begin{figure}[hbtp]
@@ -395,7 +412,7 @@ Out of the box, Node.js provides into the binary compiled core modules, to help 
 The latest version of the Node.js environment can be installed from a GitHub repository.\footnote{See \url{http://nodejs.org/dist/latest/}}
 Even though the core modules are sophisticated enough to write complex applications, Node.js is not complex itself.
 The node package manager, however, provides 21,104 packaged modules as of January 18, 2013\footcite[Cf.][]{node_packages}, which enable the developer to leverage a variety of pre-defined complex functionalities.
-Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment. (TODO source) Npm is run on the command line and manages dependencies for applications.\\
+Since Node.js version 0.6.3 the package manager npm is deployed and installed automatically within the environment.\footcite[Cf.]{blog_nodejs_2011} Npm is run on the command line and manages dependencies for applications.\\
 Node.js received standing ovations from the web developer community, which lead to spectacular participation in the project. Primarily, Node.js is supported by a San Francisco based company named Joyent, which offers cloud services such as Infrastructure as a Service and Platform as a Service to large companies, focussing on open-source projects such as Ruby on Rails and Node.js.\footcite[Cf.][]{http://jaxenter.com/node-js-moves-to-joyent-32530.html}\\
 Node.js's documentation and manual are extensive and cover all functionalities of the non-extended edition.
 Node.js is licensed under the MIT License\footnote{See \url{http://opensource.org/licenses/MIT }}, meaning that it permits reuse within proprietary software provided all copies of the licensed software include a copy of the MIT License terms.\\
