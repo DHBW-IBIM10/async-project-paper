@@ -1673,6 +1673,37 @@ Kue is an example of a message queue (also called job queue) that is entirely de
 npm install kue
 \end{lstlisting}
 
+\appsection{Meteor and Opa -- Next Generation Web Application Frameworks}
+\label{appendix_meteor}
+\FloatBarrier
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
+
+Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
+
+At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
+Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
+
+Opa is conceptually similar although its technical underpinnings as well as the developer-used framework is different which is illustrated in fig. \ref{img:opa}.\footcite{opa}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/hello-opa-write}
+\caption{Opa example code \label{img:opa}}
+\end{figure}
+
+\lstinputlisting[float,
+language=html,
+morekeywords={template},
+caption={HTML of the Meteor example 'Leaderboard'},
+label=lst:leaderboard_html]{lst/leaderboard/leaderboard.html}
+
+\lstinputlisting[float,
+language=Javascript,
+morekeywords={},
+caption={JS of the Meteor example 'Leaderboard'},
+label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
+\FloatBarrier
+
 \appsection{Case Study – LinkedIn}
 \label{app:case_linkedin}
 In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
@@ -1710,36 +1741,7 @@ In conclusion, Clock states that at the beginning the projects took some extra t
 
 
 
-\appsection{Meteor and Opa}
-\label{appendix_meteor}
-\FloatBarrier
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
-
-Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
-
-At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
-Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
-
-Opa is conceptually similar although its technical underpinnings as well as the developer-used framework is different which is illustrated in fig. \ref{img:opa}.\footcite{opa}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/hello-opa-write}
-\caption{Opa example code \label{img:opa}}
-\end{figure}
-
-\lstinputlisting[float,
-language=html,
-morekeywords={template},
-caption={HTML of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_html]{lst/leaderboard/leaderboard.html}
-
-\lstinputlisting[float,
-language=Javascript,
-morekeywords={},
-caption={JS of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
-\FloatBarrier 
+ 
 
 \appsection{Benchmarking results}
 \label{app:benchmark_results}
