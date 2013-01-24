@@ -21,7 +21,7 @@ Course: WWI2010I\\
 }
 
 % DOCUMENT
-
+\renewcommand{\baselinestretch}{1.4}\normalsize
 \begin{document}
 \pagestyle{scrheadings}
 
@@ -104,7 +104,6 @@ Course: WWI2010I\\
 % Set page number to 1: 
 \setcounter{page}{1} 
 
-\renewcommand{\baselinestretch}{1.4}\normalsize
 
 \section{Introduction}
 \label{sec:introduction}
@@ -959,101 +958,6 @@ other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 \subsection{Software implementation}
 \label{software_implementation}
 
-\subsubsection{Vert.x}
-\label{implementation_vertx}
-
-The Vert.x application is entirely written in Java, but it is also possible to
-write each verticle in a different language if desired. This could be done to
-maximize code reuse between front-end and back-end.\\
-The business logic of the back-end consists of three verticles and additional
-utility classes.
-One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
-requests are interpreted as file requests and are answered directly from within
-the verticle. POST requests are interpreted as form submissions. Whenever a POST
-requests arrives, the verticle transforms the request body to a JSON object and
-submits it via Vert.x' event bus.\\
-The second verticle is a worker verticle which performs the CPU intense calculation
-tasks. This verticle listens on the event bus for incoming messages. Whenever
-such a message arrives it transforms the received JSON object into a form
-instance for validation and fee calculation. The results are then sent back via
-the event bus when this operation has been completed, so that the event loop can return
-the result to the client in its next iteration.\\
-The third verticle serves as a starter script which programmatically starts
-the previously mentioned verticles and terminates afterwards as it does not
-define any callbacks itself (see \autoref{lst:starter_verticle}).
-
-\lstinputlisting[language=Java,caption={Verticle that starts two other verticles},
-label=lst:starter_verticle]{lst/starter_verticle.java}
-
-The actual deployment of the other verticles happen in lines 13 and 14.
-An important detail is the second parameter in the \texttt{deployWorkerVerticle} method.
-Vert.x allows deploying multiple instances of a verticle programmatically
-which eases scaling an application to the number of available processors of a machine.
-In this case the main loop is single-threaded and for each remaining processor
-there is one worker verticle. Vert.x automatically distributes requests among
-these worker verticles (as described in section \ref{Vert.x}).
-
-A global configuration file is read in line 12. This configuration file is
-formatted as JSON string and can include settings for modules or verticles. The
-path to the configuration file has to be provided to the \texttt{vertx} command
-upon server start to allow access to it from within the verticles.
-The command that has to be invoked for the Proof of Concept is shown in \autoref{lst:vertx_start}.
-
-\lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
-label=lst:vertx_start]{lst/vertx_start_command.sh}
-
-Vert.x allows either running verticles by providing the compiled Java class or by providing the
-source file, which is then automatically compiled by Vert.x. However, in this
-setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
-use it with the source files. The issues observed were partially related to
-Vert.x bug 444\footnote{see \url{https://github.com/vert-x/Vert.x/issues/444}}.
-Due to incomplete dependency resolution, not all classes were compiled so that
-Vert.x could not find all required classes in the path at runtime.
-These startup issues can easily be avoided by using compiled classes instead of
-the source files when multiple verticles need to be started programmatically.
-The path to the compiled classes has to be provided with the \texttt{cp} switch as
-shown in \autoref{lst:vertx_start}.
-
-\clearpage
-\lstinputlisting[language=Java,caption={Vert.x form handler},
-label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
-
-\lstinputlisting[language=Java,caption={Vert.x worker verticle that receives the message sent by the form handler},
-label=lst:vertx_calculator]{lst/Calculator.java}
-
-
-The implementation of the communication between the web server and the worker
-verticle was rather easy by using the event bus. The event bus has a very
-simple adressing mechanism where the address consists of a normal string.
-Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
-in the web server verticle and gets called whenever a form submission arrives.
-The handler registers another handler that is called as soon as the entire
-request body has arrived (line 7). The data that arrives as a buffer is than
-turned into a JSON Object (line 10) and submitted to the event bus (line 12).\\
-As soon as a reply is returned over the event bus it is forwarded to the client line 16).
-\autoref{lst:vertx_calculator} shows the worker verticle that receives
-the message, does the calculation and then returns the result via the message bus.
-
-The live communication via the WebSocket Protocol is handled in a similar way. As mentioned in section
-\ref{Vert.x}, Vert.x allows access to its event bus from within the client's browser.
-This is accomplished by using a so-called \textit{bridge} that forwards client messages to
-the server event bus and vice versa. As this poses a potential security vulnerability
-it is recommended to set up the bridge with a filtering instance that only allows certain
-addresses or message contents for inbound or outbound communication. \autoref{lst:vertx_bridge} contains
-the configuration that has been used for the real-time communication between clients
-and server in the Vert.x implementation.\\
-Inbound messages are allowed on the address ``form.data'' and outbound messages
-are allowed on all addresses that start with ``form.data.client.'' and end with a number.
-The variable number is used as the form key for grouping clients, as described in section
-\ref{software_description}. Note that this is still an insecure solution as attackers
-could register theirselves with a large number of form keys to receive all data that
-is being sent. Possible ways to address this issue are either encrypting submitted
-data or by allowing connections for authorized clients only.
-
-\lstinputlisting[language=Java,caption={Vert.x event bus bridge configuration},
-label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
-
-
 \subsubsection{Node.js}
 \label{implementation_node}
 The Node.js implementation starts with four modules that are required to run the application, as shown in Lst. \ref{lst:includenodemodules}:
@@ -1255,6 +1159,102 @@ into the project’s folder using cd, the only command needed is shown in Lst. \
 \begin{lstlisting}[caption={Executing Node.js code},label=lst:execnode]
 Node.js [filename].js
 \end{lstlisting}
+
+
+\subsubsection{Vert.x}
+\label{implementation_vertx}
+
+The Vert.x application is entirely written in Java, but it is also possible to
+write each verticle in a different language if desired. This could be done to
+maximize code reuse between front-end and back-end.\\
+The business logic of the back-end consists of three verticles and additional
+utility classes.
+One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
+requests are interpreted as file requests and are answered directly from within
+the verticle. POST requests are interpreted as form submissions. Whenever a POST
+requests arrives, the verticle transforms the request body to a JSON object and
+submits it via Vert.x' event bus.\\
+The second verticle is a worker verticle which performs the CPU intense calculation
+tasks. This verticle listens on the event bus for incoming messages. Whenever
+such a message arrives it transforms the received JSON object into a form
+instance for validation and fee calculation. The results are then sent back via
+the event bus when this operation has been completed, so that the event loop can return
+the result to the client in its next iteration.\\
+The third verticle serves as a starter script which programmatically starts
+the previously mentioned verticles and terminates afterwards as it does not
+define any callbacks itself (see \autoref{lst:starter_verticle}).
+
+\lstinputlisting[float,language=Java,caption={Verticle that starts two other verticles},
+label=lst:starter_verticle]{lst/starter_verticle.java}
+
+The actual deployment of the other verticles happen in lines 13 and 14.
+An important detail is the second parameter in the \texttt{deployWorkerVerticle} method.
+Vert.x allows deploying multiple instances of a verticle programmatically
+which eases scaling an application to the number of available processors of a machine.
+In this case the main loop is single-threaded and for each remaining processor
+there is one worker verticle. Vert.x automatically distributes requests among
+these worker verticles (as described in section \ref{Vert.x}).
+
+A global configuration file is read in line 12. This configuration file is
+formatted as JSON string and can include settings for modules or verticles. The
+path to the configuration file has to be provided to the \texttt{vertx} command
+upon server start to allow access to it from within the verticles.
+The command that has to be invoked for the Proof of Concept is shown in \autoref{lst:vertx_start}.
+
+\lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
+label=lst:vertx_start]{lst/vertx_start_command.sh}
+
+Vert.x allows either running verticles by providing the compiled Java class or by providing the
+source file, which is then automatically compiled by Vert.x. However, in this
+setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
+use it with the source files. The issues observed were partially related to
+Vert.x bug 444\footnote{see \url{https://github.com/vert-x/Vert.x/issues/444}}.
+Due to incomplete dependency resolution, not all classes were compiled so that
+Vert.x could not find all required classes in the path at runtime.
+These startup issues can easily be avoided by using compiled classes instead of
+the source files when multiple verticles need to be started programmatically.
+The path to the compiled classes has to be provided with the \texttt{cp} switch as
+shown in \autoref{lst:vertx_start}.
+
+\clearpage
+\lstinputlisting[language=Java,caption={Vert.x form handler},
+label=lst:vertx_form_handler]{lst/vertx_form_handler.java}
+
+\lstinputlisting[language=Java,caption={Vert.x worker verticle that receives the message sent by the form handler},
+label=lst:vertx_calculator]{lst/Calculator.java}
+
+
+The implementation of the communication between the web server and the worker
+verticle was rather easy by using the event bus. The event bus has a very
+simple adressing mechanism where the address consists of a normal string.
+Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
+in the web server verticle and gets called whenever a form submission arrives.
+The handler registers another handler that is called as soon as the entire
+request body has arrived (line 7). The data that arrives as a buffer is than
+turned into a JSON Object (line 10) and submitted to the event bus (line 12).\\
+As soon as a reply is returned over the event bus it is forwarded to the client line 16).
+\autoref{lst:vertx_calculator} shows the worker verticle that receives
+the message, does the calculation and then returns the result via the message bus.
+
+The live communication via the WebSocket Protocol is handled in a similar way. As mentioned in section
+\ref{Vert.x}, Vert.x allows access to its event bus from within the client's browser.
+This is accomplished by using a so-called \textit{bridge} that forwards client messages to
+the server event bus and vice versa. As this poses a potential security vulnerability
+it is recommended to set up the bridge with a filtering instance that only allows certain
+addresses or message contents for inbound or outbound communication. \autoref{lst:vertx_bridge} contains
+the configuration that has been used for the real-time communication between clients
+and server in the Vert.x implementation.\\
+Inbound messages are allowed on the address ``form.data'' and outbound messages
+are allowed on all addresses that start with ``form.data.client.'' and end with a number.
+The variable number is used as the form key for grouping clients, as described in section
+\ref{software_description}. Note that this is still an insecure solution as attackers
+could register theirselves with a large number of form keys to receive all data that
+is being sent. Possible ways to address this issue are either encrypting submitted
+data or by allowing connections for authorized clients only.
+
+\lstinputlisting[language=Java,caption={Vert.x event bus bridge configuration},
+label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
+
 
 \newpage
 \section{Evaluation of Non-functional Attributes}
