@@ -1,6 +1,6 @@
 \title{\papertitle}
 
-\author{Can Paul Bineytioglu,
+\author{by Can Paul Bineytioglu,
 		Joe Andr\'{e} Boden,
 		Rocco Schulz,\\
 		Max V\"{o}kler,
@@ -8,7 +8,17 @@
 		
 \publishers{Corporate State University\\Baden-Wuerttemberg - Stuttgart}
 
-\date{\today}
+\date{
+\vspace{0.6cm}
+provided on \today\\
+\vspace{0.6cm}
+School of: Business\\
+\vspace{0.6cm}
+Program: International Business Information Management\\
+\vspace{0.6cm}
+Course: WWI2010I\\
+\vspace{0.6cm}
+}
 
 % DOCUMENT
 
@@ -31,6 +41,7 @@
 \thispagestyle{empty}
 
 \begin{abstract}
+\vspace{1.6cm}
 \textbf{\abstractname}: This paper evaluates asynchronous server technologies
 using the more recent frameworks Node.js and Vert.x as references. Strengths and
 weaknesses of asynchronous programming models are elaborated to identify areas
@@ -1726,7 +1737,7 @@ caption={JS of the Meteor example 'Leaderboard'},
 label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
 \FloatBarrier
 
-\appsection{Case Study – LinkedIn}
+\appsection{Case Study -- LinkedIn}
 \label{app:case_linkedin}
 In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
 LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
