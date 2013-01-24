@@ -38,12 +38,7 @@
   edition = {Edn\adddot},%	Replace ed with Edn
   urlseen = {retrieval\addcolon}%	replace 'visited on' with 'retrieval:'
 }
-%edition should be like 2nd Edn., not displayed if 1st Edn.
-%\DeclareFieldFormat{edition}{%
-% \ifthenelse{\ifinteger{#1}\AND\NOT #1=1}%only display if a number and not 1
-%    {\mkbibordedition{#1}~\bibstring{edition}}
-%    {}}
-    
+%edition should be like 2nd Edn., not displayed if 1st Edn. 
 \DeclareFieldFormat{edition}%
                    {\ifinteger{#1}%
                     {\ifnum#1>1 \mkbibordedition{#1} \bibstring{edition} \else \fi}%
