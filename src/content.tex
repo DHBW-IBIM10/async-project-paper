@@ -99,35 +99,33 @@ existing application landscape.
 
 \subsection{Objectives}
 Permanent change is a basic concept and global phenomenon in the IT industry. 
-Most recent trends include cloud computing, big data, social media and mobile computing.
+Most recent trends include cloud computing, big data, social media, and mobile computing.
 The tremendous impact of the latter one is  revealed by a Cisco study, which states that in 2011 the mobile data traffic
-doubled the fourth year in a row.\footcite[Cf.]{cisco_2012} Those enormous traffic and the
+doubled the fourth year in a row.\footcite[Cf.]{cisco_2012} That enormous traffic and the
 nature of social media applications raised problems in the common synchronous server technologies.
 Since 1996 the Microsoft Internet Explorer supports asynchronous content loading. A popular
 asynchronous technology is AJAX (asynchronous JavaScript and XML). It got even more attention when
-Google ntroduced a wide deployment of standards-compliant, cross browser Ajax with Gmail (2004) 
+Google introduced a well-respected deployment of standards-compliant browser applications leveraging AJAX - Gmail (2004) 
 and Google Maps (2005).\footcite[Cf.]{Swartz_2005} Since then asynchronous technologies
-encountered a steep carrier and are on the way to change the way of our programming.
-The main goal of this paper is to identify specific use cases for asynchronous server
-technologies. Special emphasis is put on applications in the business environment. 
-The authors' intention is to build a working prototype in order to present the advantages and
+encountered a steep carrier and are on the way to change the way of programming.
+The main goal of this paper is to identify specific use cases for asynchronous technologies on the server-side and to make clear why this technology has evolved, showing when and when not it is worth considering. Special emphasis is put on applications in the business environment. 
+The authors' intention is also to build a working prototype in order to present the advantages and
 disadvantages of this rising technology.
 
 %Goal of this paper and structure
-The two folded approach - explaining the change in web development and an application in an 
-business environment - infers two main programming languages, that are ubiquitous in each
-community: Java for the enterprise world and JavaScript for the web developers.
-This paper elaborates the concepts behind the young frameworks Node.js, that briefly explained enables running JavaScript on a server, and 
-Vert.x, a Java implementation of asynchronous technologies, and analyses their 
+The two-sided approach – explaining the change in web development and an application in a 
+business environment – harnesses two main programming languages, which are ubiquitous in each
+community: Java for the enterprise world and JavaScript for web developers.
+This paper elaborates the concepts behind the young frameworks Node.js, that briefly explained brings JavaScript to the server, and 
+Vert.x, a Java implementation of asynchronous technologies, and analyzes their 
 technical strengths and weaknesses. Furthermore non-functional attributes will be
-evaluated based on two sample implementations in Node.js  and Vert.x.
+evaluated.
 
 \subsection{Methodology and Structure}
-The whole thesis consists of seven chapters. The first two parts explain the author's motivation and introduces the 
-basic concepts of asynchronous technologies, whose use cases are explained in chapter three.
-Two prototypes of an insurance purchase webpage are implmented in Node.js and Vert.x in chapter 4.
-Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). Before the outlook and the conclusion summarize the paper, non-functional attributes e.g. maintainability and integration are 
-investigated.
+The whole thesis consists of seven chapters. The first two parts explain the authors' motivation and introduce the 
+basic concepts of web technologies and the difference of synchronous and asynchronous aproaches, whose use cases are explained in chapter three.
+Two prototypes of an insurance purchase webpage are implemented in Node.js and Vert.x in chapter four.
+Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). This implementation was furthermore taken into consideration when non-functional attributes like maintainability, integration and performance were evaluated in chapter five. Chapter six provides an outlook on the future of Node.js and Vert.x before chapter seven concludes the main research findings.
 
 \subsection{Problem Description}
 
@@ -172,7 +170,7 @@ especially applications with a lot of I/O streams face.\\
 
 \subsection{Potential Web Development Issues}
 \label{potentialissues}
-This section is used to outline briefly some issues that are relevant when dealing with synchronous and asynchronous approaches.
+This section is used to briefly outline some theories that are relevant when dealing with synchronous and asynchronous approaches.
 
 \subsubsection{I/O Bound Applications}
 \label{issue_io}
@@ -186,7 +184,7 @@ by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
 CPU bound or compute-bound refers to operations that cause high CPU workload,
 like compiling code, spell checking, grammar checking, transcoding audio or
 video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in
-several threads in order not to block one thread and have all users waiting for
+several threads in order to not block one thread and have all users waiting for
 this thread. The program could be sped up immediately by better CPU performance.
 
 \subsubsection{Single-/Multithreading and Event-driven Development}
@@ -270,7 +268,7 @@ read operation has finished.
 \lstinputlisting[language=JavaScript,caption={Pseudocode: Synchronously reading and displaying a file's content},
 label=lst:synchronous_call]{lst/synchronous_call.txt}
 
-As opposed to the asynchronous call, \autoref{lst:asynchronous_call} demonstrates
+As opposed to the synchronous call, \autoref{lst:asynchronous_call} demonstrates
 how the same example can be realized in an asynchronous fashion using the event-driven
 methodology: After the file was read, the callback is triggered in order to
 display its content.
@@ -289,7 +287,7 @@ label=lst:asynchronous_call]{lst/asynchronous_call.txt}
 
 \subsection{Existing Asynchronous Frameworks}
 \label{existing_frameworks}
-The principle of asynchronous processing exists on the client for a long time and has also evolved
+The principle of asynchronous processing has existed on the client-side for a long time and has also evolved
 on the server-side. This section will give a brief market overview, which is followed by the
 introduction of two upcoming frameworks for server-side asynchronous
 development: Node.js and Vert.x.
@@ -298,7 +296,7 @@ development: Node.js and Vert.x.
 \subsubsection{Market Overview}
 \label{frameworks_overview}
 \FloatBarrier
-Table \ref{tab:existing_frameworks} shows that there is actually competition
+Table \ref{tab:existing_frameworks} shows that there is real competition
 from established communities (namely the Ruby and Python ones). An important
 aspect in determining the potential success of a new technology is measuring the
 interest of software developers in the newcomer. Google-developed Google Trends
@@ -323,7 +321,7 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 
 Looking at the graphs in Fig. \ref{img_googletrend_all}, it can be
 concluded that interest in Node.js is very high at the moment in absolute terms as well
-as in relative terms when comparing it to peers at the same point in its lifecycle.
+as in relative terms when comparing it to peers at the same point in there lifecycle.
 Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
 The gap in interest could be related to many reasons, two of which will be discussed 
 briefly thus concluding this section.
@@ -417,7 +415,7 @@ Node.js is a framework based on Google's V8 JavaScript Engine, libUV as platform
 layer\footnote{See \url{https://github.com/joyent/libuv}}, and a core library
 written in JavaScript.
 Node.js brings JavaScript to the server-side and therefore makes it possible to
-write a web application on both the server-side and the client-side in one
+write a web application on both, the server-side and the client-side in one
 language – JavaScript.
 
 Compared to other technologies that try to apply the fundamentals of
@@ -1355,8 +1353,8 @@ it can be said though that because Vert.x requires Java hosting infrastructure
 there might be an associated licensing cost for application servers.
 
 
-At present there is a discussion in the Google users group footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of the Vert.x project which has been owned by VMWare. The founder of the project and
-former employeee of VMWare had to transfer ownership of the Github project,
+At present there is a discussion in the Google users group \footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of the Vert.x project which has been owned by VMWare. The founder of the project and
+former employeee of VMWare had to transfer ownership of the GitHub project,
 domain, Gooole group and blog to VMWare after he left the company in December
 2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
 uncertainty in the community and might have increased the entry barriers for new
@@ -1367,11 +1365,11 @@ the Eclipse Foundation.\footcite[Cf.][]{Vertx_future_2013}.
 \label{integration}
 Vert.x and Node.js are supposed to be used as fully event-driven standalone
 applications, which can be extended with event-driven modules.
-However when introducing a Node.js or Vert.x application into the currentc
-application landscape it might be desired to reuse or communicate with existing
-systems that are not fully event driven. Furthermore, integration of these
+However, when introducing a Node.js or Vert.x application into the current
+application landscape, it might be desired to integrate or communicate with existing
+systems that are not fully event-driven. Furthermore, integration of these
 technologies might not be limited to mere IPC\nomenclature{IPC}{Inter Process
-Communication} but instead as a new middleware-layer beneath current and new
+Communication} but instead could establish a new middleware-layer between current and new
 applications.\\
 %Consider connecting that software with a message bus.
 %Separate IO intense tasks into ``web workers'' or similar constructs.
@@ -1382,18 +1380,18 @@ Node.js is not designed to handle CPU-intensive tasks efficiently. However,
 there is a way a Node.js process can perform such tasks without impairing the
 application performance. Node.js uses so-called child processes for this
 (provided by the \textit{child process}
-module). The module is basically a wrapper around the unix tool \textit{popen} and
+module). That module is basically a wrapper around the unix tool \textit{popen} and
 provides access to a child process' communication streams (stdin, stdout, stderr).
 \footcite[Cf.][]{node_child_process}
 
 There are two cases child processes are used for:\\
 First, CPU-intensive tasks can be performed outside Node.js by assigning them to a
 different process (which is then called a child process) in order not to block
-the event loop. Output data from the child process is then sent back to the
+the event loop. The output data from the child process is then sent back to the
 parent process.\footcite[Cf.][63]{teixeira_2012} In this case, the child process is used to
 outsource a task that requires high computation work and would otherwise block
-the event loop. This approach however requires routines that should run
-within the child process to be written in JavaScript as well, so that it is not
+the event loop. This approach, however, requires routines running
+within the child process to be written in JavaScript as well, so that this is not
 usable to properly connect an existing application with the Node.js application.\\
 A second way of using the child process module is to actually run external
 commands, scripts, files and other utilities that cannot directly be executed inside Node.\footcite[Cf.][63]{teixeira_2012}
@@ -1415,15 +1413,15 @@ Moreover, Kue is an example of a message queue developed in Node.js, which could
 \subsubsection{Vert.x Integration}
 \label{vertx_integration}
 In Vert.x there are multiple ways to communicate with external programs.
-Depending on the used language there are already multiple libraries that can be
-used to invoke child processes. However these libraries usually only expose
+Depending on the language used there are already multiple libraries that can be
+used to invoke child processes. However, these libraries usually only expose
 synchronous APIs, so that these calls need to be done inside a worker verticle
-that doesn't block the event loop.\\
+that does not block the event loop.\\
 Listing \ref{lst:vertx_child} shows a minimal worker verticle written in Java
 that invokes \textit{ls -lh /usr} via the \textit{Apache Commons Exec}
 library\footnote{See \url{http://commons.apache.org/exec/}} in a blocking way.
 This worker verticle runs the command whenever it receives a message via the event bus.
-The command to run could also be provided via the Json object that is passed
+The command to run could also be provided via the JSON object that is passed
 into the verticle via the event bus for higher flexibility. A watchdog
 (instantiated in line 27) is used to terminate the process after six seconds.
 Otherwise a runaway process could block the worker thread so that it cannot be
@@ -1434,8 +1432,8 @@ used anymore\footcite[Cf.][67]{Evi_2007}.
 
 This approach might not be very satisfying, as the output is not captured and
 execution errors aren't handled properly. Luckily the \textit{Apache Commons Exec} library
-can be used in an event driven style as well. To achieve this one first needs to
-write a class that handles the outputstreams.
+can be used in an event -driven style as well. To achieve this one first needs to
+write a class that handles the output streams.
 An exemplary implementation of such a class is provided in listing
 \ref{lst:java_stream}.
 
@@ -1449,8 +1447,8 @@ listing \ref{lst:external_process}, where the instance gets passed into a PumpSt
 {lst/external_process.java}
 
 There are some more noteworthy details in listing \ref{lst:external_process}.
-The \texttt{DefaultExecuteResultHandler} which is defined in lines 5 to
-13 can be used to provide callbacks for successfull termination or failure of
+The \texttt{DefaultExecuteResultHandler}, which is defined in lines 5 to
+13, can be used to provide callbacks for successfull termination or failure of
 the external process. The call to \texttt{executor.execute} (line 23) automatically becomes
 asynchronous when a \texttt{StreamHandler} is set for the executor (line 19)\footcite[Cf.][]{apache_2010}.
 
@@ -1476,12 +1474,12 @@ Both Vert.x and Node.js offer great performance and scalability under certain
 circumstances that were identified in section \ref{areas_of_application}.
 In order to allow a comparison for a very simple use case, a micro-benchmark was
 run to collect information on request handling of Node.js, Vert.x and the two
-popular web servers Apache2 and Nginx.
+popular webservers Apache2 and Nginx.
 \paragraph{Experiment setup} Each server was run isolated on a virtual machine
 that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
 of 2.5GHz (to make sure that the host system has enough free capacity). A static
 file with 200kb has been created using \texttt{dd}, which then had to be
-delivered by the web servers.
+delivered by the webservers.
 
 Requests were then sent from another virtual machine on the same host system 
 to the running server using the \textit{Apache HTTP server benchmarking 
@@ -1494,11 +1492,11 @@ default configuration. All servers were run without caching.
 Plotted results are shown in figures \ref{fig:benchmark_all} and \ref{fig:benchmark_async}.\\
 Apache2 had the worst respone times, that were increasing rapidly with the number of requests sent.
 Nginx was able to deliver an almost constant response time for up to 5000 requests before response times started to increase.
-Interesting is the fact, that Nginx response times where slightly below those of Node.js and Vert.x for up to 3000 requests.
+Interesting is the fact, that Nginx's response times where slightly below those of Node.js and Vert.x for up to 3000 requests.
 Both Node.js and Vert.x were able to deliver the file in almost constant time for up to 9500 requests. Node.js performed slightly better than
 Vert.x. A partial plot is shown in figure \ref{fig:benchmark_async} for better comparability between Node.js and Vert.x.
 
-Despite not being a representation for a real usage scenario, this benchmark
+Although not being a representation for a real usage scenario, this benchmark
 gives a good representation of the scalability attributes of asynchronous 
 servers. The bad performance of Apache2 is due to the process forking for each
 new request. Nginx is a lightweight HTTP server that by default only uses as
@@ -1516,7 +1514,7 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{img/200kb_benchmark_node_vertx.png}
-\caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
+\caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the webserver benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_async}
 \end{figure}
 
@@ -1547,7 +1545,7 @@ Listing \ref{lst:vertx_cluster} shows how a Vert.x cluster can be set up on a
 network with the default configuration. The cluster-port argument specifies on
 which port distributed instances will communicate with each other and defaults
 to $25500$ when omitted.
-Each instance that is started in clustermode will have access to a distributed
+Each instance that is started in cluster mode will have access to a distributed
 event bus.\footcite[Cf.][]{vertx_2012} Implementation details on the cluster
 internals can be found in the Hazelcast documentation on the project's
 website.\\
@@ -1558,19 +1556,19 @@ addressed.\footcite[Cf.][]{node_clusterserver}
 
 
 \paragraph{General ways of distributing workload among distributed machines}
-One possible procedure is to deploy an application multiple times and to use an additional load balancer that
+One possible procedure is to deploy an application multiple times and to use an additional (external) load balancer that
 distributes incoming requests among all running deployments. This has some
 implications: Due to the isolation in separate processes, application instances cannot share any
 data or communicate directly with each other.
 Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
 \url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
 \url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
-processes require access, depending on its ability to address parallel processing.
+processes require access, depending on its ability to provide parallel processing.
 
 \paragraph{Speeding up single requests}
 Node.js and Vert.x do not offer any possibility to speed up a single request.
 These requests will aways run at the same speed. What these frameworks do is to
-maximise the number of possible requests while keeping the processing speed
+maximize the number of possible requests while keeping the processing speed
 steady. This is why it scales so well (see section \ref{scalability}). The only
 additional delay between request and response is the time that a request waits
 in the event loop until it gets processed.  In many cases however it is
