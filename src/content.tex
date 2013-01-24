@@ -1653,6 +1653,7 @@ The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries bui
 One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
 
 Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware. Appendices \ref{appendix_kue}, \ref{app:etherpad} and \ref{appendix_meteor} will showcase what is possible when turning Node.js into a middleware-layer (fundamentally this is also true for Vert.x). 
+\newpage
 
 \appsection{Kue --- A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
@@ -1672,6 +1673,7 @@ Kue is an example of a message queue (also called job queue) that is entirely de
 \begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
 npm install kue
 \end{lstlisting}
+\newpage
 
 \appsection{Meteor and Opa --- Next Generation Web Application Frameworks}
 \label{appendix_meteor}
