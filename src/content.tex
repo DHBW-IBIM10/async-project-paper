@@ -334,7 +334,7 @@ point), Node.js already established itself as the dominant technology especially
 mindshare is concerned, which is supported by the data from Google.
 Theory (2) is based around technical considerations. Because of the dogmatic
 nature of asynchronicity in the Node.js framework, every package available on
-NPM\nomenclature{NPM}{Node.js Package Manager} is built with asynchronous calling
+$npm$\nomenclature{NPM}{Node.js Package Manager} is built with asynchronous calling
 and non-blocking I/O\nomenclature{I/O}{Input / Output} in mind. Vert.x on the
 other hand is in a curious position here. Vert.x itself is architecturally
 similar to Node.js but its ecosystem of established Java libraries is not developed
@@ -394,7 +394,7 @@ Vert.x			& JavaScript, Java, Python, Groovy, Ruby, Coffeescript
 %\end{longtable}
 \end{table}
 \end{savenotes}
-
+\pagebreak
 Table\ref{tab:existing_frameworks} only considers four major frameworks. Other libraries/frameworks include, but are not limited to:
 
 \begin{itemize}
@@ -1062,9 +1062,12 @@ and will therefore be used for convenience purposes in this PoC, as recommended 
 
 Express can be installed using the command-line command shown in Lst. \ref{lst:expressinstallation}:\\
 
-\begin{lstlisting}[language=javascript,caption={Installing Express via command-line},label=lst:expressinstallation]
-npm install express 
-\end{lstlisting}
+\begin{lstlisting}[language=javascript,
+caption={Installing Express via command-line},
+label=lst:expressinstallation,
+morekeywords={npm}]
+$ npm install express 
+\end{lstlisting}%$
 
 In order to enable HTTPS by leveraging the Node.js class \texttt{https.Server}, the \texttt{privatekey.pem} and \texttt{certificate.pem} files need to be read and their content can be written into the \texttt{httpsOptions} array by using the \textit{FileSystem} module and its function \texttt{readFileSync()}. The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
 
@@ -1092,9 +1095,12 @@ HTTPS server that is available at \texttt{https://localhost:4431/}. Afterwards, 
 \textit{socket.io} module for WebSockets comes into play. First of all, it needs to be
 installed using the command in Lst. \ref{lst:installsocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager},label=lst:installsocketio]
-npm install socket.io
-\end{lstlisting}
+\begin{lstlisting}[language=javascript,
+caption={Command to install socket.io via Node.js' package manager},
+label=lst:installsocketio,
+morekeywords={npm}]
+$ npm install socket.io
+\end{lstlisting}%$
 
 Afterwards, it is included and initialized by passing the secureServer variable
 (for the HTTPS server), as shown in Lst. \ref{lst:requiresocketio}.
@@ -1619,7 +1625,7 @@ While Node.js is clearly dominating the market at present, it also comes with it
 
 Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see sec. \ref{Vert.x}) however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.\\
 
-At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem (see sec. \ref{use_cases} and especially \ref{dont_use_cases}), this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility) or none at all.
+At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem (see sec. \ref{use_cases} and especially \ref{dont_use_cases}), this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility) or none at all. 
 
 
 %----------------------------------------------------------------------------
