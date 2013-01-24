@@ -174,14 +174,16 @@ especially applications with a lot of I/O streams face.\\
 \label{potentialissues}
 This section is used to briefly outline some theories that are relevant when dealing with synchronous and asynchronous approaches.
 
-\subsubsection{I/O Bound Applications}
+\subsubsection{I/O and CPU Bound Applications}
+
+\paragraph{I/O bound applications}
 \label{issue_io}
 I/O bound means that a system requests data faster than the peripheral devices
 (e.g. hard disk) can transfer it, causing a process/thread to be put
 asleep.\footcite[Cf.][10]{Caldera_2003} The program could be sped up immediately
 by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
 
-\subsubsection{CPU Bound Applications}
+\paragraph{CPU bound applications}
 \label{issue_cpu}
 CPU bound or compute-bound refers to operations that cause high CPU workload,
 like compiling code, spell checking, grammar checking, transcoding audio or
