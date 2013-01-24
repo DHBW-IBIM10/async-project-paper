@@ -1562,7 +1562,7 @@ One possible procedure is to deploy an application multiple times and to use an 
 distributes incoming requests among all running deployments. This has some
 implications: Due to the isolation in separate processes, application instances cannot share any
 data or communicate directly with each other.
-Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
+Furthermore, data might be stored in a physically separated database like CouchDB\footnote{See
 \url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
 \url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
 processes require access, depending on its ability to provide parallel processing.
@@ -1613,7 +1613,7 @@ While Node.js is clearly dominating the market at present, it also comes with it
 
 Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see sec. \ref{Vert.x}) however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.\\
 
-At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem, this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility).
+At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem (see sec. \ref{use_cases} and especially \ref{dont_use_cases}), this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility) or none at all.
 
 
 %----------------------------------------------------------------------------
@@ -1653,8 +1653,9 @@ The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries bui
 One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
 
 Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware. Appendices \ref{appendix_kue}, \ref{app:etherpad} and \ref{appendix_meteor} will showcase what is possible when turning Node.js into a middleware-layer (fundamentally this is also true for Vert.x). 
+\newpage
 
-\appsection{Kue – A Message Queue (Job Queue) based on Node.js}
+\appsection{Kue --- A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
 
 A message queue is “an area where you can add messages representing a task”\footcite[][]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][]{McGlennon_2007}
@@ -1669,11 +1670,16 @@ Asynchronous server technologies such as Node.js can leverage message queues ver
 
 Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to Listing \ref{lst:installkue}.
 
-\begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
-npm install kue
+\begin{lstlisting}[language=javascript,
+morekeywords={npm},
+caption={Installing Kue via command-line},
+label=lst:installkue]
+$ npm install kue
 \end{lstlisting}
+%$
+\newpage
 
-\appsection{Meteor and Opa -- Next Generation Web Application Frameworks}
+\appsection{Meteor and Opa --- Next Generation Web Application Frameworks}
 \label{appendix_meteor}
 \FloatBarrier
 Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
@@ -1717,19 +1723,19 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
   \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
 \end{itemize}
 
-\appsection{Case Study – AIRCODE}
+\appsection{Case Study -- AIRCODE}
 \label{app:case_aircode}
 
 The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
 AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
 Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
-\appsection{Case Study – Etherpad}
+\appsection{Case Study -- Etherpad}
 \label{app:etherpad}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
-\appsection{Case Study – Clock, a UK web agency}
+\appsection{Case Study -- Clock, a UK web agency}
 \label{app:case_clock}
 
 The following information are taken from an online article\footnote{\url{http://venturebeat.com/2012/01/07/building-consumer-apps-with-node/}} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, CTO of Clock.
