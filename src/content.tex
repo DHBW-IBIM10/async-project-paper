@@ -1056,15 +1056,16 @@ var fs = require('fs');
 \end{lstlisting}
 
 The HTTP and HTTPS modules are necessary to set up the web servers accordingly. 
-In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a web server, like routing, 
+In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework \textit{Express} offers complementary functionality for a web server, like routing, 
 and will therefore be used for convenience purposes in this PoC, as recommended by Roden, G. (2012). 
+
 Express can be installed using the command-line command shown in Lst. \ref{lst:expressinstallation}:\\
 
 \begin{lstlisting}[language=javascript,caption={Installing Express via command-line},label=lst:expressinstallation]
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
+In order to enable HTTPS by leveraging the Node.js class \texttt{https.Server}, the \texttt{privatekey.pem} and \texttt{certificate.pem} files need to be read and their content can be written into the \texttt{httpsOptions} array by using the \textit{FileSystem} module and its function \texttt{readFileSync()}. The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
 
 \begin{lstlisting}[language=javascript,caption={Reading encryption keys},label=lst:readencryptionkeys]
 var httpsOptions = {
@@ -1073,8 +1074,8 @@ var httpsOptions = {
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} ist used, which first
-initializes express() and then creates the server using the express variable.
+To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} is used, which first
+initializes Express (\texttt{express()}) and then creates the server using the express variable.
 Afterwards, the ports on which the servers are listening are defined.
 
 \begin{lstlisting}[language=javascript,caption={Starting servers in Node.js},label=lst:startnodeservers]
@@ -1136,11 +1137,14 @@ app.post('/insurances', function (req, res) {
 As the AJAX POST-request contains an array filled with JSON-objects, this
 example demonstrates how to access each item. Within the PoC, this
 for-loop is used to apply regular expressions in order to validate each form
-field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
+field. \texttt{req.body[i].name} is an example on how the Express \textit{bodyParser} is leveraged.
 
 So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have opened one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
+\begin{lstlisting}[float,
+language=javascript,
+caption={Using WebSockets to distribute form inputs in real-time},
+label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1158,9 +1162,9 @@ io.sockets.on('connection', function (socket) {
 });
 \end{lstlisting}
 
-The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
+The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of \textit{socket.io} allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported as shown in Lst. \ref{lst:socketiojs}.
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the JavaScript library \textit{socket.io.js} needs to be imported as shown in Lst. \ref{lst:socketiojs}.
 
 \begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript},label=lst:socketiojs]
 <script src="/socket.io/socket.io.js"></script>
@@ -1182,7 +1186,7 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element]q.value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via \textit{[element].value} (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
 \begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
