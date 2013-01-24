@@ -1140,7 +1140,10 @@ field. \texttt{req.body[i].name} is an example on how the Express \textit{bodyPa
 
 So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have opend one specific form at the same time. Tis is implemented by using WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with \textit{socket.io} to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
+\begin{lstlisting}[float,
+language=javascript,
+caption={Using WebSockets to distribute form inputs in real-time},
+label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1646,14 +1649,19 @@ At the end the only real conclusion is that like all IT infrastructure asynchron
 
 \appsection{Middleware as use case for Node.js}
 \label{middleware}
+
+This appendix is to briefly highlight theoretical as well as practical perspectives worth noting regarding the usage of Node.js and Vert.x as middleware, of which a definition by \citeauthor{Geihs_2001} can be found in the blockquote.
+
+\begin{quotation}
 "The term middleware refers to the software layer between the operating system—including the basic communication protocols—and the distributed applications that interact via the network. This software infrastructure facilitates the
-interaction among distributed software modules."\footcite[][]{Geihs_2001} This section is to point out briefly from a theoretical and practical perspective some of the aspects worth noting when dealing with Node.js and Vert.x as middleware.\\
+interaction among distributed software modules."\footcite[][]{Geihs_2001}
+\end{quotation}
 
-The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of this concept. The underlying concepts of both frameworks outlined thus far in this paper present advantages to middleware/library development as it does for business logic implementation. This realization manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js.\\
+The JVM\nomenclature{JVM}{Java Virtual Machine} and its associated libraries building the foundation for Vert.x are a classic example of the concept defined above although most of the currently available JVM-middleware is synchronously implemented. This offers opportunities to leverage the underlying concepts of both frameworks regarding business logic implementation for middleware development. Realization of this potential manifests itself not only in the number of packages available on $npm$ (21,104 as of January 18, 2013)\footcite[Cf.][]{node_packages} but also in new projects built on top of Node.js.\\
 
-One issue mentioned when dealing with middleware is the format of messages that are xexchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side script language to the server-side, the developer can take advantage of that fact by using the universal format JavaScript Object Notation (JSON) and common exchange format by using "application/json" as content type.\footcite[Cf.][]{rfc4627} CouchDB, e.g., is a database storing documents in JSON and could benefit in particular from Node.js as middleware.\\
+One issue mentioned when dealing with middleware is the format of messages that are exchanged among distributed systems.\footcite[149]{Tannenbaum_2007} As Node.js brings a typical client-side scripting language to the server-side, the developer can take advantage of that fact by using the serialization format JavaScript Object Notation (JSON\nomenclature{JSON}{JavaScript Object Notation}) by using "application/json" as the response content type.\footcite[Cf.][]{rfc4627} JSON is a common exchange format,e.g.\ CouchDB is a database storing documents in JSON and could particularly benefit from Node.js as middleware.\\
 
-Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as proxy server was outlined, which is another hint for the potential of those technologies in terms of middleware. Appendices \ref{appendix_kue}, \ref{app:etherpad} and \ref{appendix_meteor} will showcase what is possible when turning Node.js into a middleware-layer (fundamentally this is also true for Vert.x). 
+Furthermore, sec. \ref{use_cases}  outlined the potential of Vert.x and Node.js as proxy servers, which is another hint at the potential of these technologies in terms of middleware. Appendices \ref{appendix_kue}, \ref{app:etherpad} and \ref{appendix_meteor} will showcase what is possible when turning Node.js into a middleware-layer (which fundamentally is also true for Vert.x). 
 \newpage
 
 \appsection{Kue --- A Message Queue (Job Queue) based on Node.js}
