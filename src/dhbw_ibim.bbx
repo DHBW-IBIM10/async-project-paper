@@ -39,10 +39,15 @@
   urlseen = {retrieval\addcolon}%	replace 'visited on' with 'retrieval:'
 }
 %edition should be like 2nd Edn., not displayed if 1st Edn.
-\DeclareFieldFormat{edition}{%
-  \ifthenelse{\ifinteger{#1}\AND\NOT #1=1}%only display if a number and not 1
-    {\mkbibordedition{#1}~\bibstring{edition}}
-    {}}
+%\DeclareFieldFormat{edition}{%
+% \ifthenelse{\ifinteger{#1}\AND\NOT #1=1}%only display if a number and not 1
+%    {\mkbibordedition{#1}~\bibstring{edition}}
+%    {}}
+    
+\DeclareFieldFormat{edition}%
+                   {\ifinteger{#1}%
+                    {\ifnum#1>1 \mkbibordedition{#1} \bibstring{edition} \else \fi}%
+                    {#1\isdot}}
 
 %pagerefs after articles and proceedings should have a leading "p."
 %\newbibmacro*{pageref}{%
@@ -246,8 +251,7 @@
 
 %requirement by DHBW:
 % lastname, fn. (year)	Title of work, subtitle, series, (editor), volume,
-% edition, place of publication: publishing house
-%TODO: remove dot after entries						
+% edition, place of publication: publishing house						
 
 \DeclareBibliographyDriver{book}{%
   \parbox[t]{\entrywidth}{%
