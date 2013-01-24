@@ -563,7 +563,8 @@ an Open Source foundation (see section \ref{vertx_maintainability}).
 \subsection{Use Cases}
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
-applications that need to handle a large number of requests in real time.
+applications that need to handle a large number of requests. Its event-driven model
+also makes it a good choice for most types of real time processing.\\
 A fairly obvious fit is given for I/O bound applications, as the single-threaded asynchronous processing
 does not wait for I/O streams to finish, but instead uses callbacks to come back to the processing part
 as soon as the I/O has finished.
@@ -571,9 +572,12 @@ The single-threaded nature of event loops allows to make efficient use of the
 thread as long as callback functions don't take up too much time. This makes asynchronous
 server applications a good fit for most types of networked applications that
 either tend to keep many inactive connections or need to handle many concurrent 
-short-lived connections.\\
+short-lived connections.
 
-A few possible use cases are described in the list below and case studies are provided in Appendices TODO.
+A few possible use cases are described in the list below. Furthermore case studies of real
+implementations are provided in appendices \ref{app:case_linkedin}, \ref{app:case_aircode},
+\ref{app:etherpad} and \ref{app:case_clock}.
+
 
 \begin{description}
   \item[Web traffic monitoring] By getting notified of every single request that
@@ -1625,6 +1629,7 @@ $ npm install kue $
 \end{lstlisting}
 
 \appsection{Case Study – LinkedIn}
+\label{app:case_linkedin}
 In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
 LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
 LinkedIn therefore wanted to implement an event-driven model and tested and evaluated three possible candidates: Rails/Event Machine, Python/Twisted, and Node.js.
@@ -1637,6 +1642,7 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
 \end{itemize}
 
 \appsection{Case Study – AIRCODE}
+\label{app:case_aircode}
 
 The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
 AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
