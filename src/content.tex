@@ -727,18 +727,18 @@ section there are also a few usage scenarios where one should not use
 asynchronous frameworks like Node.js or Vert.x. In general, the choice
 always depends on the very specific needs for every single use case.
 Critics argue that asynchronous frameworks are not necessarily the best choice
-only because they represent a new stream.\footcite[Cf.][]{semerau_2011},\footcite[Cf.][]{arranz_2011},\footcite[Cf.][]{behren_2003}\\
+only because they represent a new stream.\footcite[Cf.][]{semerau_2011}\textsuperscript{,}\footcite[Cf.][]{arranz_2011}\textsuperscript{,}\footcite[Cf.][]{behren_2003}
 
 Since one key feature of asynchronous technologies is non-blocking I/O, use
 cases that hardly encompass interaction with external resources do not set a
 precedent and might even be penalized. This penelization would be caused by the
 fact that the strength of non-blocking I/O could not be leveraged on the one
 hand and on the other hand one thread would be busy through computations and
-cause long response times.\footcite[Cf.][14]{Roden_2012}\\
+cause long response times.\footcite[Cf.][14]{Roden_2012}
 
 Expanding upon the non-blocking I/O strenghts, it becomes obvious that
-asynchronous frameworks are not I/O bound. Consequently, they are, however, not
-designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}\\
+asynchronous frameworks are not I/O bound. Consequently, they are not
+designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}
 
 \begin{description}
   \item[Datawarehousing with analytics] Doing analytical and complex computations
@@ -751,13 +751,12 @@ designed to deal with CPU bound use cases.\footcite[Cf.][15]{Nguyen_2012}\\
 	an object relational model.
 	At present Node.js and Vert.x do not provide additional benefits to scalability
 	for these types of web applications.\footcite[Cf.][15]{Roden_2012} Unless the page has to deal with a large number of
-	concurrent requests it should be considered to use a more powerfull frameworks
-	like Ruby On Rails, Grails or Django. These are currently better suited for quickly
+	concurrent requests it should be considered to use more powerfull frameworks
+	like \textit{Ruby On Rails}, \textit{Grails} or \textit{Django}. These are currently better suited for quickly
 	developing such an application. Providing a site that is suited for 
-	millions of requests does not automatically increase the number of users.
-  \item[Large session data volumes] TODO
-  \item[Workflow-driven applications] TODO
-  \item[XML-based environments] TODO - especially not suitable for Node.js
+	millions of requests per day does not automatically increase the number of users.
+  \item[XML-based environments] This applies for Node.js in particular. Node.js makes strong use of JSON as a data format and
+  does not support XML. Node.js should hence not be used in an environment that communicates in data formats like XML.
 \end{description}
 
 This leads to the simple conclusion that migrating from legacy applications to asynchronous
