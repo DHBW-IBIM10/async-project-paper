@@ -1140,7 +1140,10 @@ field. req.body[i].name is an example on how the Express bodyParser is leveraged
 
 So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
+\begin{lstlisting}[float,
+language=javascript,
+caption={Using WebSockets to distribute form inputs in real-time},
+label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
 
     // create new form
