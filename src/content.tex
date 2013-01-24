@@ -96,8 +96,10 @@ existing application landscape.
 \renewcommand{\baselinestretch}{1.4}\normalsize
 
 \section{Introduction}
+\label{sec:introduction}
 
 \subsection{Objectives}
+\label{sec:objectives}
 Permanent change is a basic concept and global phenomenon in the IT industry. 
 Most recent trends include cloud computing, big data, social media, and mobile computing.
 The tremendous impact of the latter one is  revealed by a Cisco study, which states that in 2011 the mobile data traffic
@@ -141,7 +143,7 @@ as images and videos cause even more delays.
 As demand around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
-synchronous transmission using the \textit{XmlHttpRequest} object which allows to request
+synchronous transmission using the XmlHttpRequest object which allows to request
 resources programmatically (using JavaScript) while
 deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
@@ -321,7 +323,7 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 
 Looking at the graphs in Fig. \ref{img_googletrend_all}, it can be
 concluded that interest in Node.js is very high at the moment in absolute terms as well
-as in relative terms when comparing it to peers at the same point in their lifecycle.
+as in relative terms when comparing it to peers at the same point in there lifecycle.
 Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
 The gap in interest could be related to many reasons, two of which will be discussed 
 briefly thus concluding this section.
@@ -1044,7 +1046,7 @@ label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
 
 \subsubsection{Node.js}
 \label{implementation_node}
-The Node.js implementation starts with four modules that are required to run the application:
+The Node.js implementation starts with four modules that are required to run the application, as shown in Lst. \ref{lst:includenodemodules}:
 
 \begin{lstlisting}[language=javascript,caption={Including modules},label=lst:includenodemodules]
 var express = require('express');
@@ -1053,29 +1055,29 @@ var https = require('https');
 var fs = require('fs');
 \end{lstlisting}
 
-The HTTP and HTTPS modules are necessary to set up the web servers accordingly. 
-In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a web server, like routing, 
+The HTTP and HTTPS modules are necessary to set up the webservers accordingly. 
+In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a webserver, like routing, 
 and will therefore be used for convenience purposes, as recommended by Roden, G. (2012). 
-Express can be installed using the following command-line command:\\
+Express can be installed using the command-line command shown in Lst. \ref{lst:expressinstallation}:\\
 
-\begin{lstlisting}[language=javascript,caption={Installing Express via command-line}]
+\begin{lstlisting}[language=javascript,caption={Installing Express via command-line},label=lst:expressinstallation]
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
+In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
 
-\begin{lstlisting}[language=javascript,caption={Reading encryption keys}]
+\begin{lstlisting}[language=javascript,caption={Reading encryption keys},label=lst:readencryptionkeys]
 var httpsOptions = {
     key: fs.readFileSync(__dirname + '/privatekey.pem')
     , cert: fs.readFileSync(__dirname + '/certificate.pem')
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the following code is used, which first
-initialized express() and then creates the server using the express variable
-before the ports on which the servers are listening are defined:
+To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} ist used, which first
+initializes express() and then creates the server using the express variable.
+Afterwards, the ports on which the servers are listening are defined.
 
-\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js},label=lst:startnodeservers]
 var app = express();
 var server = http.createServer(app);
 var secureServer = https.createServer(httpsOptions, app);
@@ -1086,39 +1088,39 @@ secureServer.listen(4431);
 The HTTP server can be accessed using \texttt{http://localhost:8888/} as opposed to the
 HTTPS server that is available at \texttt{https://localhost:4431/}. Afterwards, the
 \textit{socket.io} module for WebSockets comes into play. First of all, it needs to be
-installed using the following command:
+installed using the command in Lst. \ref{lst:installsocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager}]
+\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager},label=lst:installsocketio]
 npm install socket.io
 \end{lstlisting}
 
 Afterwards, it is included and initialized by passing the secureServer variable
-(for the HTTPS server):
+(for the HTTPS server), as shown in Lst. \ref{lst:requiresocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Initialisation of the socket.io module in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Initialization of the socket.io module in Node.js},label=lst:requiresocketio]
 var io = require('socket.io').listen(secureServer);
 \end{lstlisting}
 
 The first Express functionality used is that static files can be served with
-Node.js. Using the following statement, the directory “/” is made the root
-directory for a \texttt{http[s]://localhost:[port]/}
+Node.js. Using the statement in Lst. \ref{lst:nodestatic}, the directory “/” is made the root
+directory for a \texttt{http[s]://localhost:[port]/}.
 
-\begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
+\begin{lstlisting}[language=javascript,caption={Serving static assets with Express},label=lst:nodestatic]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
 
 Another Express feature is the “bodyParser”, which is used as middleware to
-parse request bodies, for this Proof of Concept especially JSON.
+parse request bodies, for this Proof of Concept especially JSON. It is initialized as shown in Lst. \ref{lst:nodebodyparser}.
 
-\begin{lstlisting}[language=javascript,caption={Using the bodyParser}]
+\begin{lstlisting}[language=javascript,caption={Using the bodyParser},label=lst:nodebodyparser]
 app.configure(function(){
     app.use(express.bodyParser());
 });
 \end{lstlisting}
 
-Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in Node.js on http://localhost:8888/insurances:
+Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code in Lst. \ref{lst:nodepost} shows how to catch this (AJAX-driven) POST-request in Node.js on http[s]://localhost:[port]/insurances:
 
-\begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data}]
+\begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data},label=lst:nodepost]
 app.post('/insurances', function (req, res) {
 	// iterating through the array that contains JSON-objects
 	// write the value of the name attribute of each JSON-object into the console
@@ -1136,9 +1138,9 @@ example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
 field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
+So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time}]
+\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1158,21 +1160,21 @@ io.sockets.on('connection', function (socket) {
 
 The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported:
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported as shown in Lst. \ref{lst:socketiojs}.
 
-\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript}]
+\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript},label=lst:socketiojs]
 <script src="/socket.io/socket.io.js"></script>
 \end{lstlisting}
 
-Afterwards, a connection is established to https://localhost:4431/ using the following code:
+Afterwards, a connection is established to https://localhost:4431/ using the code in Lst. \ref{lst:socketioconnect}:
 
-\begin{lstlisting}[language=javascript,caption={Establishing socket.io connection from the client-side}]
+\begin{lstlisting}[language=javascript,caption={Establishing socket.io connection from the client-side},label=lst:socketioconnect]
 var socket = io.connect('https://localhost:4431/');
 \end{lstlisting}
 
-Having established a connection, the following code refers to the variable formId, which was previously filled with the query string "formId" or left null in case there was none provided. In case it was left null, the user is asked (line two) for an ID. In Case it is there, the ID will be sent (line four) and as the code above shows, the ID is used as a room's name.
+Having established a connection, the code in Lst. \ref{lst:formId} refers to the variable formId, which was previously filled with the query string "formId" or left null in case there was none provided. In case it was left null, the user is asked (line two) for an ID. In Case it is there, the ID will be sent (line four) and as the code above shows, the ID is used as a room's name.
 
-\begin{lstlisting}[language=javascript,caption={Joining a specific area – "room"}]
+\begin{lstlisting}[language=javascript,caption={Joining a specific area – "room"},label=lst:formId]
 if (formId == null) {
 	socket.emit('createForm', prompt('What is your ID?'));
 } else {
@@ -1180,9 +1182,9 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The following code demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line 7), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
-\begin{lstlisting}[language=javascript,caption={Sending data to the server}]
+\begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
     var JSONdata = {};
     // write JSON, depending on INPUT or SELECT field
@@ -1203,9 +1205,9 @@ function sendToServer(fieldId) {
 });
 \end{lstlisting}
 
-On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The following code demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
+On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The code in Lst. \ref{lst:socketreceivedata} demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
 
-\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets}]
+\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets},label=lst:socketreceivedata]
 socket.on("liveform", function (data) {
     // read (unknown) field from JSON
     for (key in data) {
@@ -1228,8 +1230,8 @@ socket.on("liveform", function (data) {
 \end{lstlisting}
 
 To use the application, the Node.js servers can be started by using the command-line. After navigating
-into the project’s folder using cd, the only command needed is:
-\begin{lstlisting}[caption={Executing Node.js code}]
+into the project’s folder using cd, the only command needed is shown in Lst. \ref{lst:execnode}:
+\begin{lstlisting}[caption={Executing Node.js code},label=lst:execnode]
 Node.js [filename].js
 \end{lstlisting}
 
@@ -1579,7 +1581,7 @@ requests.\\
 
 \section{Outlook}
 
-This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.\\
+This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.
 
 \paragraph{Node.js} Node.js, as became evident throughout the paper, is popular and enjoys healthy development. It is backed by a variety of modules that enable developers to implement complex functionality. The packaged modules available at \url{npmjs.org} indicate great interest, as the number of downloads (about 14.6 million last month\footcite[Cf.][]{node_packages}) suggests. In addition, the GitHub Commit History\footcite[Cf.][]{vertxcommithistory_2013} shows constant contributions. 
 
@@ -1597,20 +1599,23 @@ activity for the Vert.x project starts increasing once it has completed the tran
 
 \paragraph{Evolving the Proof of Concept} The Proof of Concept introduced within this paper is an initial implementation that was set up to show the potential usage of asynchronous server technologies while remaining on a moderate level of complexity. However, the use case that was shown -- real-time insurance form infilling and instant price calculation based on inserted values -- provides great potential for companies to evolve their business model. The technology enables salesmen to interact more easily with clients and transforms geographically spread conclusion of contracts to the next stage, because the anonymity of web-based contracts can be mitigated by real-time communication that is not only limited to filling a form, but instead can be extended to live web-conferences with video/audio stream next to the form through the use of asynchronous server technologies. 
 
-%
-%
-%
-%
-%
-%OUTLOOK
-%
-%
-%
-%
-
 
 \section{Conclusion}
 \label{conclusion}
+How enterprise-ready are asynchronous server technologies at the moment?
+
+The answer, thus this paper's conclusion, is: it depends.
+
+This is neither definitives nor satisfying and needs some further explaining.\\
+
+As was defined in sec. \ref{sec:objectives} the task of this paper was to research the current market participants and find out how these contenders comply with the requirements of enterprise software development.
+
+While Node.js is clearly dominating the market at present, it also comes with its fair share of issues, especially if reliability and maintainability is concerned. This is not to say that Node.js is unstable and/or unreliable, secs. \ref{Node.js} \& \ref{maintainability} proofed that, but rather that its community philosophy of \textit{"Update Node, Upgrade code."} is diametrically different to the principles of enterprise software deployment.
+
+Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see sec. \ref{Vert.x}) however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.\\
+
+At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem, this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility).
+
 
 %----------------------------------------------------------------------------
 % APPENDIX
@@ -1666,47 +1671,10 @@ Asynchronous server technologies such as Node.js can leverage message queues ver
 Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to Listing \ref{lst:installkue}.
 
 \begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
-$ npm install kue $
+npm install kue
 \end{lstlisting}
 
-\appsection{Case Study – LinkedIn}
-\label{app:case_linkedin}
-In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
-LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
-LinkedIn therefore wanted to implement an event-driven model and tested and evaluated three possible candidates: Rails/Event Machine, Python/Twisted, and Node.js.
-Node.js was identified as the best solution for following benefits\footcite[Cf.][]{Avram_2012}:
-\begin{itemize}
-  \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
-  \item Programmers could make use of their JavaScript skills. 
-  \item front-end JavaScript and back-end mobile teams could be merged into a single unit. 
-  \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
-\end{itemize}
-
-\appsection{Case Study – AIRCODE}
-\label{app:case_aircode}
-
-The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
-AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
-Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
-
-\appsection{Case Study – Etherpad}
-\label{app:etherpad}
-On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
-Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
-
-\appsection{Case Study – Clock, a UK web agency}
-\label{app:case_clock}
-
-The following information are taken from an online article\footnote{\url{http://venturebeat.com/2012/01/07/building-consumer-apps-with-node/}} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, CTO of Clock.
-Clock is a web agency in the United Kingdom that builds the websites for their clients in Node.js. They chose Node.js for several reasons:
-First, JavaScript as the underlying programming language of Node.js is very beneficial. Most developers at Clock have JavaScript expertise what makes it relatively easy to introduce Node.js and therefore saves time and costs. In addition to that, Clock uses MongoDB. Thus, code can be used on the browser-side, server-side and for the database as MongoDB uses JavaScript for querying data.\footnote{\url{http://www.mongodb.org/}}
-Paul says that “our browser-side JavaScript code improved in quality and structure”. Another aspect the developers at Clock appreciate is the highly active community which is useful when solving programming issues. Also, the developers have had “large productivity gains in HTML and CSS using Jade and Stylus\footnote{\url{http://clock.co.uk/tech-blogs/a-simple-website-in-nodejs-with-express-jade-and-stylus}}”.
-Furthermore, the amount of traffic could be increased with Node.js compared to PHP with Apache which was used before. Clock says that using Node.js and MongoDB they could scale up much better than with PHP and PostgreSQL. Moreover, Clock developers appreciate the many hosting options that come with Node.js (e.g. No.de, Joyent’s SmartMachine, Heroku and Nodejitsu). Joyent’s SmartMachine is supposed to be used for upcoming projects.\\
-In conclusion, Clock states that at the beginning the projects took some extra time as developers had to get used to Node.js and the underlying concepts. However, Node.js fitted their use case very well (which was to develop high-scaling web applications) and after a short time, it made their development “extremely effective”.
-
-
-
-\appsection{Meteor and Opa}
+\appsection{Meteor and Opa -- Next Generation Web Application Frameworks}
 \label{appendix_meteor}
 \FloatBarrier
 Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
@@ -1735,7 +1703,46 @@ language=Javascript,
 morekeywords={},
 caption={JS of the Meteor example 'Leaderboard'},
 label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
-\FloatBarrier 
+\FloatBarrier
+
+\appsection{Case Study – LinkedIn}
+\label{app:case_linkedin}
+In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
+LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
+LinkedIn therefore wanted to implement an event-driven model and tested and evaluated three possible candidates: Rails/Event Machine, Python/Twisted, and Node.js.
+Node.js was identified as the best solution for following benefits\footcite[Cf.][]{Avram_2012}:
+\begin{itemize}
+  \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
+  \item Programmers could make use of their JavaScript skills. 
+  \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
+  \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
+\end{itemize}
+
+\appsection{Case Study – AIRCODE}
+\label{app:case_aircode}
+
+The following information are taken from the website of AIRCODE.\footnote{See aircode.co}
+AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
+Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
+
+\appsection{Case Study – Etherpad}
+\label{app:etherpad}
+On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
+Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
+
+\appsection{Case Study – Clock, a UK web agency}
+\label{app:case_clock}
+
+The following information are taken from an online article\footnote{\url{http://venturebeat.com/2012/01/07/building-consumer-apps-with-node/}} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, CTO of Clock.
+Clock is a web agency in the United Kingdom that builds the websites for their clients in Node.js. They chose Node.js for several reasons:
+First, JavaScript as the underlying programming language of Node.js is very beneficial. Most developers at Clock have JavaScript expertise what makes it relatively easy to introduce Node.js and therefore saves time and costs. In addition to that, Clock uses MongoDB. Thus, code can be used on the browser-side, server-side and for the database as MongoDB uses JavaScript for querying data.\footnote{\url{http://www.mongodb.org/}}
+Paul says that “our browser-side JavaScript code improved in quality and structure”. Another aspect the developers at Clock appreciate is the highly active community which is useful when solving programming issues. Also, the developers have had “large productivity gains in HTML and CSS using Jade and Stylus\footnote{\url{http://clock.co.uk/tech-blogs/a-simple-website-in-nodejs-with-express-jade-and-stylus}}”.
+Furthermore, the amount of traffic could be increased with Node.js compared to PHP with Apache which was used before. Clock says that using Node.js and MongoDB they could scale up much better than with PHP and PostgreSQL. Moreover, Clock developers appreciate the many hosting options that come with Node.js (e.g. No.de, Joyent’s SmartMachine, Heroku and Nodejitsu). Joyent’s SmartMachine is supposed to be used for upcoming projects.\\
+In conclusion, Clock states that at the beginning the projects took some extra time as developers had to get used to Node.js and the underlying concepts. However, Node.js fitted their use case very well (which was to develop high-scaling web applications) and after a short time, it made their development “extremely effective”.
+
+
+
+ 
 
 \appsection{Benchmarking results}
 \label{app:benchmark_results}
