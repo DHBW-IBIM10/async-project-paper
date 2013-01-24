@@ -1306,16 +1306,15 @@ TCO is difficult to estimate for Vert.x for a lack of success/failure stories,
 it can be said though that because Vert.x requires Java hosting infrastructure
 there might be an associated licensing cost for application servers.
 
-At present there is a discussion in the google users group
+Recently there was a discussion in the google users group
 \footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of
-the Vert.x project which is owned by VMWare. The founder of the project and
+the Vert.x project which has been owned by VMWare. The founder of the project and
 former employeee of VMWare had to transfer ownership of the Github project,
-domain, gooole group and blog to VMWare after he left the company in December
+domain, Goole group and blog to VMWare after he left the company in December
 2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
-uncertainty in the community and might increase the entry barriers for new
-developers. So far there is no final decision made, however it seems likely that VMware
-submits the project as-is to a foundation, so that development can be continued
-within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_future_2013}.
+uncertainty in the community and might have increased the entry barriers for new
+developers. The outcome of this discussion has been that Vert.x should be submitted to
+the Eclipse Foundation.\footcite[Cf.][]{Vertx_future_2013}.
 
 \subsection{Integration}
 \label{integration}
@@ -1539,15 +1538,17 @@ This section is going to cover future prospects of the two technologies that wer
 
 \paragraph{Node.js} Node.js, as became evident throughout the paper, is popular and enjoys healthy development. It is backed by a variety of modules that enable developers to implement complex functionality. The packaged modules available at \url{npmjs.org} indicate great interest, as the number of downloads (about 14.6 million last month\footcite[Cf.][]{node_packages}) suggests. In addition, the GitHub Commit History\footcite[Cf.][]{vertxcommithistory_2013} shows constant contributions. 
 
-\paragraph{Vert.x} Currently there is a lot of uncertainty in terms of the
-development of Vert.x goes further, as recent news articles
+\paragraph{Vert.x} Recently there has been some uncertainty concerning the future
+development of Vert.x, as recent news articles
 indicate.\footcite[Cf.][]{Asay_2013} This is mainly related to the reaction of
 VMware when Vert.x foudner Tim Fox left the company. Moreover, there is
 currently no developer roadmap available that allows to infer the future
 development. Its commit history on
 GitHub\footcite[Cf.][]{vertxcommithistory_2013} is another sign of a decreasing
 popularity, which, however has always been on a lower level than on GitHub but
-might currently be related to the unclear future.
+might currently be related to the unclear future. It is likely that the development
+activity for the Vert.x project starts increasing once it has completed the transition
+ to the Eclipse foundation.
 
 \paragraph{Evolving the Proof of Concept} The Proof of Concept introduced within this paper is an initial implementation that was set up to show the potential usage of asynchronous server technologies while remaining on a moderate level of complexity. However, the use case that was shown -- real-time insurance form infilling and instant price calculation based on inserted values -- provides great potential for companies to evolve their business model. The technology enables salesmen to interact more easily with clients and transforms geographically spread conclusion of contracts to the next stage, because the anonymity of web-based contracts can be mitigated by real-time communication that is not only limited to filling a form, but instead can be extended to live web-conferences with video/audio stream next to the form through the use of asynchronous server technologies. 
 
