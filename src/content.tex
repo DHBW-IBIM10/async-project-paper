@@ -122,14 +122,14 @@ Vert.x, a Java implementation of asynchronous technologies, and analyses their
 technical strengths and weaknesses. Furthermore non-functional attributes will be
 evaluated based on two sample implementations in Node.js  and Vert.x.
 
-\subsection{Methodology and structure}
+\subsection{Methodology and Structure}
 The whole thesis consists of seven chapters. The first two parts explain the author's motivation and introduces the 
 basic concepts of asynchronous technologies, whose use cases are explained in chapter three.
 Two prototypes of an insurance purchase webpage are implmented in Node.js and Vert.x in chapter 4.
 Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). Before the outlook and the conclusion summarize the paper, non-functional attributes e.g. maintainability and integration are 
 investigated.
 
-\subsection{Problem description}
+\subsection{Problem Description}
 
 In traditional web application development data is transmitted synchronously,
 i.e. upon a GET/POST request, so that the result can be displayed only after transmission
@@ -167,21 +167,21 @@ explain further, why asynchronous technologies can help mitigate problems that
 especially applications with a lot of I/O streams face.\\
 
 \newpage
-\section{Setting the context}
+\section{Setting the Context}
 \label{setting_the_context}
 
-\subsection{Potential web development issues}
+\subsection{Potential Web Development Issues}
 \label{potentialissues}
 This section is used to outline briefly some issues that are relevant when dealing with synchronous and asynchronous approaches.
 
-\subsubsection{I/O bound applications}
+\subsubsection{I/O Bound Applications}
 \label{issue_io}
 I/O bound means that a system requests data faster than the peripheral devices
 (e.g. hard disk) can transfer it, causing a process/thread to be put
 asleep.\footcite[Cf.][10]{Caldera_2003} The program could be sped up immediately
 by faster I/O (e.g. using a Solid State Drive instead of a normal hard disk).
 
-\subsubsection{CPU bound applications}
+\subsubsection{CPU Bound Applications}
 \label{issue_cpu}
 CPU bound or compute-bound refers to operations that cause high CPU workload,
 like compiling code, spell checking, grammar checking, transcoding audio or
@@ -189,7 +189,7 @@ video data.\footcite[Cf.][718]{Richter_2010} They are usually executed in
 several threads in order not to block one thread and have all users waiting for
 this thread. The program could be sped up immediately by better CPU performance.
 
-\subsubsection{Single-/Multithreading and event-driven development}
+\subsubsection{Single-/Multithreading and Event-driven Development}
 \label{issue_threads}
 
 % writing multithreaded code is not trivial
@@ -214,7 +214,7 @@ event loop. \footcite[Cf.][]{Croucher_2010} Memory or processor intense callback
 can lead to growing queues of unserved events, which eventually results
 in a slow application or service\footcite[Cf.][48]{teixeira_2012}.
 
-\subsection{Concept of synchronous processing}
+\subsection{Concept of Synchronous Processing}
 \label{concept_sync}
 \FloatBarrier
 
@@ -230,7 +230,7 @@ the I/O operation before it can continue.
 The thread is in an idle state while it is waiting, which allows another process 
 or thread to occupy the CPU in the meanwhile.
 \FloatBarrier
-\subsection{Concept of asynchronous processing}
+\subsection{Concept of Asynchronous Processing}
 \label{concept_async}
 \FloatBarrier
 
@@ -257,7 +257,7 @@ callbacks can lead to growing queues of unserved events, which eventually
 results in a slow application or service.\footcite[Cf.][48]{teixeira_2012}
 
 
-\subsection{Technical comparison of asynchronous and synchronous processing}
+\subsection{Technical Comparison of Asynchronous and Synchronous Processing}
 \label{comparison_syncasync}
 
 % code goes here...
@@ -727,7 +727,7 @@ A simple web form application has been implemented in both Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
 with these frameworks. These implementations are thoroughly described in the following sub-sections.
 
-\subsection{Software description}
+\subsection{Software Description}
 \label{software_description}
 \FloatBarrier
 The exemplary implementation consists of a web service that can be used to calculate
@@ -788,7 +788,7 @@ valuable to show serveral ways of communication.
 
 
 \FloatBarrier
-\subsection{Software design}
+\subsection{Software Design}
 \label{software_design}
 
 \nomenclature{HTML}{Hyper Text Markup Language}
@@ -1421,7 +1421,7 @@ well.\footcite[Cf.][]{vertx_2012}
 
 
 
-\subsection{Scalability and performance}
+\subsection{Scalability and Performance}
 \label{scalability}
 
 
