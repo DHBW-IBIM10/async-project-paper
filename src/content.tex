@@ -96,8 +96,10 @@ existing application landscape.
 \renewcommand{\baselinestretch}{1.4}\normalsize
 
 \section{Introduction}
+\label{sec:introduction}
 
 \subsection{Objectives}
+\label{sec:objectives}
 Permanent change is a basic concept and global phenomenon in the IT industry. 
 Most recent trends include cloud computing, big data, social media, and mobile computing.
 The tremendous impact of the latter one is  revealed by a Cisco study, which states that in 2011 the mobile data traffic
@@ -1579,7 +1581,7 @@ requests.\\
 
 \section{Outlook}
 
-This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.\\
+This section is going to cover future prospects of the two technologies that were subject to investigation within this paper.
 
 \paragraph{Node.js} Node.js, as became evident throughout the paper, is popular and enjoys healthy development. It is backed by a variety of modules that enable developers to implement complex functionality. The packaged modules available at \url{npmjs.org} indicate great interest, as the number of downloads (about 14.6 million last month\footcite[Cf.][]{node_packages}) suggests. In addition, the GitHub Commit History\footcite[Cf.][]{vertxcommithistory_2013} shows constant contributions. 
 
@@ -1597,20 +1599,22 @@ activity for the Vert.x project starts increasing once it has completed the tran
 
 \paragraph{Evolving the Proof of Concept} The Proof of Concept introduced within this paper is an initial implementation that was set up to show the potential usage of asynchronous server technologies while remaining on a moderate level of complexity. However, the use case that was shown -- real-time insurance form infilling and instant price calculation based on inserted values -- provides great potential for companies to evolve their business model. The technology enables salesmen to interact more easily with clients and transforms geographically spread conclusion of contracts to the next stage, because the anonymity of web-based contracts can be mitigated by real-time communication that is not only limited to filling a form, but instead can be extended to live web-conferences with video/audio stream next to the form through the use of asynchronous server technologies. 
 
-%
-%
-%
-%
-%
-%OUTLOOK
-%
-%
-%
-%
-
-
 \section{Conclusion}
 \label{conclusion}
+How enterprise-ready are asynchronous server technologies at the moment?
+
+The answer, thus this paper's conclusion, is: it depends.
+
+This is neither definitives nor satisfying and needs some further explaining.\\
+
+As was defined in sec. \ref{sec:objectives} the task of this paper was to research the current market participants and find out how these contenders comply with the requirements of enterprise software development.
+
+While Node.js is clearly dominating the market at present, it also comes with its fair share of issues, especially if reliability and maintainability is concerned. This is not to say that Node.js is unstable and/or unreliable, secs. \ref{Node.js} \& \ref{maintainability} proofed that, but rather that its community philosophy of \textit{"Update Node, Upgrade code."} is diametrically different to the principles of enterprise software deployment.
+
+Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see sec. \ref{Vert.x}) however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.\\
+
+At the end the only real conclusion is that like all IT infrastructure asynchronous server technologies require careful evaluation of ones needs and wants and most off all concrete implementation goals in order to only use the most capable solution. Depending on the given problem, this might be Node.js, Vert.x or both (not necessarily in the same project, but that is definitely a possibility).
+
 
 %----------------------------------------------------------------------------
 % APPENDIX
@@ -1666,8 +1670,39 @@ Asynchronous server technologies such as Node.js can leverage message queues ver
 Kue is an example of a message queue (also called job queue) that is entirely developed in Node.js. It uses redis as a queue server. With Kue, jobs can be prioritized, delayed, monitored graphically and in real-time, repeated if they failed and more. A key feature is the user interface to view and manage jobs in different states (queued, active, failed and completed). Kue can be installed easily according to Listing \ref{lst:installkue}.
 
 \begin{lstlisting}[language=javascript,caption={Installing Kue via command-line},label=lst:installkue]
-$ npm install kue $
+npm install kue
 \end{lstlisting}
+
+\appsection{Meteor and Opa -- Next Generation Web Application Frameworks}
+\label{appendix_meteor}
+\FloatBarrier
+Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
+
+Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
+
+At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
+Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
+
+Opa is conceptually similar although its technical underpinnings as well as the developer-used framework is different which is illustrated in fig. \ref{img:opa}.\footcite{opa}
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{img/hello-opa-write}
+\caption{Opa example code \label{img:opa}}
+\end{figure}
+
+\lstinputlisting[float,
+language=html,
+morekeywords={template},
+caption={HTML of the Meteor example 'Leaderboard'},
+label=lst:leaderboard_html]{lst/leaderboard/leaderboard.html}
+
+\lstinputlisting[float,
+language=Javascript,
+morekeywords={},
+caption={JS of the Meteor example 'Leaderboard'},
+label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
+\FloatBarrier
 
 \appsection{Case Study – LinkedIn}
 \label{app:case_linkedin}
@@ -1706,36 +1741,7 @@ In conclusion, Clock states that at the beginning the projects took some extra t
 
 
 
-\appsection{Meteor and Opa}
-\label{appendix_meteor}
-\FloatBarrier
-Meteor and Opa are two frameworks built on top of Node.js and MongoDB created around a radically new development workflow. Both eliminate the distinction between client-side and server-side code, instead the developer writes code in a very similar way to conventional desktop programming.\footcite[Cf.][]{meteorDocs} The difference is that the framework provides functionality to that enables the code to alter its behavior depending on where it runs.\footcite[Cf.][]{meteorDocs} An example of this methodology can be found in appendix \ref{appendix_meteor}.
-
-Meteor leverages Node.js enabling it to make use of its JavaScript-based concept and  the developer to take advantage of the variety of packages available for Node.js. Special attention should be paid to the fact that Meteor server code runs in one thread per request as opposed to the usual asynchronous callback methodology that applies to Node.js itself normally.\footcite[Cf.][]{meteorDocs} Through heavy integration of MongoDB (or Meteor's data layer in general) it is also unnecessary to write and handle AJAX calls manually as all data transmission (e.g.\ synchronization, publish, subscribe) is abstracted away.\footcite[Cf.][]{meteorDocs} The Meteor-provided example app 'leaderboard', whose code is provided in listings \ref{lst:leaderboard_html}\footcite[Cf.][]{leaderboard} and \ref{lst:leaderboard_js}\footcite[Cf.][]{leaderboard} (CSS\nomenclature{CSS}{Cascading Style Sheets} omitted), highlights this concept very well.
-
-At its current stage it is an ideal prototyping environment for it allows ideas to be brought into usable form very quickly, even including hosting in the cloud. These capabilities are especially useful when creating single-page applications (i.e.\ JS UI\nomenclature{UI}{User Interface} with only one HTML page served). Currently this means that more complex software is much more difficult to build using Meteor especially if it requires serving multiple pages (e.g.\ public material, user area and administrative area). The POC\nomenclature{POC}{Proof Of Concept} implemented as part of this paper was originally planned to be built using Meteor, this however had to be shelved as undocumented errors arose. These quickly became unfixable as the error messages provided proved no help in debugging and conventional JS debuggers also were unable to provide assistance.
-Trying to shoehorn Meteor into something it was not built for, this behavior is not unexpected.
-
-Opa is conceptually similar although its technical underpinnings as well as the developer-used framework is different which is illustrated in fig. \ref{img:opa}.\footcite{opa}
-
-\begin{figure}[hbtp]
-\centering
-\includegraphics[scale=0.5]{img/hello-opa-write}
-\caption{Opa example code \label{img:opa}}
-\end{figure}
-
-\lstinputlisting[float,
-language=html,
-morekeywords={template},
-caption={HTML of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_html]{lst/leaderboard/leaderboard.html}
-
-\lstinputlisting[float,
-language=Javascript,
-morekeywords={},
-caption={JS of the Meteor example 'Leaderboard'},
-label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
-\FloatBarrier 
+ 
 
 \appsection{Benchmarking results}
 \label{app:benchmark_results}

@@ -46,3 +46,13 @@ async-technologies.pdf
 *.lol
 src/lst/leaderboard/.meteor/
 src/lst/leaderboard/.meteor/packages
+
+*.fls
+
+*.ini
+
+*.watcher_pid
+
+src/.async-technologies.tex
+
+src/.async-technologies.pdf
