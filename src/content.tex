@@ -698,8 +698,7 @@ These implementations could be extended to provide more sophisticated features.
 
 \item[Push-notification and messaging systems] Asynchronous technologies are
 suitable for web applications and networking tools that have to handle many
-concurrent connections as they are
-event-driven.\footcite[Cf.][17]{teixeira_2012} Such applications process a
+concurrent connections as they are event-driven.\footcite[Cf.][17]{teixeira_2012} Such applications process a
 high number of requests fast, which in most cases means in real time. At the
 same time, the tasks are not CPU-intensive and do not block the event loop. \\
 \textbf{Realization:} Such web applications or services can include chat
@@ -709,16 +708,15 @@ processing, the event-loop keeps working while notifications are delivered to
 clients and potential callbacks are processed as soon as messages were received.
 As everything occurs in a single thread, an overhead of switching threads and
 concurrency issues can be avoided.\\
-\textbf{Known implementation:} AIRCODE has implemented such a real time
-notification application entirely in Node.js, see Appendix 3. Moreover,
-financial applications being required to show immediate reaction to stock
-changes may implement real time notification systems by taking advantage of
-asynchronous processing.
+\textbf{Known implementation:} \textit{AIRCODE} has implemented such a real time
+notification application entirely in Node.js (see Appendix \ref{app:case_aircode}). Moreover,
+financial applications that need to show immediate reaction to stock
+changes may take advantage of asynchronous processing to implement real time notification systems.
 
 \end{description}
 
 \nomenclature{URL}{Uniform Resource Locator}
-Some success stories are available on \url{http://nodejs.org/}.
+
 
 \subsection{Inappropriate Use Cases}
 \label{dont_use_cases}
