@@ -578,22 +578,20 @@ A few possible use cases are described in the list below. Furthermore case studi
 implementations are provided in appendices \ref{app:case_linkedin}, \ref{app:case_aircode},
 \ref{app:etherpad} and \ref{app:case_clock}.
 
-
-\begin{description}
-\item[Web traffic monitoring] By getting notified of every single request that
+\paragraph{Web traffic monitoring} By getting notified of every single request that
 arrives on an online service, an asynchronous application could keep track of the
 current number of requests and the distribution of requests among all
 available resources. These simple statistics could then be pushed to a Web interface
-frequently to allow real-time monitoring of a service in the browser.\\
-\textbf{Realization:} All services that should be monitored could implement a
+frequently to allow real-time monitoring of a service in the browser.
+\subparagraph{Realization:} All services that should be monitored could implement a
 middleware that intercepts each request and fires a call to the asynchronous
 server. However that would add a lot of overhead for the services that should
 be monitored. Alternatively all clients that access these services could be forced to send a
-second request to the asynchronous server.\\
+second request to the asynchronous server.
 The asynchronous server instance could then handle each request by adding
 relevant information to an in-memory database. In the case of HTTP requests
 these information could simply be taken from the various HTTP header fields.
-\footcite[Cf.][]{http_rfc}\\
+\footcite[Cf.][]{http_rfc}
 A second server instance could be set up to handle the online dashboard.
 In order to allow instantly updating the dashboard all clients should be
 connected to this instance via a WebSocket (described in section \ref{websockets}). Depending on the amount of visitors
@@ -601,8 +599,8 @@ this could result in a large number of open connections. However due to the
 event loop based processing the server instance will always just use one
 thread for all connections as opposed to a classical web server, which would
 keep one thread for each connection. Thus the servers footprint is much
-smaller.\\
-\textbf{Known implementation:} Hummingbird is a real-time web traffic
+smaller.
+\subparagraph{Known implementation:} Hummingbird is a real-time web traffic
 visualization tool that uses Node.js for all processing. When loading a
 website the browser sends a request for each file that is referenced in the
 HTML file. Hence each page that should be tracked by Hummingbird integrates a
@@ -610,15 +608,15 @@ reference to a tracking pixel, which is served by the Hummingbird application.
 \footcite[Cf.][]{hummingbird}. The dashboard is updated 20 times a second
 over a WebSocket connection.
 
-\item[Streaming] Applications that involve a lot of streaming of data, such
+\paragraph{Streaming} Applications that involve a lot of streaming of data, such
 as file uploading or video broadcasting, represent another appropriate use
 case for asynchronous technologies. Especially Node.js uses an abstraction
 called streams. Such a stream represents a flow of data and can appear as a
 readable stream or writable stream.\footcite[Cf.][75]{teixeira_2012} Why
 Node.js is beneficial in terms of streaming data becomes clear when
 considering the slow client problem and the way Node.js and its streams
-address it.\\
-\textbf{Realization:} The slow client problem refers to the scenario where a
+address it.
+\subparagraph{Realization:} The slow client problem refers to the scenario where a
 process reads data, processes it and sends it to another consumer.\footcite[Cf.][80]{teixeira_2012}
 If the producer (readable stream) sends data faster than the consumer (writable stream)
 can process it, the data has to be buffered. For instance, consider uploading
@@ -632,7 +630,10 @@ in Node.js can be paused and resumed, which addresses exactly the described
 problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates
 how this is realized.\footcite[Cf.][81]{teixeira_2012}
 
-\begin{lstlisting}[language=javascript,caption={Controlling streams in Node.js},label=lst:streaming]
+\begin{lstlisting}[
+language=javascript,
+caption={Controlling streams in Node.js},
+label=lst:streaming]
 require('http').createServer(function(req, res) {
 var rs = fs.createReadStream('/path/to/big/file');
 
@@ -655,14 +656,14 @@ res.end();
 
 The data flow control process can be automated by using the
 \texttt{stream.pipe()} method.
-\textbf{Known implementation:}
+\subparagraph{Known implementation:}
 Transloadit\footnote{\url{http://transloadid.com}} is a company offering a
 solution for file-uploading and encoding. They have implemented their service
 in Node.js and take advantage of the functionality of Node.js’s streams. Also
 Yahoo uses Node.js for file uploads.\footcite[Cf.][]{Odell_2012}
 
 
-\item[Lightweight network servers] Asynchronous technologies are a good fit
+\paragraph{Lightweight network servers} Asynchronous technologies are a good fit
 for HTTP servers and are efficient when it comes to handling many concurrent
 connections in a single process. A web server application should handle
 the cookie header parsing, maintainance of sessions, serving static files,
@@ -671,49 +672,45 @@ tasks are very simple and don't require much computations.
 The Proof of Concept also shows that other
 protocols, like WebSockets, can take a particular advantage from asynchronous
 technologies. In general any network server that only needs to handle a small set of
-tasks could be written easily using one of the mentioned frameworks.\\
-\textbf{Realization:} The realization can be seen exemplarily in listings
+tasks could be written easily using one of the mentioned frameworks.
+\subparagraph{Realization:} The realization can be seen exemplarily in listings
 \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
-\textbf{Known implementation:} 
+\subparagraph{Known implementation:} 
 \textit{Connect}\footcite[Cf.][]{Odell_2012} is a well-known Node.js-based middleware that provides
 web server functionality and is considered an industry
 standard.\footcite[Cf.][145]{Roden_2012} For Vert.x, there is a
-web server project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodweb server_2013}, which
+web server project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodwebserver_2013}, which
 efficiently serves files and can also be configured as en event bus bridge to
-client-side JavaScript.\\
+client-side JavaScript.
 
-
-\item[Proxies] There are two indicators that militate in favor of an asynchronous server:
+\paragraph{Proxies} There are two indicators that militate in favor of an asynchronous server:
 Proxies usually handle a large number of requests and secondly they mainly do I/O related work
 but no big computations. A common task might be to filter a set of URLs, which can be
-easily done with an array in Java and JavaScript.\\
-\textbf{Realization:} The requests are caught intercepted by the proxy server, which then
+easily done with an array in Java and JavaScript.
+\subparagraph{Realization:} The requests are caught intercepted by the proxy server, which then
 requests the actual website and passesit back to the requesting
 client. Other requests can be handled while the resources are being loaded.
 There are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}.
 These implementations could be extended to provide more sophisticated features.
-\textbf{Known implementation:} There is a Vert.x implementation called
+\subparagraph{Known implementation:} There is a Vert.x implementation called
 \textit{vertx-proxy}\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called
-\textit{node-http-proxy}\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
+\textit{node-http-proxy}\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.
 
-\item[Push-notification and messaging systems] Asynchronous technologies are
-suitable for web applications and networking tools that have to handle many
+\paragraph{Push-notification and messaging systems} Asynchronous technologies are suitable for web applications and networking tools that have to handle many
 concurrent connections as they are event-driven.\footcite[Cf.][17]{teixeira_2012} Such applications process a
 high number of requests fast, which in most cases means in real-time. At the
-same time, the tasks are not CPU-intensive and do not block the event loop. \\
-\textbf{Realization:} Such web applications or services can include chat
+same time, the tasks are not CPU-intensive and do not block the event loop.
+\subparagraph{Realization:} Such web applications or services can include chat
 platforms, sport bets, e-mailing and instant messaging
 applications.\footcite[Cf.][]{GeisendoerferF_2011} As opposed to synchronous
 processing, the event-loop keeps working while notifications are delivered to
 clients and potential callbacks are processed as soon as messages were received.
 As everything occurs in a single thread, an overhead of switching threads and
-concurrency issues can be avoided.\\
-\textbf{Known implementation:} \textit{AIRCODE} has implemented such a real-time
+concurrency issues can be avoided.
+\subparagraph{Known implementation:} \textit{AIRCODE} has implemented such a real-time
 notification application entirely in Node.js (see Appendix \ref{app:case_aircode}). Moreover,
 financial applications that need to show immediate reaction to stock
 changes may take advantage of asynchronous processing to implement real-time notification systems.
-
-\end{description}
 
 \nomenclature{URL}{Uniform Resource Locator}
 
