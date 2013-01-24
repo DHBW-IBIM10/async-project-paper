@@ -1209,19 +1209,19 @@ and bug-fixing.
 \midrule 
 %\endhead
 \textbf{API stability}
-& Frequent changes\footcite[Cf.][]{node_api_changes_2012}
-& Rarely changes\footcite[Cf.][]{vertx_2012}
+& Changes frequently\footcite[Cf.][]{node_api_changes_2012}
+& Changes rarely\footcite[Cf.][]{vertx_2012}
 \\	
 \textbf{Support of dated\newline versions}
 & No official policy known
 & No official policy known
 \\
 \textbf{Testing}
-& Has good test coverage. Various 3rd party test frameworks applicable\footcite[Cf.][]{node_testing_2013}
+& Has good test coverage. Various 3rd party test frameworks applicable.\footcite[Cf.][]{node_testing_2013}
 & Has good test coverage and comes with an own testsuite.\footcite[Cf.][]{vertx_repository_2013} Established test libraries like JUnit can be used.
 \\						  
 \textbf{Skill transferability}	
-& Coding style is similar to established JavaScript guidelines\footcite[Cf.][]{node_style_2012}							
+& Coding style is similar to established JavaScript guidelines.\footcite[Cf.][]{node_style_2012}							
 & Depends on the used language. Java coding style in Vert.x e.g. differs from J2EE practices
 \nomenclature{J2EE}{Java 2 Enterprise  Edition} while JavaScript style
 is similar to established JavaScript frameworks.
@@ -1246,7 +1246,7 @@ is similar to established JavaScript frameworks.
 \end{savenotes}
 
 Table \ref{tbl_maintain} gives a quick overview over the differences between
-Node.js and Vert.x in this context. For both, Vert.x and Node.js, there is no
+Node.js and Vert.x in this context. For both,Vert.x and Node.js there is no
 official policy how security issues or defects in dated versions are handled, so
 that upgrading to the latest stable versions is recommended for both frameworks.
 API changes need to be checked with every upgrade.
@@ -1257,7 +1257,7 @@ Further framework-specific details are provided in the following sub-sections.\\
 
 Node.js allows for leveraging the JavaScript skills already in the market which
 significantly lowers the Time to Market (TTM\nomenclature{TTM}{Time to Market})
-for its similarity to established libraries and conventions in web application
+due to its similarity to established libraries and conventions in web application
 development. JavaScript's lack of blocking I/O libraries allowed the project
 founder to establish a non-blocking standard for I/O operations.\footcite[Cf.][]{Croucher_2012}
 Unfortunately TTM is not everything because equal attention needs
@@ -1272,7 +1272,7 @@ original developers.
 
 Furthermore, Node.js is still at an unstable stage of code maturity (at time of
 writing, the current version is $0.9.7$\footcite[Cf.][]{node_unstable_2013})
-causing infrequent breaking changes to its APIs which usually is a no-go in the enterprise.
+causing infrequent breaking changes to its APIs, which usually is a no-go in the enterprise.
 The API documentation distinguishes between five stability states (deprecated,
 experimental, unstable, stable, API frozen, locked), whereas the latter ones are
 rarely found in the documented features.\footcite[Cf.][] {node_2012}.
@@ -1281,36 +1281,36 @@ on a preference for new features. The unintended benefit of this is a lot of
 available material for Node.js programmers in blogs and on
 StackOverflow\footnote{See \url{www.stackoverflow.com}}.
 This leads to the conclusion that the current pace of progress does not
-facilitate enterprise adoption, however it is not a showstopper.
+facilitate enterprise adoption, although it is not a showstopper.
 
 \subsubsection{Vert.x maintainability}
 \label{vertx_maintainability}
-Vert.x offers a similar picture to Node, however some of Node's shortcoming are
+Vert.x offers a similar picture to Node.js, however some of Node.s's shortcomings are
 more pronounced on the Vert.x side of things. Whereas Node.js can recruit from
 established web developers, is Vert.x suffering from a curious conundrum. It is
-based on the JVM, which has enormous amounts of talent (esp. in the enterprise)
+based on the JVM, which has enormous amounts of talent (especially in the enterprise)
 but because of its diametrical differences to the conventional libraries it does
 not seem to be able to recruit interest from this pool. Also its support for
 multiple programming languages (basically every JVM language) should lower the
 barrier for entry even more, as for example Groovy already features
 Vert.x-aligned language constructs. Unfortunately this means that new Vert.x
-programmers need to be trained which increases TTM significantly.\\
+programmers need to be trained, which increases TTM significantly.\\
 Another important issue is the unstable state of the Vert.x codebase. Due to the
-rather small community issues are often detected after new versions are considered final.
+rather small community, issues are often detected after new versions are considered final.
 At the time of writing there are currently 90 open issues on the project site.
-Section \ref{frameworks_overview} already mentioned the ease of calling synchronous code with Vert.x though this
+Section \ref{frameworks_overview} already mentioned the ease of calling synchronous code with Vert.x  – although this
 can be worked around with by placing the code in new verticles, this still
 requires a lot of vigilance.
 
-TCO is difficult to estimate for Vert.x for a lack of success/failure stories,
+TCO is difficult to estimate for Vert.x due to a lack of success/failure stories,
 it can be said though that because Vert.x requires Java hosting infrastructure
 there might be an associated licensing cost for application servers.
 
-At present there is a discussion in the google users group
+At present there is a discussion in the Google users group
 \footnote{See \url{https://groups.google.com/forum/\#!forum/vertx}} considering the future of
 the Vert.x project which is owned by VMWare. The founder of the project and
 former employeee of VMWare had to transfer ownership of the Github project,
-domain, gooole group and blog to VMWare after he left the company in December
+domain, Gooole group and blog to VMWare after he left the company in December
 2012\footcite[Cf.][]{Vertx_announcement_2013}. This turn of events has put
 uncertainty in the community and might increase the entry barriers for new
 developers. So far there is no final decision made, however it seems likely that VMware
@@ -1319,8 +1319,8 @@ within this foundation in a legally secure environment.\footcite[Cf.][]{Vertx_fu
 
 \subsection{Integration}
 \label{integration}
-Vert.x and Node.js are supposed to be used as fully event driven standalone
-applications that can be extended with event-driven modules.
+Vert.x and Node.js are supposed to be used as fully event-driven standalone
+applications, which can be extended with event-driven modules.
 However when introducing a Node.js or Vert.x application into the currentc
 application landscape it might be desired to reuse or communicate with existing
 systems that are not fully event driven. Furthermore, integration of these
