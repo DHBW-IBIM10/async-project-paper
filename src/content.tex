@@ -1182,7 +1182,7 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element]q.value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
 \begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
@@ -1657,13 +1657,13 @@ Furthermore, in section \ref{use_cases} the use case of Vert.x and Node.js as pr
 \appsection{Kue – A Message Queue (Job Queue) based on Node.js}
 \label{appendix_kue}
 
-A message queue is “an area where you can add messages representing a task”\footcite[][2]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][1]{McGlennon_2007}
+A message queue is “an area where you can add messages representing a task”\footcite[][]{McGlennon_2007}. According to Microsoft Message Queue (MSMQ) it helps solve two basic problems:\footcite[Cf.][]{McGlennon_2007}
 \begin{itemize}
   \item Unavailability of communications with servers or clients, and 
   \item Communications between disparate systems and components.
 \end{itemize}
 Another use case for message queues is storing less-important information in a message queue while your DBMS is busy serving customers during the day.\footcite[Cf.][449]{Thomson_2002}
-The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating system\footcite[Cf.][2]{McGlennon_2007}, can then retrieve messages from the queue for processing (basically, the FIFO principle is applied).\footcite[Cf.][450]{Thomson_2002}
+The basic concept behind message queues is as follows: When a message arrives from a client, the producer places it on a queue. It has then done its job and waits for the next input data. The consumer, which can be a process or application that may also be on a different server or even a different operating system\footcite[Cf.][]{McGlennon_2007}, can then retrieve messages from the queue for processing (basically, the FIFO principle is applied).\footcite[Cf.][450]{Thomson_2002}
 A common scenario for message queues is when only a little amount of requests create high loads on the server, e.g. video platforms such as Youtube or Vimeo.\footcite[Cf.][247]{Roden_2012} In such cases, it is useful to externalize CPU-intensive tasks in order not to impair responsiveness of the application.\footcite[Cf.][247]{Roden_2012}
 Asynchronous server technologies such as Node.js can leverage message queues very well. As a feature of the event-driven model, an event handler is triggered when a new message is available. Thus, the queue does not need to be constantly polled for messages.\footcite[Cf.][]{Knight_2011}
 
