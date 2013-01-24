@@ -138,7 +138,7 @@ evaluated.
 The whole thesis consists of seven chapters. The first two parts explain the authors' motivation and introduce the 
 basic concepts of web technologies and the difference of synchronous and asynchronous aproaches, whose use cases are explained in chapter three.
 Two prototypes of an insurance purchase webpage are implemented in Node.js and Vert.x in chapter four.
-Having set up an exemplary implementation, there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). This implementation was furthermore taken into consideration when non-functional attributes like maintainability, integration and performance were evaluated in chapter five. Chapter six provides an outlook on the future of Node.js and Vert.x before chapter seven concludes the main research findings.
+Having set up an exemplary Proof of Concept (PoC), there are additional concepts explained that are important in modern web development (e.g. AJAX and WebSockets). This implementation was furthermore taken into consideration when non-functional attributes like maintainability, integration and performance were evaluated in chapter five. Chapter six provides an outlook on the future of Node.js and Vert.x before chapter seven concludes the main research findings.
 
 \subsection{Problem Description}
 
@@ -1737,7 +1737,7 @@ caption={JS of the Meteor example 'Leaderboard'},
 label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
 \FloatBarrier
 
-\appsection{Case Study – LinkedIn}
+\appsection{Case Study -- LinkedIn}
 \label{app:case_linkedin}
 In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
 LinkedIn had scalability problems although less than 10% of their clients were using the mobile application.\footcite[Cf.][]{Avram_2012} Running on single-threaded Rails servers which caused that every request blocked the entire process, running Mongrel and leaking memory caused severe problems.\footcite[Cf.][]{Hoff_2012}
