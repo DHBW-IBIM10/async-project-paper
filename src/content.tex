@@ -1192,7 +1192,7 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-Up to this stage, the process of establishing a connection that enables interaction within a specific area was explained. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via \textit{[element].value} (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+Up to this stage, the process of establishing a connection that enables interaction within a specific area was explained. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via \textit{[element].value} (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the \textit{liveform} socket and the JSON data, which includes one field's value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
 \begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
@@ -1233,7 +1233,7 @@ socket.on("liveform", function (data) {
                 f_req();
             }
         }
-        // trigger validation to have smiliar visual appearances (valid/invalid) for the fields
+        // triqgger validation to have smiliar visual appearances (valid/invalid) for the fields
         \$('#' + key).h5Validate("isValid");
     }
 });
