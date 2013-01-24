@@ -1747,13 +1747,13 @@ Node.js fetches the news feeds and distributes them to every current visitor in 
 
 \appsection{Case Study -- Etherpad}
 \label{app:etherpad}
-On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See etherpad.org} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
+On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See \url{http://www.etherpad.org}} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
 
 \appsection{Case Study -- Clock, a UK web agency}
 \label{app:case_clock}
 
-The following information are taken from an online article\footnote{\url{http://venturebeat.com/2012/01/07/building-consumer-apps-with-node/}} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, CTO of Clock.
+The following information are taken from an online article\footcite[Cf.][]{serby_2012} on VentureBeat\footnote{\url{http://venturebeat.com/}} and are based on the statements by Paul Serby, Chief Technology Officer of Clock.
 Clock is a web agency in the United Kingdom that builds the websites for their clients in Node.js. They chose Node.js for several reasons:
 First, JavaScript as the underlying programming language of Node.js is very beneficial. Most developers at Clock have JavaScript expertise what makes it relatively easy to introduce Node.js and therefore saves time and costs. In addition to that, Clock uses MongoDB. Thus, code can be used on the browser-side, server-side and for the database as MongoDB uses JavaScript for querying data.\footnote{\url{http://www.mongodb.org/}}
 Paul says that “our browser-side JavaScript code improved in quality and structure”. Another aspect the developers at Clock appreciate is the highly active community which is useful when solving programming issues. Also, the developers have had “large productivity gains in HTML and CSS using Jade and Stylus\footnote{\url{http://clock.co.uk/tech-blogs/a-simple-website-in-nodejs-with-express-jade-and-stylus}}”.
