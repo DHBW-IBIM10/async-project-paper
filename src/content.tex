@@ -141,7 +141,7 @@ as images and videos cause even more delays.
 As demand around collaborative access and media richness evolved, this became a
 serious bottleneck, essentially preventing these types of applications. On the
 client-side (browser-side) developers were able to work around the issue of
-synchronous transmission using the XmlHttpRequest object which allows to request
+synchronous transmission using the \textit{XmlHttpRequest} object which allows to request
 resources programmatically (using JavaScript) while
 deferring handling of the response to a callback (see Fig. \ref{img_ajax}\footcite{img_ajax}) thus enabling much more responsive software.
 
@@ -321,7 +321,7 @@ subject and related ones\footcite[Cf.][]{g_trends}.
 
 Looking at the graphs in Fig. \ref{img_googletrend_all}, it can be
 concluded that interest in Node.js is very high at the moment in absolute terms as well
-as in relative terms when comparing it to peers at the same point in there lifecycle.
+as in relative terms when comparing it to peers at the same point in their lifecycle.
 Interest in Vert.x is comparably low, considering that it's idea is very similar to Node.js.
 The gap in interest could be related to many reasons, two of which will be discussed 
 briefly thus concluding this section.
@@ -349,7 +349,7 @@ StackOverflow\footnote{See \url{http://stackoverflow.com}}. As of September
 Ruby\footcite[Cf.][]{Redmonk_2012} – all of which have shown a strong
 performance over the past three years. This is an affirmative aspect with regard
 to the potential target audience of developers of Node.js and Vert.x, which will
-be introduced in the next sub-section.
+be introduced in the next section.
 
 
 \begin{savenotes} %alloows proper citation marks inside tables
@@ -562,7 +562,7 @@ an Open Source foundation (see section \ref{vertx_maintainability}).
 \label{use_cases}
 The non-blocking nature of asynchronous calls is important in all types of
 applications that need to handle a large number of requests. Its event-driven model
-also makes it a good choice for most types of real time processing.\\
+also makes it a good choice for most types of real-time processing.\\
 A fairly obvious fit is given for I/O bound applications, as the single-threaded asynchronous processing
 does not wait for I/O streams to finish, but instead uses callbacks to come back to the processing part
 as soon as the I/O has finished.
@@ -582,7 +582,7 @@ implementations are provided in appendices \ref{app:case_linkedin}, \ref{app:cas
 arrives on an online service, an asynchronous application could keep track of the
 current number of requests and the distribution of requests among all
 available resources. These simple statistics could then be pushed to a Web interface
-frequently to allow real time monitoring of a service in the browser.\\
+frequently to allow real-time monitoring of a service in the browser.\\
 \textbf{Realization:} All services that should be monitored could implement a
 middleware that intercepts each request and fires a call to the asynchronous
 server. However that would add a lot of overhead for the services that should
@@ -600,7 +600,7 @@ event loop based processing the server instance will always just use one
 thread for all connections as opposed to a classical web server, which would
 keep one thread for each connection. Thus the servers footprint is much
 smaller.\\
-\textbf{Known implementation:} Hummingbird is a real time web traffic
+\textbf{Known implementation:} Hummingbird is a real-time web traffic
 visualization tool that uses Node.js for all processing. When loading a
 website the browser sends a request for each file that is referenced in the
 HTML file. Hence each page that should be tracked by Hummingbird integrates a
@@ -674,9 +674,9 @@ tasks could be written easily using one of the mentioned frameworks.\\
 \ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
 \textbf{Known implementation:} 
 \textit{Connect}\footcite[Cf.][]{Odell_2012} is a well-known Node.js-based middleware that provides
-webserver functionality and is considered an industry
+web server functionality and is considered an industry
 standard.\footcite[Cf.][145]{Roden_2012} For Vert.x, there is a
-webserver project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodwebserver_2013}, which
+web server project called \textit{mod-web-server}\footcite[Cf.][]{vertxmodweb server_2013}, which
 efficiently serves files and can also be configured as en event bus bridge to
 client-side JavaScript.\\
 
@@ -697,7 +697,7 @@ These implementations could be extended to provide more sophisticated features.
 \item[Push-notification and messaging systems] Asynchronous technologies are
 suitable for web applications and networking tools that have to handle many
 concurrent connections as they are event-driven.\footcite[Cf.][17]{teixeira_2012} Such applications process a
-high number of requests fast, which in most cases means in real time. At the
+high number of requests fast, which in most cases means in real-time. At the
 same time, the tasks are not CPU-intensive and do not block the event loop. \\
 \textbf{Realization:} Such web applications or services can include chat
 platforms, sport bets, e-mailing and instant messaging
@@ -706,10 +706,10 @@ processing, the event-loop keeps working while notifications are delivered to
 clients and potential callbacks are processed as soon as messages were received.
 As everything occurs in a single thread, an overhead of switching threads and
 concurrency issues can be avoided.\\
-\textbf{Known implementation:} \textit{AIRCODE} has implemented such a real time
+\textbf{Known implementation:} \textit{AIRCODE} has implemented such a real-time
 notification application entirely in Node.js (see Appendix \ref{app:case_aircode}). Moreover,
 financial applications that need to show immediate reaction to stock
-changes may take advantage of asynchronous processing to implement real time notification systems.
+changes may take advantage of asynchronous processing to implement real-time notification systems.
 
 \end{description}
 
@@ -770,7 +770,7 @@ or not it is the best suited technology for the application area in the given en
 
 A simple web form application has been implemented in both Node.js and Vert.x to
 further analyze non-functional requirements and collect practical experience
-with these frameworks. These implementations are thoroughly described in the following sub-sections.
+with these frameworks. These implementations are thoroughly described in the following sections.
 
 \subsection{Software Description}
 \label{software_description}
@@ -779,9 +779,9 @@ The exemplary implementation consists of a web service that can be used to calcu
 the expected fee for an insurance. The idea behind this application is that
 two clients can collaborate during the form entry process before submitting
 all values for the fee calculation to the server.
-However this application should only serve as a demonstration of the used asynchronous 
+However, this application should only serve as a demonstration of the used asynchronous 
 frameworks and is hence very simplified.\\
-Functionalities that are included are usual POST requests as well as real time communication
+Functionalities that are included are usual POST requests as well as real-time communication
 via a WebSocket (described in section \ref{software_design}).
 
 \begin{figure}[h]
@@ -796,10 +796,10 @@ via a WebSocket (described in section \ref{software_design}).
 
 
 The basic usage workflow is shown in Fig. \ref{fig:application_workflow}.
-Upon page load both users can assign a form key. All users with the same key
+Upon page load both users can enter a form key in their browsers. All users with the same key
 will be collaborating with each other and receive all input changes from the
 other users - this is comparable to a simple chat.
-the form consists of two parts - the first part being a section for personal
+The form consists of two parts - the first part being a section for personal
 details and the second part for parameters that will be used to determine the
 fee for the insurance.\\
 The users then fill in all necessary form fields (step 1 in Fig.
@@ -811,7 +811,7 @@ the server using WebSockets.
 The server will distribute these inputs to all clients that have opened the same
 form, which is identified via the key that was set initially (step 3 in Fig.
 \ref{fig:application_workflow}).\\
-Once all fields that are required for the fee calculation are filled correctly
+Once all fields that are required for the fee calculation are filled in correctly
 the client automatically submits the values via AJAX to the server over a secure
 HTTPS connection (step 4 in Fig. \ref{fig:application_workflow}). On the server
 these values are then validated again to avoid processing of manipulated requests
@@ -822,7 +822,7 @@ This AJAX call is triggered when the three fields of the second part (being
 valid.\\
 Using two different technologies (WebSockets and AJAX) for this workflow is
 certainly not the best approach from a design point of view but is conceptually
-valuable to show serveral ways of communication.
+valuable to show several ways of communication.
 
 \nomenclature{HTTPS}{Hyper Text Transfer Protocol Secure}
 \nomenclature{HTTP}{Hyper Text Transfer Protocol}
@@ -841,7 +841,7 @@ valuable to show serveral ways of communication.
 This simple usage scenario leads to a few requirements and
 design decisions.
 The user interface has to consist of HTML, CSS and JavaScript files as it 
-will be displayed in a web browser. In general these files are not initially
+will be displayed in a web browser. In general, these files are not initially
 available on the clients machine and need to be delivered via HTTP/HTTPS by the
 server. These file requests are usually done via GET.\\
 
@@ -859,19 +859,19 @@ In addition to the static files, the server will also need to process
 requests that are sent via POST in order to receive the form data for the
 fee calculation.\\
 The body size of these requests is fairly small as the submitted values consist
-of plain text only. Therefore it is safe to assume that it won't be necessary to
+of plain text only. Therefore it is safe to assume that it will not be necessary to
 buffer each part of the requests body but start calculating once the data
-submission has completed.\\
+submission has been completed.\\
 In reality these calculations are much more complex than in this simple scenario,
-so that they have to be done outside of the event loop in a separate thread.
+so that they have to be done in a separate thread outside of the event loop.
 In the implementation these long running calculations are simulated artificially for
 demonstration purposes.\\
-Additional features in the backend can be integrated via existing modules from
+Additional features in the back-end can be integrated via existing modules from
 the repositories of Vert.x or Node.js.
 
 \subsubsection{HTTPS}
 To create a secure application, HTTPS is required. To demonstrate an HTTP and
-HTTPS server likewise, the application includes two webservers, both of which
+HTTPS server likewise, the application includes two web servers, both of which
 serve the same functionality. It is necessary to generate a pair consisting of a
 private and a public key, because the handshake prior to an HTTPS session
 follows a specific procedure\footcite[Cf.][]{Nemati_2011}:
@@ -884,7 +884,7 @@ follows a specific procedure\footcite[Cf.][]{Nemati_2011}:
  (6) The client encrypts the session key with the public key of the server. Only
  the server can decipher the data using the private key.\\
 The generation of private and public keys can be done by using the following
-commands, leveraging OpenSSL, an Open Source toolkit to implementing secure
+commands, leveraging OpenSSL, an Open Source toolkit for implementing secure
 protocols\footnote{See \url{ http://www.openssl.org/}}:\\
 
 \begin{lstlisting}[caption={Generating a new pair of public/private keys}]
@@ -899,7 +899,7 @@ the client-side, meaning that the user who sends a request from a website does
 not have to wait for the answer, but can continue using that website in the
 meantime without any obvious loading activity that deters him/her from consuming
 content.\footcite[Cf.][46]{riordan2008head} In terms of sending data to the
-server, it usually goes back to the XMLHttpRequest object in JavaScript that is
+server, it usually goes back to the \textit{XMLHttpRequest} object in JavaScript that is
 called by most browsers to send data to the server (further developments may
 apply). Receiving information in response to a request is realized using
 callback functions (JavaScript), whose principle was introduced
@@ -907,7 +907,7 @@ too.\footcite[Cf.][21]{riordan2008head} The Proof of Concept primarily uses
 jQuery as library for AJAX, which "simplifies [...] event handling, animating,
 and Ajax interactions for rapid web development"\footcite[Cf.][]{jquery2013}.
 This in particular ensures better compatibility across several platforms, as it
-covers their specific requirements. The following code snippet in Listing
+covers their specific requirements. The following code snippet in listing
 \ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because
 client-side asynchronous calls are beyond the scope of this paper.
 
@@ -926,7 +926,7 @@ client-side asynchronous calls are beyond the scope of this paper.
 
 \subsubsection{WebSockets}
 \label{websockets}
-Moreover, a key technology to allow for real-time communiation that is leveraged
+Moreover, a key technology to allow for real-time communication that is leveraged
 in the Proof of Concept is the WebSocket Protocol. The WebSocket Protocol is standardized
 by the Internet Engineering Task Force (IETF) in Request for Comments (RFC)
 6455\footcite[Cf.][]{rfc6455}. "The WebSocket Protocol enables two-way
@@ -936,7 +936,7 @@ code."\footcite[.][]{rfc6455} The protocol consists of two parts – a handshake
 and the data transfer, where the handshake is compatible with the HTTP-based
 server-side software and intermediaries. The data transfer can start as
 soon as server and client both have sent their handshakes and the actual
-handshake was successful. Each side can then send data independent from each
+handshake was successful. Each side can then send data independently from each
 other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 
 
@@ -950,25 +950,25 @@ other in a two-way communication channel.\footcite[Cf.][]{rfc6455}
 \subsubsection{Vert.x}
 \label{implementation_vertx}
 
-The vertx application is written in Java entirely, but it is also possible to
+The Vert.x application is entirely written in Java, but it is also possible to
 write each verticle in a different language if desired. This could be done to
-maximize code reuse between frontend and backend.\\
-The business logic of the backend consists of three verticles and additional
+maximize code reuse between front-end and back-end.\\
+The business logic of the back-end consists of three verticles and additional
 utility classes.
 One verticle serves as a web server that accepts HTTP and HTTPS requests. GET
 requests are interpreted as file requests and are answered directly from within
 the verticle. POST requests are interpreted as form submissions. Whenever a POST
-requests arrives, the verticle transforms the request body to a Json object and
+requests arrives, the verticle transforms the request body to a JSON object and
 submits it via Vert.x' event bus.\\
-The second verticle is a worker verticle which does the CPU intense calculation
+The second verticle is a worker verticle which performs the CPU intense calculation
 tasks. This verticle listens on the event bus for incoming messages. Whenever
-such a message arrives it transforms the received Json object into a form
+such a message arrives it transforms the received JSON object into a form
 instance for validation and fee calculation. The results are then sent back via
-the event bus when this operation has completed, so that the event loop can return
+the event bus when this operation has been completed, so that the event loop can return
 the result to the client in its next iteration.\\
 The third verticle serves as a starter script which programmatically starts
 the previously mentioned verticles and terminates afterwards as it does not
-define any callbacks itself (see listing \ref{lst:starter_verticle}).
+define any callbacks itself (see \autoref{lst:starter_verticle}).
 
 \lstinputlisting[language=Java,caption={Verticle that starts two other verticles},
 label=lst:starter_verticle]{lst/starter_verticle.java}
@@ -982,25 +982,25 @@ there is one worker verticle. Vert.x automatically distributes requests among
 these worker verticles (as described in section \ref{Vert.x}).
 
 A global configuration file is read in line 12. This configuration file is
-formatted as Json string and can include settings for modules or verticles. The
+formatted as JSON string and can include settings for modules or verticles. The
 path to the configuration file has to be provided to the \texttt{vertx} command
-upon server start to allow access to it from within the verticles. For this implementation the command that
-has to be invoked as shown in listing \ref{lst:vertx_start}.
+upon server start to allow access to it from within the verticles.
+The command that has to be invoked for the Proof of Concept is shown in \autoref{lst:vertx_start}.
 
 \lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
 label=lst:vertx_start]{lst/vertx_start_command.sh}
 
 Vert.x allows either running verticles by providing the compiled Java class or by providing the
-source file, which is then compiled automatically by Vert.x. However in this
+source file, which is then automatically compiled by Vert.x. However, in this
 setup we experienced some issues with the Vert.x \texttt{run} command when we tried to
-use it with the source files. The issues observed where partially related to
+use it with the source files. The issues observed were partially related to
 Vert.x bug 444\footnote{see \url{https://github.com/vert-x/Vert.x/issues/444}}.
 Due to incomplete dependency resolution, not all classes were compiled so that
 Vert.x could not find all required classes in the path at runtime.
 These startup issues can easily be avoided by using compiled classes instead of
 the source files when multiple verticles need to be started programmatically.
 The path to the compiled classes has to be provided with the \texttt{cp} switch as
-shown in listing \ref{lst:vertx_start}.
+shown in \autoref{lst:vertx_start}.
 
 \clearpage
 \lstinputlisting[language=Java,caption={Vert.x form handler},
@@ -1017,7 +1017,7 @@ Listing \ref{lst:vertx_form_handler} shows the form handler, which is defined
 in the web server verticle and gets called whenever a form submission arrives.
 The handler registers another handler that is called as soon as the entire
 request body has arrived (line 7). The data that arrives as a buffer is than
-turned into a JsonObject (line 10) and submitted to the event bus (line 12).\\
+turned into a JSON Object (line 10) and submitted to the event bus (line 12).\\
 As soon as a reply is returned over the event bus it is forwarded to the client line 16).
 \autoref{lst:vertx_calculator} shows the worker verticle that receives
 the message, does the calculation and then returns the result via the message bus.
@@ -1028,7 +1028,7 @@ This is accomplished by using a so-called \textit{bridge} that forwards client m
 the server event bus and vice versa. As this poses a potential security vulnerability
 it is recommended to set up the bridge with a filtering instance that only allows certain
 addresses or message contents for inbound or outbound communication. \autoref{lst:vertx_bridge} contains
-the configuration that has been used for the real time communication between clients
+the configuration that has been used for the real-time communication between clients
 and server in the Vert.x implementation.\\
 Inbound messages are allowed on the address ``form.data'' and outbound messages
 are allowed on all addresses that start with ``form.data.client.'' and end with a number.
@@ -1053,8 +1053,8 @@ var https = require('https');
 var fs = require('fs');
 \end{lstlisting}
 
-The HTTP and HTTPS modules are necessary to set up the webservers accordingly. 
-In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a webserver, like routing, 
+The HTTP and HTTPS modules are necessary to set up the web servers accordingly. 
+In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a web server, like routing, 
 and will therefore be used for convenience purposes, as recommended by Roden, G. (2012). 
 Express can be installed using the following command-line command:\\
 
@@ -1136,7 +1136,7 @@ example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
 field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
+So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
 \begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time}]
 io.sockets.on('connection', function (socket) {
@@ -1397,7 +1397,7 @@ A second way of using the child process module is to actually run external
 commands, scripts, files and other utilities that cannot directly be executed inside Node.\footcite[Cf.][63]{teixeira_2012}
 
 This characteristic lets external processes get well integrated with Node.js.
-A basic example of the child process module is shown in listing \ref{lst:node_child}\footcite[Taken from][]{node_child_process}.
+A basic example of the child process module is shown in \autoref{lst:node_child}\footcite[Taken from][]{node_child_process}.
 The child process instance that is created in lines 1 and 2 is an event emitter that
 allows registering callbacks for certain events (see lines 4,8 and 12).
 
@@ -1434,8 +1434,8 @@ This approach might not be very satisfying, as the output is not captured and
 execution errors aren't handled properly. Luckily the \textit{Apache Commons Exec} library
 can be used in an event -driven style as well. To achieve this one first needs to
 write a class that handles the output streams.
-An exemplary implementation of such a class is provided in listing
-\ref{lst:java_stream}.
+An exemplary implementation of such a class is provided in 
+\autoref{lst:java_stream}.
 
 \lstinputlisting[language=Java,caption={Subclass of LogOutputStream as a handler for the stdout stream},label=lst:java_stream]%
 {lst/StdoutStream.java}
@@ -1446,7 +1446,7 @@ listing \ref{lst:external_process}, where the instance gets passed into a PumpSt
 \lstinputlisting[language=Java,caption={Asynchronous process execution in Java},label=lst:external_process]%
 {lst/external_process.java}
 
-There are some more noteworthy details in listing \ref{lst:external_process}.
+There are some more noteworthy details in \autoref{lst:external_process}.
 The \texttt{DefaultExecuteResultHandler}, which is defined in lines 5 to
 13, can be used to provide callbacks for successfull termination or failure of
 the external process. The call to \texttt{executor.execute} (line 23) automatically becomes
@@ -1474,12 +1474,12 @@ Both Vert.x and Node.js offer great performance and scalability under certain
 circumstances that were identified in section \ref{areas_of_application}.
 In order to allow a comparison for a very simple use case, a micro-benchmark was
 run to collect information on request handling of Node.js, Vert.x and the two
-popular webservers Apache2 and Nginx.
+popular web servers Apache2 and Nginx.
 \paragraph{Experiment setup} Each server was run isolated on a virtual machine
 that was assigned 4GB of memory and 4 of 8 available processors with a limited processor rate
 of 2.5GHz (to make sure that the host system has enough free capacity). A static
 file with 200kb has been created using \texttt{dd}, which then had to be
-delivered by the webservers.
+delivered by the web servers.
 
 Requests were then sent from another virtual machine on the same host system 
 to the running server using the \textit{Apache HTTP server benchmarking 
@@ -1514,14 +1514,14 @@ performs so well. More detailed benchmarking results are shown in Appendix \ref{
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{img/200kb_benchmark_node_vertx.png}
-\caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the webserver benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
+\caption[Plot of the web server benchmark results (asynchronous servers)]{Plot of the web server benchmark results between Node.js and Vert.x (x-axis: requests, y-axis: time in ms)}
 \label{fig:benchmark_async}
 \end{figure}
 
 
 \paragraph{Scaling on a single machine}
 Support for single machine scaling using multiple threads exists natively in
-Vert.x and can be accomplished easily on a per-instance basis like shown in listing \ref{lst:starter_verticle}.
+Vert.x and can be accomplished easily on a per-instance basis like shown in \autoref{lst:starter_verticle}.
 Each instance can
 be deployed multiple times. This allows configurations like having one instance
 for the main event loop and 4 instances for the worker verticles, so that
@@ -1678,7 +1678,7 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
 \begin{itemize}
   \item Better performance (running up to 20x faster in certain scenarios) and lower memory overhead than other tested options, 
   \item Programmers could make use of their JavaScript skills. 
-  \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
+  \item front-end JavaScript and back-end mobile teams could be merged into a single unit. 
   \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
 \end{itemize}
 
