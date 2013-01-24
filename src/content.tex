@@ -1562,7 +1562,7 @@ One possible procedure is to deploy an application multiple times and to use an 
 distributes incoming requests among all running deployments. This has some
 implications: Due to the isolation in separate processes, application instances cannot share any
 data or communicate directly with each other.
-Furthermore, data might be stored in a physically separated database like CouchDb\footnote{See
+Furthermore, data might be stored in a physically separated database like CouchDB\footnote{See
 \url{http://couchdb.apache.org/}} or in a key-value store like Redis\footnote{See
 \url{http://redis.io/}}. This database could then potentially become a bottleneck when multiple application
 processes require access, depending on its ability to provide parallel processing.
