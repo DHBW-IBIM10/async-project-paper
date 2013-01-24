@@ -1044,7 +1044,7 @@ label=lst:vertx_bridge]{lst/vertx_bridge_config.java}
 
 \subsubsection{Node.js}
 \label{implementation_node}
-The Node.js implementation starts with four modules that are required to run the application:
+The Node.js implementation starts with four modules that are required to run the application, as shown in Lst. \ref{lst:includenodemodules}:
 
 \begin{lstlisting}[language=javascript,caption={Including modules},label=lst:includenodemodules]
 var express = require('express');
@@ -1056,26 +1056,26 @@ var fs = require('fs');
 The HTTP and HTTPS modules are necessary to set up the webservers accordingly. 
 In addition, the “fs” (FileSystem\footnote{See \url{ http://nodejs.org/api/fs.html}}) module is necessary to read the encryption keys for HTTPS. The web framework “Express” offers complementary functionality for a webserver, like routing, 
 and will therefore be used for convenience purposes, as recommended by Roden, G. (2012). 
-Express can be installed using the following command-line command:\\
+Express can be installed using the command-line command shown in Lst. \ref{lst:expressinstallation}:\\
 
-\begin{lstlisting}[language=javascript,caption={Installing Express via command-line}]
+\begin{lstlisting}[language=javascript,caption={Installing Express via command-line},label=lst:expressinstallation]
 npm install express 
 \end{lstlisting}
 
-In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in this example are located in the same location as the application file.
+In order to enable HTTPS by leveraging the Node.js class https.Server, the privatekey.pem and certificate.pem files need to be read and their content can be written into the httpsOptions array by using the FileSystem module and its function readFileSync(). The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
 
-\begin{lstlisting}[language=javascript,caption={Reading encryption keys}]
+\begin{lstlisting}[language=javascript,caption={Reading encryption keys},label=lst:readencryptionkeys]
 var httpsOptions = {
     key: fs.readFileSync(__dirname + '/privatekey.pem')
     , cert: fs.readFileSync(__dirname + '/certificate.pem')
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the following code is used, which first
-initialized express() and then creates the server using the express variable
-before the ports on which the servers are listening are defined:
+To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} ist used, which first
+initializes express() and then creates the server using the express variable.
+Afterwards, the ports on which the servers are listening are defined.
 
-\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js},label=lst:startnodeservers]
 var app = express();
 var server = http.createServer(app);
 var secureServer = https.createServer(httpsOptions, app);
@@ -1086,39 +1086,39 @@ secureServer.listen(4431);
 The HTTP server can be accessed using \texttt{http://localhost:8888/} as opposed to the
 HTTPS server that is available at \texttt{https://localhost:4431/}. Afterwards, the
 \textit{socket.io} module for WebSockets comes into play. First of all, it needs to be
-installed using the following command:
+installed using the command in Lst. \ref{lst:installsocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager}]
+\begin{lstlisting}[language=javascript,caption={Command to install socket.io via Node.js' package manager},label=lst:installsocketio]
 npm install socket.io
 \end{lstlisting}
 
 Afterwards, it is included and initialized by passing the secureServer variable
-(for the HTTPS server):
+(for the HTTPS server), as shown in Lst. \ref{lst:requiresocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Initialisation of the socket.io module in Node.js}]
+\begin{lstlisting}[language=javascript,caption={Initialization of the socket.io module in Node.js},label=lst:requiresocketio]
 var io = require('socket.io').listen(secureServer);
 \end{lstlisting}
 
 The first Express functionality used is that static files can be served with
-Node.js. Using the following statement, the directory “/” is made the root
-directory for a \texttt{http[s]://localhost:[port]/}
+Node.js. Using the statement in Lst. \ref{lst:nodestatic}, the directory “/” is made the root
+directory for a \texttt{http[s]://localhost:[port]/}.
 
-\begin{lstlisting}[language=javascript,caption={Serving static assets with Express}]
+\begin{lstlisting}[language=javascript,caption={Serving static assets with Express},label=lst:nodestatic]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
 
 Another Express feature is the “bodyParser”, which is used as middleware to
-parse request bodies, for this Proof of Concept especially JSON.
+parse request bodies, for this Proof of Concept especially JSON. It is initialized as shown in Lst. \ref{lst:nodebodyparser}.
 
-\begin{lstlisting}[language=javascript,caption={Using the bodyParser}]
+\begin{lstlisting}[language=javascript,caption={Using the bodyParser},label=lst:nodebodyparser]
 app.configure(function(){
     app.use(express.bodyParser());
 });
 \end{lstlisting}
 
-Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code shows how to catch this (AJAX-driven) POST-request in Node.js on http://localhost:8888/insurances:
+Moreover, Express is used to catch requests to specific URLs. As the AJAX call coming from the user interface is set up as POST-request, the following code in Lst. \ref{lst:nodepost} shows how to catch this (AJAX-driven) POST-request in Node.js on http[s]://localhost:[port]/insurances:
 
-\begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data}]
+\begin{lstlisting}[language=javascript,caption={Iteration through an array consisting of JSON data},label=lst:nodepost]
 app.post('/insurances', function (req, res) {
 	// iterating through the array that contains JSON-objects
 	// write the value of the name attribute of each JSON-object into the console
@@ -1136,9 +1136,9 @@ example demonstrates how to access each item. Within the pProof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
 field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
 
-So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in TODO!!!!!!. The following code is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
+So far, this code provides a webserver and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
 
-\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time}]
+\begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
 
     // create new form
@@ -1158,21 +1158,21 @@ io.sockets.on('connection', function (socket) {
 
 The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported:
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported as shown in Lst. \ref{lst:socketiojs}.
 
-\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript}]
+\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript},label=lst:socketiojs]
 <script src="/socket.io/socket.io.js"></script>
 \end{lstlisting}
 
-Afterwards, a connection is established to https://localhost:4431/ using the following code:
+Afterwards, a connection is established to https://localhost:4431/ using the code in Lst. \ref{lst:socketioconnect}:
 
-\begin{lstlisting}[language=javascript,caption={Establishing socket.io connection from the client-side}]
+\begin{lstlisting}[language=javascript,caption={Establishing socket.io connection from the client-side},label=lst:socketioconnect]
 var socket = io.connect('https://localhost:4431/');
 \end{lstlisting}
 
-Having established a connection, the following code refers to the variable formId, which was previously filled with the query string "formId" or left null in case there was none provided. In case it was left null, the user is asked (line two) for an ID. In Case it is there, the ID will be sent (line four) and as the code above shows, the ID is used as a room's name.
+Having established a connection, the code in Lst. \ref{lst:formId} refers to the variable formId, which was previously filled with the query string "formId" or left null in case there was none provided. In case it was left null, the user is asked (line two) for an ID. In Case it is there, the ID will be sent (line four) and as the code above shows, the ID is used as a room's name.
 
-\begin{lstlisting}[language=javascript,caption={Joining a specific area – "room"}]
+\begin{lstlisting}[language=javascript,caption={Joining a specific area – "room"},label=lst:formId]
 if (formId == null) {
 	socket.emit('createForm', prompt('What is your ID?'));
 } else {
@@ -1180,9 +1180,9 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The following code demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line 7), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element].value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
-\begin{lstlisting}[language=javascript,caption={Sending data to the server}]
+\begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
     var JSONdata = {};
     // write JSON, depending on INPUT or SELECT field
@@ -1203,9 +1203,9 @@ function sendToServer(fieldId) {
 });
 \end{lstlisting}
 
-On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The following code demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
+On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The code in Lst. \ref{lst:socketreceivedata} demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case "liveform". For for-each loop starting at line three is just a simplied way to read the JSON (which only has one data item), because the name if the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
 
-\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets}]
+\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets},label=lst:socketreceivedata]
 socket.on("liveform", function (data) {
     // read (unknown) field from JSON
     for (key in data) {
@@ -1228,8 +1228,8 @@ socket.on("liveform", function (data) {
 \end{lstlisting}
 
 To use the application, the Node.js servers can be started by using the command-line. After navigating
-into the project’s folder using cd, the only command needed is:
-\begin{lstlisting}[caption={Executing Node.js code}]
+into the project’s folder using cd, the only command needed is shown in Lst. \ref{lst:execnode}:
+\begin{lstlisting}[caption={Executing Node.js code},label=lst:execnode]
 Node.js [filename].js
 \end{lstlisting}
 
