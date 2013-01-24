@@ -1073,8 +1073,8 @@ var httpsOptions = {
 };
 \end{lstlisting}
 
-To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} ist used, which first
-initializes express() and then creates the server using the express variable.
+To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} is used, which first
+initializes Express (\texttt{express()}) and then creates the server using the express variable.
 Afterwards, the ports on which the servers are listening are defined.
 
 \begin{lstlisting}[language=javascript,caption={Starting servers in Node.js},label=lst:startnodeservers]
@@ -1134,11 +1134,11 @@ app.post('/insurances', function (req, res) {
 \end{lstlisting}
 
 As the AJAX POST-request contains an array filled with JSON-objects, this
-example demonstrates how to access each item. Within the pProof of Concept, this
+example demonstrates how to access each item. Within the Proof of Concept, this
 for-loop is used to apply regular expressions in order to validate each form
-field. req.body[i].name is an example on how the Express bodyParser is leveraged.\\
+field. \texttt{req.body[i].name} is an example on how the Express \textit{bodyParser} is leveraged.
 
-So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have oped one specific form at the same time. The technology behind that will be used is called WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with socket.io to handle WebSocket connections:
+So far, this code provides a web server and is able to respond to requests via HTTP and HTTPS. This would be fine to do server-side validation and saving data in a database, which is a fair use case but would only demonstrate the strength of Node.js if real-time server-side validation (with low CPU workload) was a key criterion. However, this Proof of Concept goes further and demonstrates the strength of of Node.js when it comes to real-time communication among several clients by distributing form inputs in real-time to all clients that have opend one specific form at the same time. Tis is implemented by using WebSockets, as explained in \ref{websockets}. The code in Lst.  \ref{lst:nodewebsockets} is necessary on the server-side to enable Node.js in combination with \textit{socket.io} to handle WebSocket connections:
 
 \begin{lstlisting}[language=javascript,caption={Using WebSockets to distribute form inputs in real-time},label=lst:nodewebsockets]
 io.sockets.on('connection', function (socket) {
@@ -1158,9 +1158,9 @@ io.sockets.on('connection', function (socket) {
 });
 \end{lstlisting}
 
-The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of socket.io allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.\\
+The first line refers to the "connection" event, which is triggered by default when a client connects to a server. Its parameter is the socket that is used enables the communication with the client.\footcite[Cf.][197]{Roden_2012} Line four shows the "on" function of the socket, that refers to the socket object "createForm". This one is used to write the room's name into the console (line five), write the room's name into the socket session of a client (line six) and finally join the room (line seven). A room is a functionality of \textit{socket.io} allowing "closed" areas.\footnote{See https://github.com/LearnBoost/socket.io/wiki/Rooms} Starting at line 10, the actual live form functionality begins. Whereas the "createForm" function was used to establish sort of "closed areas" for the individual forms, the "liveform" socket actually distributes data to the clients that have joined one form (i.e. room). Line 12 demonstrates a broadcast of data to all clients that have joined a room.
 
-As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the socket.io.js needs to be imported as shown in Lst. \ref{lst:socketiojs}.
+As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the JavaScript library \textit{socket.io.js} needs to be imported as shown in Lst. \ref{lst:socketiojs}.
 
 \begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript},label=lst:socketiojs]
 <script src="/socket.io/socket.io.js"></script>
@@ -1182,7 +1182,7 @@ if (formId == null) {
 }
 \end{lstlisting}
 
-So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via [element]q.value (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
+So far to the process of establishing a connection that enables interaction within a specific area. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via \textit{[element].value} (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the "liveform" socket and the JSON data, which includes one fields value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
 \begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
 function sendToServer(fieldId) {
