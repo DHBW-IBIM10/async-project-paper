@@ -647,21 +647,21 @@ language=javascript,
 caption={Controlling streams in Node.js},
 label=lst:streaming]
 require('http').createServer(function(req, res) {
-var rs = fs.createReadStream('/path/to/big/file');
+	var rs = fs.createReadStream('/path/to/big/file');
 
-rs.on('data', function(data) {
-if (!res.write(data)) {
-rs.pause();
-}
-});
+	rs.on('data', function(data) {
+		if (!res.write(data)) {
+			rs.pause();
+		}
+	});
 
-res.on('drain', function() {
-rs.resume();
-});
+	res.on('drain', function() {
+		rs.resume();
+	});
 
-rs.on('end', function() {
-res.end();
-});
+	rs.on('end', function() {
+		res.end();
+	});
 }).listen(8080);
 \end{lstlisting}
 
@@ -898,11 +898,14 @@ The generation of private and public keys can be done by using the following
 commands, leveraging OpenSSL, an Open Source toolkit for implementing secure
 protocols\footnote{See \url{ http://www.openssl.org/}}:\\
 
-\begin{lstlisting}[caption={Generating a new pair of public/private keys}]
-openssl genrsa -out privatekey.pem 1024
-openssl req -new -key privatekey.pem -out certrequest.csr 
-openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
-\end{lstlisting}
+\begin{lstlisting}[language=bash,
+morekeywords={openssl},
+caption={Generating a new pair of public/private keys},
+label={lst:openssl}]
+$ openssl genrsa -out privatekey.pem 1024
+$ openssl req -new -key privatekey.pem -out certrequest.csr 
+$ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
+\end{lstlisting}%$
 
 \subsubsection{AJAX - Asynchronous JavaScript and XML}
 AJAX applies the previously explained concept of asynchronous communication to
@@ -922,18 +925,21 @@ covers their specific requirements. The following code snippet in listing
 \ref{lst:jqueryajaxcall} only demonstrates briefly an exemplary call, because
 client-side asynchronous calls are beyond the scope of this paper.
 
-\begin{lstlisting}[language=javascript,caption={Exemplary jQuery AJAX call},label={lst:jqueryajaxcall}]
-\$.ajax({
+\begin{lstlisting}[float,
+language=javascript,
+caption={Exemplary jQuery AJAX call},
+label={lst:jqueryajaxcall}]
+$.ajax({
     url: '/testurl',
     type: 'POST',
     contentType: "application/json; charset=utf-8",
     data: {"testkey" : "testvalue"},
     success: function(response) {
         // success actions, the response object contains the information sent from the server
-	alert('Everything worked out!');
+        alert('Everything worked out!');
     }
 });
-\end{lstlisting}
+\end{lstlisting}%$
 
 \subsubsection{WebSockets}
 \label{websockets}
@@ -985,10 +991,13 @@ $ npm install express
 
 In order to enable HTTPS by leveraging the Node.js class \texttt{https.Server}, the \texttt{privatekey.pem} and \texttt{certificate.pem} files need to be read and their content can be written into the \texttt{httpsOptions} array by using the \textit{FileSystem} module and its function \texttt{readFileSync()}. The files in Lst. \ref{lst:readencryptionkeys} are located in the same location as the application file.
 
-\begin{lstlisting}[language=javascript,caption={Reading encryption keys},label=lst:readencryptionkeys]
+\begin{lstlisting}[
+language=javascript,
+caption={Reading encryption keys},
+label=lst:readencryptionkeys]
 var httpsOptions = {
-    key: fs.readFileSync(__dirname + '/privatekey.pem')
-    , cert: fs.readFileSync(__dirname + '/certificate.pem')
+    key: fs.readFileSync(__dirname + '/privatekey.pem'),
+    cert: fs.readFileSync(__dirname + '/certificate.pem')
 };
 \end{lstlisting}
 
@@ -996,7 +1005,10 @@ To run the HTTP/HTTPS servers, the code in Lst. \ref{lst:startnodeservers} is us
 initializes Express (\texttt{express()}) and then creates the server using the express variable.
 Afterwards, the ports on which the servers are listening are defined.
 
-\begin{lstlisting}[language=javascript,caption={Starting servers in Node.js},label=lst:startnodeservers]
+\begin{lstlisting}[
+language=javascript,
+caption={Starting servers in Node.js},
+label=lst:startnodeservers]
 var app = express();
 var server = http.createServer(app);
 var secureServer = https.createServer(httpsOptions, app);
@@ -1019,7 +1031,10 @@ $ npm install socket.io
 Afterwards, it is included and initialized by passing the secureServer variable
 (for the HTTPS server), as shown in Lst. \ref{lst:requiresocketio}.
 
-\begin{lstlisting}[language=javascript,caption={Initialization of the socket.io module in Node.js},label=lst:requiresocketio]
+\begin{lstlisting}[
+language=javascript,
+caption={Initialization of the socket.io module in Node.js},
+label=lst:requiresocketio]
 var io = require('socket.io').listen(secureServer);
 \end{lstlisting}
 
@@ -1027,7 +1042,10 @@ The first Express functionality used is that static files can be served with
 Node.js. Using the statement in Lst. \ref{lst:nodestatic}, the directory “/” is made the root
 directory for a \texttt{http[s]://localhost:[port]/}.
 
-\begin{lstlisting}[language=javascript,caption={Serving static assets with Express},label=lst:nodestatic]
+\begin{lstlisting}[
+language=javascript,
+caption={Serving static assets with Express},
+label=lst:nodestatic]
 app.use(express.static(__dirname + '/UI'));
 \end{lstlisting}
 
@@ -1072,8 +1090,8 @@ io.sockets.on('connection', function (socket) {
     socket.on('createForm', function (data) {
         console.log('room:' + data);
         socket.room = data;
-         socket.join(data);
-    } ) ;
+        socket.join(data);
+    });
 
     socket.on('liveform', function (data) {
         console.log(data);
@@ -1087,7 +1105,9 @@ The first line refers to the "connection" event, which is triggered by default w
 
 As the client-side here is specific to socket.io, this part will be explained as well to provide a comprehensive understanding of how WebSockets are used. First of all, the JavaScript library \textit{socket.io.js} needs to be imported as shown in Lst. \ref{lst:socketiojs}.
 
-\begin{lstlisting}[language=javascript,caption={Including the client-side socket.io JavaScript},label=lst:socketiojs]
+\begin{lstlisting}[language=html,
+caption={Including the client-side socket.io JavaScript},
+label=lst:socketiojs]
 <script src="/socket.io/socket.io.js"></script>
 \end{lstlisting}
 
@@ -1109,7 +1129,10 @@ if (formId == null) {
 
 Up to this stage, the process of establishing a connection that enables interaction within a specific area was explained. The code in Lst. \ref{lst:socketsenddata} demonstrates how to send data to the server using WebSockets. As the form that is used in the Proof of Concept has INPUT fields as well as SELECT fields, it is necessary to distinguish between these both: Whereas the value of INPUT fields can be read via \textit{[element].value} (line seven), the selected value of a SELECT field must be read by [element].selectedIndex (line five). However, within the JSON, both can be saved the same way. Line nine shows how to send data to the server using the \textit{liveform} socket and the JSON data, which includes one field's value. This sendToServer(fieldId) function is called whenever the user changes the form, meaning with every letter the user types or with every SELECT field the user changes (lines 12 to 18)
 
-\begin{lstlisting}[language=javascript,caption={Sending data to the server},label=lst:socketsenddata]
+\begin{lstlisting}[float,
+language=javascript,
+caption={Sending data to the server},
+label={lst:socketsenddata}]
 function sendToServer(fieldId) {
     var JSONdata = {};
     // write JSON, depending on INPUT or SELECT field
@@ -1122,17 +1145,20 @@ function sendToServer(fieldId) {
 }
 
 // trigger request for each key written in input/select fields
-\$('input[type="text"]').on('keyup', function () {
-    sendToServer(\$(this).attr("id"));
+$('input[type="text"]').on('keyup', function () {
+    sendToServer($(this).attr("id"));
 });
-\$("select").on("change", function () {
-    sendToServer(\$(this).attr("id"));
+$("select").on("change", function () {
+    sendToServer($(this).attr("id"));
 });
-\end{lstlisting}
+\end{lstlisting}%$
 
 On the other hand, it is for sure necessary to receive data on the client-side and populate the form fields appropriately. The code in Lst. \ref{lst:socketreceivedata} demonstrates how this is realized. Line one shows how to "listen" on a socket, in this case \textit{liveform}. The for-each loop starting at line three is just a simplified way to read the JSON (which only has one data item), because the name of the key used in that data item is unknown. Again, the distinction between INPUT and SELECT fields needs to be taken into account as explained above, which is why the IF on line five reflects that issue. Lines seven and 10 write the data received in the JSON into the form fields. In case of the INPUT fields "SummeInput", "BehaltInput" and "BerufInput", there is the possibility that the calculation of the insurance rate needs to be triggered using function f\_req(), which is why lines 12 to 14 check for these INPUT fields. Finally, line 17 triggers the validation of the INPUT fields using the jQuery plugin h5Validate, which is primarily important to create the same visual effects on every client's form.
 
-\begin{lstlisting}[language=javascript,caption={Receiving data using WebSockets},label=lst:socketreceivedata]
+\begin{lstlisting}[float,
+language=javascript,
+caption={Receiving data using WebSockets},
+label={lst:socketreceivedata}]
 socket.on("liveform", function (data) {
     // read (unknown) field from JSON
     for (key in data) {
@@ -1145,20 +1171,20 @@ socket.on("liveform", function (data) {
             document.getElementById(key).value = data[key];
             // also trigger the price calculation when these fields are filled
             if (key == "SummeInput" || key == "BehaltInput" || key == "BerufInput") {
-                f_req();
+            f_req();
             }
         }
         // triqgger validation to have smiliar visual appearances (valid/invalid) for the fields
-        \$('#' + key).h5Validate("isValid");
+        $('#' + key).h5Validate("isValid");
     }
 });
-\end{lstlisting}
+\end{lstlisting}%$
 
 To use the application, the Node.js servers can be started by using the command-line. After navigating
 into the project’s folder using cd, the only command needed is shown in Lst. \ref{lst:execnode}:
 \begin{lstlisting}[caption={Executing Node.js code},label=lst:execnode]
-Node.js [filename].js
-\end{lstlisting}
+$ node [filename].js
+\end{lstlisting}%$
 
 
 \subsubsection{Vert.x}
@@ -1184,8 +1210,11 @@ The third verticle serves as a starter script which programmatically starts
 the previously mentioned verticles and terminates afterwards as it does not
 define any callbacks itself (see \autoref{lst:starter_verticle}).
 
-\lstinputlisting[float,language=Java,caption={Verticle that starts two other verticles},
-label=lst:starter_verticle]{lst/starter_verticle.java}
+\lstinputlisting[float,
+language=Java,
+caption={Verticle that starts two other verticles},
+label={lst:starter_verticle},
+morekeywords={}]{lst/starter_verticle.java}
 
 The actual deployment of the other verticles happen in lines 13 and 14.
 An important detail is the second parameter in the \texttt{deployWorkerVerticle} method.
@@ -1424,8 +1453,10 @@ A basic example of the child process module is shown in \autoref{lst:node_child}
 The child process instance that is created in lines 1 and 2 is an event emitter that
 allows registering callbacks for certain events (see lines 4,8 and 12).
 
-\lstinputlisting[language=JavaScript,caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code},label=lst:node_child]%
-{lst/node_child_process.js}
+\lstinputlisting[float,
+language=JavaScript,
+caption={Example of running \textit{ls -lh /usr} in Node.js, capturing stdout, stderr, and the exit code},
+label=lst:node_child]{lst/node_child_process.js}
 
 Invoking processes on a different machine across the network still
 requires a remote API or a distributed message bus system.\\
@@ -1450,8 +1481,10 @@ into the verticle via the event bus for higher flexibility. A watchdog
 Otherwise a runaway process could block the worker thread so that it cannot be
 used anymore\footcite[Cf.][67]{Evi_2007}.
 
-\lstinputlisting[language=Java,caption={Example of running \textit{ls -lh /usr} in Vert.x from within a worker verticle},label=lst:vertx_child]%
-{lst/vertx_child_process.java}
+\lstinputlisting[float,
+language=Java,
+caption={Example of running \textit{ls -lh /usr} in Vert.x from within a worker verticle},
+label=lst:vertx_child]{lst/vertx_child_process.java}
 
 This approach might not be very satisfying, as the output is not captured and
 execution errors aren't handled properly. Luckily the \textit{Apache Commons Exec} library
@@ -1460,8 +1493,10 @@ write a class that handles the output streams.
 An exemplary implementation of such a class is provided in 
 \autoref{lst:java_stream}.
 
-\lstinputlisting[language=Java,caption={Subclass of LogOutputStream as a handler for the stdout stream},label=lst:java_stream]%
-{lst/StdoutStream.java}
+\lstinputlisting[float,
+language=Java,
+caption={Subclass of LogOutputStream as a handler for the stdout stream},
+label=lst:java_stream]{lst/StdoutStream.java}
 
 An instance of this class can then be provided to the executor as shown in
 listing \ref{lst:external_process}, where the instance gets passed into a PumpStreamHandler (line 21)
@@ -1561,8 +1596,8 @@ Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 functionality internally to scale on multiple machines.\\
 
 \begin{lstlisting}[language=bash,caption={Starting a Vert.x application in cluster mode},label={lst:vertx_cluster}]
-vertx run server.js -cluster -cluster-port 22000
-\end{lstlisting}
+$ vertx run server.js -cluster -cluster-port 22000
+\end{lstlisting}%$
 
 Listing \ref{lst:vertx_cluster} shows how a Vert.x cluster can be set up on a
 network with the default configuration. The cluster-port argument specifies on
