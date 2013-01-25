@@ -685,7 +685,7 @@ protocols, like WebSockets, can take a particular advantage from asynchronous
 technologies. In general any network server that only needs to handle a small set of
 tasks could be written easily using one of the mentioned frameworks.\\
 \textbf{Realization:} The realization can be seen exemplarily in listings
-\ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.
+\ref{lst:includenodemodules} et sqq., as this is part of the Proof of Concept.\\
 \textbf{Known implementation:}
 \textit{Connect}\footcite[Cf.][]{Odell_2012} is a well-known Node.js-based middleware that provides
 web server functionality and is considered an industry
@@ -703,7 +703,7 @@ easily done with an array in Java and JavaScript.\\
 requests the actual website and passesit back to the requesting
 client. Other requests can be handled while the resources are being loaded.
 There are examples of Node.js showing a proxy written on 20 lines of code\footcite[Cf.][]{krumins_nodeproxy}.
-These implementations could be extended to provide more sophisticated features.
+These implementations could be extended to provide more sophisticated features.\\
 \textbf{Known implementation:} There is a Vert.x implementation called
 \textit{vertx-proxy}\footcite[Cf.][]{vertxproxy} as well as a Node.js proxy called
 \textit{node-http-proxy}\footcite[Cf.][]{nodeproxy}, both of which support HTTPS.\\
@@ -1427,7 +1427,7 @@ application landscape, it might be desired to integrate or communicate with exis
 systems that are not fully event-driven. Furthermore, integration of these
 technologies might not be limited to mere IPC\nomenclature{IPC}{Inter Process
 Communication} but instead could establish a new middleware-layer between current and new
-applications.\\
+applications.
 %Consider connecting that software with a message bus.
 %Separate IO intense tasks into ``web workers'' or similar constructs.
 
@@ -1669,11 +1669,11 @@ activity for the Vert.x project starts increasing once it has completed the tran
 
 The objective of this paper was to evaluate server-side asynchronous technologies with special focus on enterprise-readiness. This paper addressed this goal by outlining basic technologies in web development and pointing out the different approaches of synchronous and asynchronous communication.
 
-The initial market overview has shown that there is a variety of frameworks for established programming languages available, which, however, are not always in a satisfying state of development. The scope of investigations within this paper was limited to two frameworks, which were evaluated in detail: Node.js and Vert.x\\
+The initial market overview has shown that there is a variety of frameworks for established programming languages available, which, however, are not always in a satisfying state of development. The scope of investigations within this paper was limited to two frameworks, which were evaluated in detail: Node.js and Vert.x.
 
 \paragraph{Node.js} While Node.js is clearly dominating the market at present, it also comes with its fair share of issues, especially if reliability and maintainability are concerned. This is not to say that Node.js is unstable and/or unreliable, sections \ref{Node.js} and \ref{maintainability} proved that, but rather that its community philosophy of \textit{"Update Node, Upgrade code."} is diametrically different to the principles of enterprise software deployment.
 
-\paragraph{Vert.x} Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see section \ref{Vert.x}), however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse Foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.
+\paragraph{Vert.x} Vert.x certainly has a much stronger position for entering the enterprise market (due to its JVM underpinnings and ease of distributed programming, see section \ref{Vert.x}), however its small community and uncertain state of affairs do weaken its chances. Moving to the Eclipse Foundation does alter this once the project has moved as this provides a very strong foundation (pun intended) for the future.\\
 
 Asynchronous server technologies require careful evaluation of one's needs and wants and in particular implementation goals in order to only use the most capable solution. It is key to bring the actual use cases and inappropriate use cases to mind. Exceptionally good use cases are those with a high number of requests, real-time communciation and (very important) low CPU workload in order to leverage non-blocking I/O streams. Inappropriate use cases for asynchronous technologies are CPU intensive applications (e.g. data warehousing with analytics) or simple CRUD/HTML applications. Moreover, as non-blocking I/O is a key feature, use cases that hardly encompass interaction with external resources do not set a precedent and might even be penalized. It is important to point out that it is not worth using asynchronous technologies for the sake of leveraging single secondary features (like the similarity of client- and server-side programming language in case of Node.js) when the overall application is not a good fit. Computing intensive tasks that are handled in a single thread or a very limited number of threads jeopardize the availability of an application and there should be good reasons to work around such issues instead of using a synchronous approach. It can be a valid approach to implement single functionalities like real-time communication (chats, push-notifications) and use a synchronous technology for other parts of an application. Depending on the use case and environment, using Node.js or Vert.x both could potentially be beneficial. However, in an enterprise context, there are caveats for both frameworks due to their early stages in development.
 
