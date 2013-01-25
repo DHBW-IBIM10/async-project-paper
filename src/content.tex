@@ -1233,8 +1233,10 @@ path to the configuration file has to be provided to the \texttt{vertx} command
 upon server start to allow access to it from within the verticles.
 The command that has to be invoked for the Proof of Concept is shown in \autoref{lst:vertx_start}.
 
-\lstinputlisting[language=bash,caption={Command for starting the Vert.x application},
-label=lst:vertx_start]{lst/vertx_start_command.sh}
+\lstinputlisting[language=bash,
+caption={Command for starting the Vert.x application},
+label={lst:vertx_start},
+morekeywords={vertx}]{lst/vertx_start_command.sh}
 
 Vert.x allows either running verticles by providing the compiled Java class or by providing the
 source file, which is then automatically compiled by Vert.x. However, in this
@@ -1598,7 +1600,10 @@ This module allows to take advantage of a multi-core system by launching a clust
 Vert.x uses Hazelcast's\footnote{See \url{http://www.hazelcast.com/}} clustering
 functionality internally to scale on multiple machines.\\
 
-\begin{lstlisting}[language=bash,caption={Starting a Vert.x application in cluster mode},label={lst:vertx_cluster}]
+\begin{lstlisting}[language=bash,
+caption={Starting a Vert.x application in cluster mode},
+label={lst:vertx_cluster},
+morekeywords={vertx}]
 $ vertx run server.js -cluster -cluster-port 22000
 \end{lstlisting}%$
 
