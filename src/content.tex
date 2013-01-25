@@ -614,6 +614,7 @@ event loop based processing the server instance will always just use one
 thread for all connections as opposed to a classical web server, which would
 keep one thread for each connection. Thus the servers footprint is much
 smaller.\\
+
 \textbf{Known implementation:} Hummingbird is a real-time web traffic
 visualization tool that uses Node.js for all processing. When loading a
 website the browser sends a request for each file that is referenced in the
@@ -644,7 +645,8 @@ in Node.js can be paused and resumed, which addresses exactly the described
 problem.\footcite[Cf.][81]{teixeira_2012} Listing \ref{lst:streaming} illustrates
 how this is realized.\footcite[Cf.][81]{teixeira_2012}
 
-\begin{lstlisting}[language=javascript,caption={Controlling streams in Node.js},label=lst:streaming]
+\begin{lstlisting}[float,
+language=javascript,caption={Controlling streams in Node.js},label=lst:streaming]
 require('http').createServer(function(req, res) {
 	var rs = fs.createReadStream('/path/to/big/file');
 
@@ -663,7 +665,6 @@ require('http').createServer(function(req, res) {
 	});
 }).listen(8080);
 \end{lstlisting}
-
 
 The data flow control process can be automated by using the
 \texttt{stream.pipe()} method.
