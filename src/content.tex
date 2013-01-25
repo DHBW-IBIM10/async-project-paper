@@ -1781,6 +1781,7 @@ caption={JS of the Meteor example 'Leaderboard'},
 label=lst:leaderboard_js]{lst/leaderboard/leaderboard.js}
 \FloatBarrier
 
+\newpage
 \appsection{Case Study -- LinkedIn}
 \label{app:case_linkedin}
 In 2012, LinkedIn, the career-oriented social network, has changed their back-end infrastructure of the mobile application, which was built on Ruby on Rails until then.\footcite[Cf.][]{Avram_2012} LinkedIn moved from Ruby on Rails to Node.js for performance and scalability reasons and has made immense performance improvements.\footcite[Cf.][]{ODell_2011} 
@@ -1793,7 +1794,7 @@ Node.js was identified as the best solution for following benefits\footcite[Cf.]
   \item Frontend JavaScript and backend mobile teams could be merged into a single unit. 
   \item Servers were cut from 30 to 3, leaving room to handle 10x current levels of resource utilization.
 \end{itemize}
-
+\newpage
 \appsection{Case Study -- AIRCODE}
 \label{app:case_aircode}
 
@@ -1801,11 +1802,12 @@ The following information are taken from the website of AIRCODE.\footnote{See ai
 AIRCODE has implemented an application providing real-time news and visitor’s geolocation to the visitors of their website. The application is implemented in Node.js and aims to reveal the ability of Node.js of event-driven notification in real-time, i.e. in this specific case to deliver web pages with real-time news, based on live occurring events in six countries of the world. This is accomplished by providing the user with news from six countries at the same time – news being published in the moment the user receives them. The idea is to show that different news can be delivered at the same time, which makes use of Node.js’s strength of the underlying event-driven model.
 Node.js fetches the news feeds and distributes them to every current visitor in real-time. When new visitors connect to the web site, all other visitors will be notified with the others’ position. For this, Node.js uses the broadcast function from the socket.io module.
 
+\newpage
 \appsection{Case Study -- Etherpad}
 \label{app:etherpad}
 On 22 August 2011 the Etherpad Lite, that is implemented with Node.js, was released.\footcite[Cf.][]{Martischka_2011}  Etherpad is an Open Source online editor providing collaborative editing of documents in real-time.\footnote{See \url{http://www.etherpad.org}} The original Etherpad had the following main problems:\footcite[Cf.][]{Martischka_2011} Resource utilization: – the JVM that Etherpad was based on, consumed 1-2 GB RAM during normal operation time. Besides memory leaks, infinite loops, constantly high server loads and server outages were other severe problems.
 Peter Martischka, an Etherpad developer, migrated the entire application from Rhino to Node.js. It was a successful act. Node.js solved many problems in terms of performance and resource utilization. 
-
+\newpage
 \appsection{Case Study -- Clock, a UK web agency}
 \label{app:case_clock}
 
@@ -1818,8 +1820,7 @@ In conclusion, Clock states that at the beginning the projects took some extra t
 
 
 
- 
-
+\newpage
 \appsection{Benchmarking results}
 \label{app:benchmark_results}
 \lstinputlisting[numbers=none,caption={Benchmarking results as shown by the Apache benchmarking tool for web servers},
